@@ -1,9 +1,14 @@
 function App() {
   return (
     <>
-      <p>this is code swap!</p>
+      <p
+        className="d"
+        style={{ width: '5px' }}
+      >
+        this is code swap!
+      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
