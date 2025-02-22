@@ -1,8 +1,7 @@
-import './App.css'
-
 function App() {
   return (
     <>
+      <p>this is code swap!</p>
     </>
   )
 }
