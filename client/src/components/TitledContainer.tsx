@@ -1,4 +1,6 @@
 import { type ReactNode, useMemo } from 'react';
+import PerfectScrollbar from 'react-perfect-scrollbar';
+import 'react-perfect-scrollbar/dist/css/styles.css';
 
 export type TitledContainerProps = {
   /**
@@ -28,7 +30,12 @@ const TITLE_CLASSES = [
   'px-2',
   'font-bold',
   'text-gray-200',
+  'h-[30px]',
+  'flex',
+  'items-center',
 ].join(' ');
+
+const CHILD_CLASSES = ['h-[calc(100%-30px)]', 'overflow-auto'].join(' ');
 
 export const TitledContainer = ({
   title,
@@ -42,8 +49,12 @@ export const TitledContainer = ({
       className={CONTAINER_CLASSES}
       style={computedStyles}
     >
-      <div className={TITLE_CLASSES}>{title}</div>
-      {children}
+      <div className={TITLE_CLASSES}>
+        <span>{title}</span>
+      </div>
+      <PerfectScrollbar>
+        <div className={CHILD_CLASSES}>{children}</div>
+      </PerfectScrollbar>
     </div>
   );
 };

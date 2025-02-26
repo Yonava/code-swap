@@ -98,3 +98,15 @@
     @apply bg-background text-foreground;
   }
 }
+
+.group .ps__rail-y {
+  @apply bg-transparent;
+}
+
+.group .ps__thumb-y {
+  @apply bg-gray-500 rounded-md transition-all;
+}
+
+.group .ps__thumb-y:hover {
+  @apply bg-gray-700;
+}

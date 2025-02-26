@@ -2,11 +2,17 @@ import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import { useState } from 'react';
 
+const starterSnippet = `
+const result = () => {
+  // your solution here
+}`;
+
 export const CodeEditor = () => {
-  const [code, setCode] = useState('omg');
+  const [code, setCode] = useState(starterSnippet);
   return (
     <CodeMirror
-      height="100%"
+      style={{ height: '500px' }}
+      height="2000px"
       width="100%"
       theme="dark"
       extensions={[javascript()]}
