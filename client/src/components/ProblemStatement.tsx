@@ -1,17 +1,18 @@
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
+import mycssclassed from './classes';
 
 export const ProblemStatement = () => {
-  const classes = '<style> .test { color: red } </style>';
   const content = `
-  <h1 class="test">head</h1>
+  <header>head</header>
+  <custom>fsvni</custom>
   <code>head2</code>
   `;
   return (
     <div>
       <ReactMarkdown
         rehypePlugins={[rehypeRaw]}
-        children={content + ' ' + classes}
+        children={content + ' ' + mycssclassed}
       />
     </div>
   );
