@@ -12,12 +12,16 @@ ReactDOM.createRoot(app).render(
     <BrowserRouter>
       <Routes>
         <Route
-          path="/"
+          index
           element={<HomeView />}
         />
         <Route
-          path="/challenge"
+          path="challenge"
           element={<ChallengeView />}
+        />
+        <Route
+          path="*"
+          element={<div>404</div>}
         />
       </Routes>
     </BrowserRouter>
