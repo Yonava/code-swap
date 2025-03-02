@@ -1,10 +1,29 @@
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Route, Routes } from 'react-router';
+import ChallengeView from './views/ChallengeView';
+import HomeView from './views/HomeView';
 import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
 import './index.css';
-import App from './App.tsx';
 
-createRoot(document.getElementById('root')!).render(
+const app = document.getElementById('root')!;
+
+ReactDOM.createRoot(app).render(
   <StrictMode>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route
+          index
+          element={<HomeView />}
+        />
+        <Route
+          path="challenge"
+          element={<ChallengeView />}
+        />
+        <Route
+          path="*"
+          element={<div>404</div>}
+        />
+      </Routes>
+    </BrowserRouter>
   </StrictMode>
 );

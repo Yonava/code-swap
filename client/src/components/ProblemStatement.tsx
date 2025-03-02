@@ -5,7 +5,6 @@ import mycssclassed from './classes';
 export const ProblemStatement = () => {
   const content = `
   <header>head</header>
-  <custom>fsvni</custom>
   <code>head2</code>
   `;
   return (
