@@ -1,8 +1,8 @@
-import { CodeEditor } from './components/CodeEditor';
-import { ProblemStatement } from './components/ProblemStatement';
-import { TitledContainer } from './components/TitledContainer';
+import { CodeEditor } from '@/components/CodeEditor';
+import { ProblemStatement } from '@/components/ProblemStatement';
+import { TitledContainer } from '@/components/TitledContainer';
 
-function App() {
+const ChallengeView = () => {
   return (
     <>
       <div className="flex bg-gray-900 w-[100vw] h-[100vh] relative p-2 gap-2">
@@ -23,6 +23,6 @@ function App() {
       </div>
     </>
   );
-}
+};
 
-export default App;
+export default ChallengeView;
