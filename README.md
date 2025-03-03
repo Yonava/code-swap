@@ -34,7 +34,7 @@ pnpm dev
 
 ## Team Code Swap
 
-- [Ashley Bhandari](https://github.com/ashleybhandari)
-- [Wanqi Li](https://github.com/wLMEB)
-- [Viral Rathod](https://github.com/viralrathod10)
-- [Yona Voss-Andreae](https://github.com/yonava)
+- [Ashley Bhandari (ashleybhandari)](https://github.com/ashleybhandari)
+- [Wanqi Li (wLMEB)](https://github.com/wLMEB)
+- [Viral Rathod (viralrathod10)](https://github.com/viralrathod10)
+- [Yona Voss-Andreae (yonava)](https://github.com/yonava)

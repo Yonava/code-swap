@@ -1,7 +1,7 @@
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import combinedStyles from './tags';
-
+import { Button } from './ui/Button';
 
 export const ProblemStatement = () => {
   const content = `
@@ -25,6 +25,7 @@ export const ProblemStatement = () => {
   `;
   return (
     <div>
+      <Button>Click me</Button>
       <ReactMarkdown
         rehypePlugins={[rehypeRaw]}
         children={content + ' ' + combinedStyles}
