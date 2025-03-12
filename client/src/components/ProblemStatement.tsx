@@ -15,16 +15,16 @@ export const ProblemStatement = () => {
   <sub-title>Example</sub-title>
   <br>
   <br>
-  <ds>This is an example of a challenge. Examples can include <variable>math notations(n=2)</variable> and <line>code</line>.</ds>
+  <ds>This is description of an example of the challenge. Examples can include <variable>math notations(n=2)</variable> and <line>code</line>.</ds>
   <br>
   <br>
-  <more>This is an explanation to the example </more>
+  <more>This is an explanation to the description </more>
   <br>
   <br>
   <sub-title>Constrain</sub-title>
   <br>
   <br>
-  <ds>This is the constrain of this problem</ds>
+  <ds>This is the description of this constrain</ds>
   <br>
   `;
   return (
@@ -32,7 +32,6 @@ export const ProblemStatement = () => {
       <Button>Click me</Button>
       <ReactMarkdown
         rehypePlugins={[rehypeRaw]}
-        //children={content + ' ' + combinedStyles}
         children = {content + ' '+ classes}
       />
     </div>
