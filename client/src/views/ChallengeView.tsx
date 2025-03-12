@@ -1,6 +1,7 @@
 import { CodeEditor } from '@/components/CodeEditor';
 import { ProblemStatement } from '@/components/ProblemStatement';
 import { TitledContainer } from '@/components/TitledContainer';
+import { TestCases } from '@/components/TestCases';
 
 const ChallengeView = () => {
   return (
@@ -18,7 +19,14 @@ const ChallengeView = () => {
           title="Code"
           width="75%"
         >
-          <CodeEditor />
+          <div className="flex flex-col h-full">
+            <div className="flex-auto">
+              <CodeEditor />
+            </div>
+            <div className="mt-2 flex-none">
+              <TestCases />
+            </div>
+          </div>
         </TitledContainer>
       </div>
     </>
