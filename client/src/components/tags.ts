@@ -1,21 +1,19 @@
-const challengeTitle = `
-  challengeTitle {
-    color: #b0b0b0; 
+const challenge = `
+  challenge {
+    color: #f5f5f5; 
     font-size: 30px;
     font-family: "Georgia", "serif"; 
   }
 `;
 
-const description = `
-  description{
+const ds = `
+  ds{
     color: #f0f0f0;
     font-size: 20px;
     font-family: 'Georgia', serif;
 
   }
 `;
-
-
 
 const example = `
 example{
@@ -26,8 +24,8 @@ example{
 }
 
 `;
-const sectionHeader= `
-sectionHeader{
+const sub_title = `
+sub-title{
   color: #b0b0b0;
   font-size: 25px;
   font-family: "Georgia", "serif";
@@ -36,8 +34,8 @@ sectionHeader{
 
 `;
 
-const explain = `
-  explain {
+const more = `
+  more {
     color: #f0f0f0;
     font-size: 18px;
     font-family: "Georgia", "serif";
@@ -73,17 +71,15 @@ const line = `
       font-size: 0.95em;}
 `;
 
-
-
 const combinedStyles = `<style>
-          ${challengeTitle}
-          ${description}
+          ${challenge}
+          ${ds}
           ${example}
-          ${explain}
+          ${more}
           ${constrain}
           ${variable}
           ${line}
-          ${sectionHeader}
+          ${sub_title}
 
 
 </style>
@@ -91,12 +87,12 @@ const combinedStyles = `<style>
 
 export default combinedStyles;
 
-// export default `<style>challengeTitle {
+// export default `<style>challenge {
 //   color: red;
 //   font-size: 50px;
 // }
 
-// description {
+// ds {
 //   color: green;
 // }
 //  </style>`;
