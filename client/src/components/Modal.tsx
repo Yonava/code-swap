@@ -1,31 +1,37 @@
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
+  DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
 
-import { ModalHeader } from './ModalHeader';
-
 type Props = {
-  header: React.ReactElement<typeof ModalHeader>;
+  title: string;
   children: React.ReactNode;
   trigger?: React.ReactNode;
+  subtitle?: string;
   footer?: React.ReactNode;
   isOpen?: boolean;
   disableClose?: boolean;
+  hideHeader?: boolean;
 };
 
 export const Modal = ({
-  header,
+  title,
   children,
   trigger,
+  subtitle,
   footer,
   isOpen = false,
   disableClose = false,
+  hideHeader = false,
   ...props
 }: Props) => {
   const [open, setOpen] = useState(isOpen);
@@ -33,6 +39,13 @@ export const Modal = ({
   const handleInteractOutside = (e) => {
     if (disableClose) e.preventDefault();
   };
+
+  const header = (
+    <DialogHeader>
+      <DialogTitle>{title}</DialogTitle>
+      {subtitle && <DialogDescription>{subtitle}</DialogDescription>}
+    </DialogHeader>
+  );
 
   return (
     <Dialog
@@ -42,9 +55,10 @@ export const Modal = ({
       {trigger && <DialogTrigger>{trigger}</DialogTrigger>}
       <DialogContent
         onInteractOutside={handleInteractOutside}
-        className={cn('p-0 rounded', { '[&>button]:hidden': disableClose })}
+        className={cn({ '[&>button]:hidden': disableClose })}
       >
-        {header}
+        {!hideHeader && header}
+        {hideHeader && <VisuallyHidden>{header}</VisuallyHidden>}
         <div {...props}>{children}</div>
         {footer && <DialogFooter>{footer}</DialogFooter>}
       </DialogContent>

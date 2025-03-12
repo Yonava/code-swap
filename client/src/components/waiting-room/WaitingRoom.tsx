@@ -1,21 +1,14 @@
-import { Modal } from '@/components/modal/Modal';
-import { ModalHeader } from '@/components/modal/ModalHeader';
+import { Modal } from '@/components/Modal';
 import { WaitingRoomTeam } from './WaitingRoomTeam';
 
 export const WaitingRoom = () => {
-  const header = (
-    <ModalHeader
-      hidden
-      title="Waiting Room"
-    ></ModalHeader>
-  );
-
   return (
     <Modal
+      title="Waiting Room"
       isOpen
       disableClose
-      header={header}
-      className="flex flex-col md:flex-row gap-3 bg-gray-200 p-3"
+      hideHeader
+      className="flex flex-col md:flex-row gap-3"
     >
       <WaitingRoomTeam
         name="team 1"

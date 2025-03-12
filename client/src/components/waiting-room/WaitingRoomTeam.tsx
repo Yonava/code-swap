@@ -7,7 +7,7 @@ type Props = {
 
 export const WaitingRoomTeam = ({ name, members }: Props) => {
   return (
-    <div className="flex flex-col w-full items-center p-4 rounded bg-white">
+    <div className="flex flex-col w-full items-center">
       <h1 className="text-2xl font-bold">{name}</h1>
       <div>
         {members.map((e) => (
