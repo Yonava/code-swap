@@ -12,7 +12,7 @@ export const CodeEditor = () => {
   return (
     <CodeMirror
       style={{ height: '500px' }}
-      height="2000px"
+      height="600px"
       width="100%"
       theme="dark"
       extensions={[javascript()]}
