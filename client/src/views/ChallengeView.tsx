@@ -15,19 +15,23 @@ const ChallengeView = () => {
             <ProblemStatement />
           </div>
         </TitledContainer>
-        <TitledContainer
-          title="Code"
-          width="75%"
-        >
-          <div className="flex flex-col h-full">
-            <div className="flex-auto">
-              <CodeEditor />
-            </div>
-            <div className="mt-2 flex-none">
+
+        <div className="flex flex-col h-full padding-2 gap-2 w-[75%]">
+          <TitledContainer
+            title="Code"
+            width="100%"
+          >
+            <CodeEditor />
+          </TitledContainer>
+          <div className="h-[50%]">
+            <TitledContainer
+              title="Test Cases"
+              width="100%"
+            >
               <TestCases />
-            </div>
+            </TitledContainer>
           </div>
-        </TitledContainer>
+        </div>
       </div>
     </>
   );
