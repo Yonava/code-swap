@@ -4,24 +4,37 @@ challenge {
   color: var(--background);
   font-size: var(--font-size-title);
   font-family: var(--font-family-title);
+  display: block;
+  margin-bottom: var(--margin-bottom-title);
 }
 
 ds {
   color: var(--secondary);
   font-size: var(--font-size-text);
   font-family: var(--font-family-text);
+  display: block;
+  margin-bottom: var(--margin-bottom-text);
 }
 
 sub-title {
   color: var(--secondary);
   font-size: var(--font-size-sub-title);
   font-family: var(--font-family-title);
+  display: block;
+  margin-bottom: var(--margin-bottom-title);
+}
+
+snip{
+  display: block;
+  margin-bottom: var(--margin-bottom-text);
 }
 
 more {
   color: var(--secondary);
   font-size: var(--font-size-small);
   font-family: var(--font-family-text);
+  display: block;
+  margin-bottom: var(--margin-bottom-text);
 }
 
 variable {
