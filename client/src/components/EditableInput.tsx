@@ -43,7 +43,7 @@ export const EditableInput = ({
   return (
     <div
       onBlur={handleBlur}
-      className="flex flex-row items-center gap-2"
+      className="flex items-center gap-2"
     >
       <input
         value={value}
