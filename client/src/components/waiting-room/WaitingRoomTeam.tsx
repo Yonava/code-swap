@@ -1,3 +1,4 @@
+import { EditableInput } from '@/components/EditableInput';
 import { WaitingRoomPlayer } from './WaitingRoomPlayer';
 
 type WaitingRoomTeamProps = {
@@ -8,7 +9,10 @@ type WaitingRoomTeamProps = {
 export const WaitingRoomTeam = ({ name, members }: WaitingRoomTeamProps) => {
   return (
     <div className="flex flex-col w-full items-center">
-      <h1 className="text-2xl font-bold">{name}</h1>
+      <EditableInput
+        defaultValue={name}
+        className="w-54 text-2xl font-bold text-center"
+      />
       <div>
         {members.map((e) => (
           <WaitingRoomPlayer>{e}</WaitingRoomPlayer>
