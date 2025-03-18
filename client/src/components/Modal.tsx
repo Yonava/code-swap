@@ -36,8 +36,10 @@ export const Modal = ({
 }: ModalProps) => {
   const [open, setOpen] = useState(isOpen);
 
-  const handleInteractOutside = (e) => {
-    if (disableClose) e.preventDefault();
+  const handleClose = (e) => {
+    if (disableClose) {
+      e.preventDefault();
+    }
   };
 
   const header = (
@@ -54,7 +56,8 @@ export const Modal = ({
     >
       {trigger && <DialogTrigger>{trigger}</DialogTrigger>}
       <DialogContent
-        onInteractOutside={handleInteractOutside}
+        onInteractOutside={handleClose}
+        onEscapeKeyDown={handleClose}
         className={cn({ '[&>button]:hidden': disableClose })}
       >
         {!hideHeader && header}
