@@ -1,9 +1,9 @@
 import React from 'react';
 
-type Props = {
+type WaitingRoomPlayerProps = {
   children: React.ReactNode;
 };
 
-export const WaitingRoomPlayer = ({ children }: Props) => {
+export const WaitingRoomPlayer = ({ children }: WaitingRoomPlayerProps) => {
   return <div>{children}</div>;
 };

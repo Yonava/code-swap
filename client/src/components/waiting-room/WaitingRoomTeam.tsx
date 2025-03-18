@@ -1,11 +1,11 @@
 import { WaitingRoomPlayer } from './WaitingRoomPlayer';
 
-type Props = {
+type WaitingRoomTeamProps = {
   name: string;
   members: string[];
 };
 
-export const WaitingRoomTeam = ({ name, members }: Props) => {
+export const WaitingRoomTeam = ({ name, members }: WaitingRoomTeamProps) => {
   return (
     <div className="flex flex-col w-full items-center">
       <h1 className="text-2xl font-bold">{name}</h1>

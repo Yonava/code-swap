@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 
-type Props = {
+type ModalProps = {
   title: string;
   children: React.ReactNode;
   trigger?: React.ReactNode;
@@ -33,7 +33,7 @@ export const Modal = ({
   disableClose = false,
   hideHeader = false,
   ...props
-}: Props) => {
+}: ModalProps) => {
   const [open, setOpen] = useState(isOpen);
 
   const handleInteractOutside = (e) => {
