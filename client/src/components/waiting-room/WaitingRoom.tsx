@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/Button';
-import { Modal } from '@/components/Modal';
+import { DialogBox } from '@/components/DialogBox';
 import { WaitingRoomTeam } from './WaitingRoomTeam';
 
 export const WaitingRoom = () => {
@@ -8,7 +8,7 @@ export const WaitingRoom = () => {
   }
 
   return (
-    <Modal
+    <DialogBox
       title="Waiting Room"
       isOpen
       disableClose
@@ -25,6 +25,6 @@ export const WaitingRoom = () => {
       >
         Start Game
       </Button>
-    </Modal>
+    </DialogBox>
   );
 };

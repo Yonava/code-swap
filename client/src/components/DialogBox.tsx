@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 
-type ModalProps = {
+type DialogBoxProps = {
   title: string;
   children: React.ReactNode;
   trigger?: React.ReactNode;
@@ -23,7 +23,7 @@ type ModalProps = {
   hideHeader?: boolean;
 };
 
-export const Modal = ({
+export const DialogBox = ({
   title,
   children,
   trigger,
@@ -33,7 +33,7 @@ export const Modal = ({
   disableClose = false,
   hideHeader = false,
   ...props
-}: ModalProps) => {
+}: DialogBoxProps) => {
   const [open, setOpen] = useState(isOpen);
 
   const handleClose = (e) => {
@@ -42,7 +42,7 @@ export const Modal = ({
     }
   };
 
-  const header = (
+  const HeaderContent = (
     <DialogHeader>
       <DialogTitle>{title}</DialogTitle>
       <DialogDescription>{subtitle}</DialogDescription>
@@ -60,8 +60,11 @@ export const Modal = ({
         onEscapeKeyDown={handleClose}
         className={cn('!max-w-fit', { '[&>button]:hidden': disableClose })}
       >
-        {!hideHeader && header}
-        {hideHeader && <VisuallyHidden>{header}</VisuallyHidden>}
+        {hideHeader ? (
+          <VisuallyHidden>{HeaderContent}</VisuallyHidden>
+        ) : (
+          HeaderContent
+        )}
         <div {...props}>{children}</div>
         {footer && <DialogFooter>{footer}</DialogFooter>}
       </DialogContent>
