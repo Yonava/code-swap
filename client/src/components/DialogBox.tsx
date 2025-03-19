@@ -12,6 +12,17 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 
+/**
+ * @typedef {Object} DialogBoxProps
+ * @property {string} title - Dialog title
+ * @property {React.ReactNode} children - Dialog content
+ * @property {React.ReactNode} [trigger] - Element that's clicked to open the dialog
+ * @property {string} [subtitle] - Dialog subtitle
+ * @property {React.ReactNode} [footer] - Dialog footer content
+ * @property {boolean} [isOpen=false] - Whether the dialog starts open or closed
+ * @property {boolean} [disableClose=false] - Whether the user is allowed to close the dialog
+ * @property {boolean} [hideHeader=false] - Whether to show the title and subtitle
+ */
 type DialogBoxProps = {
   title: string;
   children: React.ReactNode;
