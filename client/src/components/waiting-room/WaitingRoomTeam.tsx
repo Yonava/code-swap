@@ -17,13 +17,13 @@ export const WaitingRoomTeam = ({ defaultName }: WaitingRoomTeamProps) => {
   const [player2, setPlayer2] = useState<Player>(MOCK_PLAYERS[1]);
 
   return (
-    <div className="flex flex-col w-full items-center gap-6">
+    <div className="flex flex-col w-full items-center gap-5 md:gap-18">
       <EditableText
         defaultValue={defaultName}
         iconSize={18}
-        className="text-2xl font-bold text-center ml-8"
+        className="text-2xl font-bold text-center"
       />
-      <div className="flex flex-col">
+      <div className="grow flex flex-col justify-evenly mr-8">
         <PlayerSlot>
           {player1 ? (
             <FilledPlayerSlot
@@ -45,7 +45,7 @@ export const WaitingRoomTeam = ({ defaultName }: WaitingRoomTeamProps) => {
           )}
         </PlayerSlot>
       </div>
-      <div>(QR code)</div>
+      <div className="border border-black size-22 md:size-32">(QR code)</div>
     </div>
   );
 };
