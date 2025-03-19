@@ -39,7 +39,7 @@ export const EditableText = ({
 
   return (
     <>
-      {isEditing && (
+      {isEditing ? (
         <input
           ref={inputRef}
           value={value}
@@ -48,9 +48,8 @@ export const EditableText = ({
           onKeyDown={handleKeyDown}
           className={cn('w-full', className)}
         ></input>
-      )}
-      {!isEditing && (
-        <div className="flex flex-row items-center gap-3">
+      ) : (
+        <div className="flex items-center gap-3">
           <span className={className}>{value}</span>
           <button
             onClick={() => setIsEditing(true)}

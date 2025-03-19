@@ -2,17 +2,17 @@ import { cn } from '@/lib/utils';
 import { ProfilePicture } from '@/components/ProfilePicture';
 import { Player } from '@/types/Player';
 
-type WaitingRoomPlayerProps = {
+type FilledPlayerSlotProps = {
   player: Player;
   className?: string;
 };
 
-export const WaitingRoomPlayer = ({
+export const FilledPlayerSlot = ({
   player,
   className,
-}: WaitingRoomPlayerProps) => {
+}: FilledPlayerSlotProps) => {
   return (
-    <div className={cn('gap-5', className)}>
+    <div className={cn('flex items-center gap-4', className)}>
       <ProfilePicture src={player.pfp} />
       <span>{player.name}</span>
     </div>
