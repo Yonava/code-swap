@@ -45,7 +45,7 @@ export const Modal = ({
   const header = (
     <DialogHeader>
       <DialogTitle>{title}</DialogTitle>
-      {subtitle && <DialogDescription>{subtitle}</DialogDescription>}
+      <DialogDescription>{subtitle}</DialogDescription>
     </DialogHeader>
   );
 
