@@ -19,17 +19,17 @@ export const EditableInput = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const lastValidInput = useRef(defaultValue);
 
-  function saveChanges() {
+  function stopEditing(saveChanges = true) {
     setIsEditing(false);
 
     // if empty string, replace value with last valid input
-    if (value.trim().length > 0) lastValidInput.current = value;
+    if (saveChanges && value.trim().length > 0) lastValidInput.current = value;
     else setValue(lastValidInput.current);
   }
 
-  // stop editing on ENTER or ESC
   function handleKeyDown(e) {
-    if (e.key === 'Enter' || e.key === 'Escape') saveChanges();
+    if (e.key === 'Enter' || e.key === 'Tab') stopEditing();
+    else if (e.key === 'Escape') stopEditing(false);
   }
 
   // focus on input while editing
@@ -44,19 +44,14 @@ export const EditableInput = ({
           ref={inputRef}
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          onBlur={saveChanges}
+          onBlur={() => stopEditing()}
           onKeyDown={handleKeyDown}
           className={cn('w-full', className)}
         ></input>
       )}
       {!isEditing && (
         <div className="flex flex-row items-center gap-3">
-          <span
-            onDoubleClick={() => setIsEditing(true)}
-            className={className}
-          >
-            {value}
-          </span>
+          <span className={className}>{value}</span>
           <button
             onClick={() => setIsEditing(true)}
             className="cursor-pointer"

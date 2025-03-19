@@ -22,7 +22,7 @@ export const WaitingRoomTeam = ({
         iconSize={18}
         className="text-2xl font-bold text-center"
       />
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col items-center gap-2">
         {players.map((player) => (
           <WaitingRoomPlayer
             user={player}
