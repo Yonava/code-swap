@@ -12,14 +12,14 @@ export const WaitingRoomPlayer = ({
   onRemove,
 }: WaitingRoomPlayerProps) => {
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-5">
       <ProfilePicture src={user.pfp} />
-      {user.name}
+      <div className="min-w-24">{user.name}</div>
       <button
         onClick={() => onRemove(user.id)}
         className="cursor-pointer"
       >
-        <X size={18} />
+        <X size={22} />
       </button>
     </div>
   );

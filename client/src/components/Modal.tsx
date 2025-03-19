@@ -58,7 +58,7 @@ export const Modal = ({
       <DialogContent
         onInteractOutside={handleClose}
         onEscapeKeyDown={handleClose}
-        className={cn({ '[&>button]:hidden': disableClose })}
+        className={cn('!max-w-fit', { '[&>button]:hidden': disableClose })}
       >
         {!hideHeader && header}
         {hideHeader && <VisuallyHidden>{header}</VisuallyHidden>}

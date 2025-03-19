@@ -19,9 +19,10 @@ export const WaitingRoomTeam = ({
     <div className="flex flex-col w-full items-center gap-5">
       <EditableInput
         defaultValue={defaultName}
-        className="w-54 text-2xl font-bold text-center"
+        iconSize={20}
+        className="text-2xl font-bold text-center"
       />
-      <div>
+      <div className="flex flex-col gap-2">
         {players.map((player) => (
           <WaitingRoomPlayer
             user={player}
