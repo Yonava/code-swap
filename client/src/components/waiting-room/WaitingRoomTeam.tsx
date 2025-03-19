@@ -1,18 +1,20 @@
 import { EditableInput } from '@/components/EditableInput';
-import { User } from '@/types/User';
+import { MOCK_PLAYERS } from '@/mock-data/mock-players';
+import { Player } from '@/types/Player';
+import { useState } from 'react';
 import { WaitingRoomPlayer } from './WaitingRoomPlayer';
 
 type WaitingRoomTeamProps = {
   defaultName: string;
-  players: User[];
 };
 
-export const WaitingRoomTeam = ({
-  defaultName,
-  players,
-}: WaitingRoomTeamProps) => {
-  function handleRemovePlayer(id: string) {
-    console.log(id);
+export const WaitingRoomTeam = ({ defaultName }: WaitingRoomTeamProps) => {
+  const [players, setPlayers] = useState<Player[]>([]);
+
+  function removePlayer(id: string) {
+    // setPlayers((players) =>
+    //   players.map((p) => (p.id === id ? { id: p.id } : p))
+    // );
   }
 
   return (
@@ -25,8 +27,9 @@ export const WaitingRoomTeam = ({
       <div className="flex flex-col items-center gap-2">
         {players.map((player) => (
           <WaitingRoomPlayer
-            user={player}
-            onRemove={handleRemovePlayer}
+            key={player.id}
+            player={player}
+            onRemove={removePlayer}
           />
         ))}
       </div>

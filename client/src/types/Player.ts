@@ -1,4 +1,4 @@
-export type User = {
+export type Player = {
   id: string;
   name: string;
   pfp?: string;
