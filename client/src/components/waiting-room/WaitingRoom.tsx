@@ -9,7 +9,7 @@ export const WaitingRoom = () => {
       isOpen
       disableClose
       hideHeader
-      className="flex flex-col md:flex-row gap-10"
+      className="w-[80dvw] sm:w-96 md:w-2xl flex flex-col md:flex-row gap-10"
     >
       <WaitingRoomTeam
         defaultName="Team 1"

@@ -19,7 +19,7 @@ export const WaitingRoomTeam = ({
     <div className="flex flex-col w-full items-center gap-5">
       <EditableInput
         defaultValue={defaultName}
-        iconSize={20}
+        iconSize={18}
         className="text-2xl font-bold text-center"
       />
       <div className="flex flex-col gap-2">
