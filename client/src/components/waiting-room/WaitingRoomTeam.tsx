@@ -1,4 +1,4 @@
-import { EditableInput } from '@/components/EditableInput';
+import { EditableText } from '@/components/EditableText';
 import { MOCK_PLAYERS } from '@/mock-data/mock-players';
 import { WaitingRoomPlayer } from './WaitingRoomPlayer';
 import { useState } from 'react';
@@ -16,7 +16,7 @@ export const WaitingRoomTeam = ({ defaultName }: WaitingRoomTeamProps) => {
 
   return (
     <div className="flex flex-col w-full items-center gap-6">
-      <EditableInput
+      <EditableText
         defaultValue={defaultName}
         iconSize={18}
         className="text-2xl font-bold text-center"

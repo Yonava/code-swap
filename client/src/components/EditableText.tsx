@@ -2,17 +2,17 @@ import { cn } from '@/lib/utils';
 import { Pencil } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
-type EditableInputProps = {
+type EditableTextProps = {
   defaultValue: string;
   iconSize?: number;
   className?: string;
 };
 
-export const EditableInput = ({
+export const EditableText = ({
   defaultValue,
   iconSize = 24,
   className,
-}: EditableInputProps) => {
+}: EditableTextProps) => {
   const [value, setValue] = useState(defaultValue);
   const [isEditing, setIsEditing] = useState(false);
 
