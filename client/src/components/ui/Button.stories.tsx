@@ -7,12 +7,27 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
+  argTypes: {
+    children: {
+      description: 'Button label',
+    },
+    variant: {
+      control: 'radio',
+      options: ['', 'secondary', 'outline', 'destructive', 'ghost', 'link'],
+      description:
+        'Variants of how the button appears (do not specify for primary)',
+    },
+    asChild: {
+      description: 'Delegates rendering the child element',
+    },
+  },
 } satisfies Meta<typeof Button>;
 
 export default meta;
 
 type Story = StoryObj<typeof Button>;
 
+/** Default button provided by shadcn. */
 export const Default: Story = {
   args: {
     children: 'Default',
@@ -20,6 +35,7 @@ export const Default: Story = {
   },
 };
 
+/** Secondary button provided by shadcn. */
 export const Secondary: Story = {
   args: {
     children: 'Secondary',
@@ -27,6 +43,7 @@ export const Secondary: Story = {
   },
 };
 
+/** Outlined button provided by shadcn. */
 export const Outline: Story = {
   args: {
     children: 'Outline',
