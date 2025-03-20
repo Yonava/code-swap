@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 type ProfilePictureProps = {
-  src?: string;
+  src: string;
 };
 export const ProfilePicture = ({ src }: ProfilePictureProps) => {
   return (

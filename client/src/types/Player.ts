@@ -1,5 +1,5 @@
 export type Player = {
   id: string;
   name: string;
-  pfp?: string;
+  pfp: string;
 };
