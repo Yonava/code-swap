@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { Button } from '../ui/Button';
-import { DisplayTestCase } from './DisplayTestCases';
+import { TestsDisplay } from './TestsDisplay';
 
 export const TestCases = () => {
   const [activeTab, setActiveTab] = useState(1);
 
   const testCases = [
-    { id: 1, input: '[3,3]', output: '[3,3]', expected: '6' },
-    { id: 2, input: '[1,2,3]', output: '5', expected: '[1,2,3]' },
-    { id: 3, input: '[2,4,6]', output: '10', expected: '[2,4,6]' },
+    { id: 1, input: '[3,3]', output: '6', expected: '6' },
+    { id: 2, input: '[1,2,3]', output: '6', expected: '6' },
+    { id: 3, input: '[2,4,6]', output: '12', expected: '12' },
+    { id: 4, input: '[2,4,6]', output: '13', expected: '12' },
+    { id: 5, input: '[2,4,6]', output: '14', expected: '12' },
   ];
 
   return (
@@ -27,7 +29,7 @@ export const TestCases = () => {
       {testCases.map(
         (tc) =>
           activeTab === tc.id && (
-            <DisplayTestCase
+            <TestsDisplay
               key={tc.id}
               input={tc.input}
               output={tc.output}
