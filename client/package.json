@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@codemirror/lang-javascript": "^6.2.3",
+    "@radix-ui/react-label": "^2.1.2",
     "@radix-ui/react-slot": "^1.1.2",
     "@tailwindcss/vite": "^4.0.9",
     "@uiw/react-codemirror": "^4.23.8",
