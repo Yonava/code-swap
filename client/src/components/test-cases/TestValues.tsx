@@ -3,7 +3,7 @@ export type DisplayInputProps = {
   value: string;
 };
 
-export function DisplayInput({ title, value }: DisplayInputProps) {
+export function TestValues({ title, value }: DisplayInputProps) {
   return (
     <>
       <p className="font-bold">{title}</p>

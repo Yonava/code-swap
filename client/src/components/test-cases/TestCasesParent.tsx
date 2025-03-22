@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from '../ui/Button';
-import { TestsDisplay } from './TestsDisplay';
+import { TestCase } from './TestCase';
 
 export const TestCases = () => {
   const [activeTab, setActiveTab] = useState(1);
@@ -29,7 +29,7 @@ export const TestCases = () => {
       {testCases.map(
         (tc) =>
           activeTab === tc.id && (
-            <TestsDisplay
+            <TestCase
               key={tc.id}
               input={tc.input}
               output={tc.output}

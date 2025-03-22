@@ -1,4 +1,4 @@
-import { DisplayInput } from './DisplayInput';
+import { TestValues } from './TestValues';
 
 export type TestsDisplayProps = {
   input: string;
@@ -6,18 +6,18 @@ export type TestsDisplayProps = {
   expected: string;
 };
 
-export function TestsDisplay({ input, output, expected }: TestsDisplayProps) {
+export function TestCase({ input, output, expected }: TestsDisplayProps) {
   return (
     <div>
-      <DisplayInput
+      <TestValues
         title="Input:"
         value={input}
       />
-      <DisplayInput
+      <TestValues
         title="Output:"
         value={output}
       />
-      <DisplayInput
+      <TestValues
         title="Expected:"
         value={expected}
       />

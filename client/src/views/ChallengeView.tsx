@@ -1,7 +1,7 @@
 import { CodeEditor } from '@/components/CodeEditor';
 import { ProblemStatement } from '@/components/ProblemStatement';
 import { TitledContainer } from '@/components/TitledContainer';
-import { TestCases } from '@/components/test-cases/TestCases';
+import { TestCases } from '@/components/test-cases/TestCasesParent';
 
 const ChallengeView = () => {
   return (
