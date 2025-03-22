@@ -11,6 +11,11 @@ export const TestCases = () => {
     { id: 3, input: '[2,4,6]', output: '12', expected: '12' },
     { id: 4, input: '[2,4,6]', output: '13', expected: '12' },
     { id: 5, input: '[2,4,6]', output: '14', expected: '12' },
+    { id: 6, input: '[2,4,6]', output: '14', expected: '12' },
+    { id: 7, input: '[2,4,6]', output: '14', expected: '12' },
+    { id: 8, input: '[2,4,6]', output: '14', expected: '12' },
+    { id: 9, input: '[2,4,6]', output: '14', expected: '12' },
+    { id: 10, input: '[2,4,6]', output: '14', expected: '12' },
   ];
 
   return (

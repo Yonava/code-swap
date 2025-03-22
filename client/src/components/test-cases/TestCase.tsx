@@ -8,7 +8,7 @@ export type TestsDisplayProps = {
 
 export function TestCase({ input, output, expected }: TestsDisplayProps) {
   return (
-    <div>
+    <div className="space-y-2">
       <TestValues
         title="Input:"
         value={input}
