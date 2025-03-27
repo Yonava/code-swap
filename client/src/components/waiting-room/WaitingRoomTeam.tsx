@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
 import { EditableText } from '@/components/EditableText';
-import { EmptyPlayerSlot } from './EmptyPlayerSlot';
-import { FilledPlayerSlot } from './FilledPlayerSlot';
-import { PlayerSlot } from './PlayerSlot';
+import { EmptyPlayerSlot } from './PlayerSlot/EmptyPlayerSlot';
+import { FilledPlayerSlot } from './PlayerSlot/FilledPlayerSlot';
+import { PlayerSlot } from './PlayerSlot/PlayerSlot';
 
 import { MOCK_PLAYERS } from '@/mock-data/mock-players';
 import { Player } from '@/types/Player';
