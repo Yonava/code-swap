@@ -1,4 +1,4 @@
-import { TestValues } from './TestValues';
+import { TestField } from './TestField';
 
 export type TestsDisplayProps = {
   input: string;
@@ -6,18 +6,18 @@ export type TestsDisplayProps = {
   expected: string;
 };
 
-export function TestCase({ input, output, expected }: TestsDisplayProps) {
+export function ValuesDisplay({ input, output, expected }: TestsDisplayProps) {
   return (
     <div className="space-y-2">
-      <TestValues
+      <TestField
         title="Input:"
         value={input}
       />
-      <TestValues
+      <TestField
         title="Output:"
         value={output}
       />
-      <TestValues
+      <TestField
         title="Expected:"
         value={expected}
       />

@@ -6,7 +6,7 @@ export type DisplayInputProps = {
   value: string;
 };
 
-export function TestValues({ title, value }: DisplayInputProps) {
+export function TestField({ title, value }: DisplayInputProps) {
   return (
     <div className="grid w-full items-center">
       <Label className="text-lg font-bold">{title}</Label>
