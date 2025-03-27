@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { WaitingRoomTeam } from './WaitingRoomTeam';
 
 const meta = {
-  title: 'UI/WaitingRoomTeam',
+  title: 'UI/WaitingRoom/WaitingRoomTeam',
   component: WaitingRoomTeam,
   parameters: {
     layout: 'centered',
