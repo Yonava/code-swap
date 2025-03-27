@@ -9,17 +9,18 @@ export const TestCases = () => {
   const localTestCases = testCases;
 
   return (
-    <div className="w-full h-full bg-gray-400 text-black p-3">
+    <div className="w-full h-full text-white p-3">
       <div className="flex gap-2 mb-4">
         {localTestCases.map((tc) => (
           <Button
             key={tc.id}
-            className={`p-2 ${activeTab === tc.id ? 'bg-gray-900 text-white' : 'bg-gray-600'}`}
+            className={`default hover:bg-primary shadow-none ${activeTab === tc.id ? '' : 'bg-transparent'}`}
             onClick={() => setActiveTab(tc.id)}
           >
             Case {tc.id}
           </Button>
         ))}
+        <Button className="bg-green-700 hover:bg-green-600 ml-auto">Run</Button>
       </div>
       {localTestCases.map(
         (tc) =>

@@ -11,7 +11,7 @@ export function TestValues({ title, value }: DisplayInputProps) {
     <div className="grid w-full items-center">
       <Label className="text-lg font-bold">{title}</Label>
       <Input
-        className="font-bold"
+        className="font-bold bg-primary border-none"
         value={value}
         readOnly
       />
