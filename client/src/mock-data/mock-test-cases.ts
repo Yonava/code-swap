@@ -7,6 +7,4 @@ export const testCases = [
   { id: 6, input: '[2,4,6]', output: '14', expected: '12' },
   { id: 7, input: '[2,4,6]', output: '14', expected: '12' },
   { id: 8, input: '[2,4,6]', output: '14', expected: '12' },
-  { id: 9, input: '[2,4,6]', output: '14', expected: '12' },
-  { id: 10, input: '[2,4,6]', output: '14', expected: '12' },
 ];
