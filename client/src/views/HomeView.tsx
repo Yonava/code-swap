@@ -1,5 +1,8 @@
 import { Button } from '@/components/ui/Button';
-import { ReactNode } from 'react';
+import { Dialog, DialogClose, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { DialogContent } from '@radix-ui/react-dialog';
+import { ReactNode, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 type BillboardProps = {
@@ -32,12 +35,44 @@ const Billboard = ({
   );
 };
 
-const StartActions = () => (
-  <>
+const StartActions = () => {
+  return (<>
     <Button>Host</Button>
-    <Button variant="secondary">Join</Button>
-  </>
-);
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="secondary">Join</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Share link</DialogTitle>
+          <DialogDescription>
+            Anyone who has this link will be able to view this.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="flex items-center space-x-2">
+          <div className="grid flex-1 gap-2">
+            <Input
+              id="link"
+              defaultValue="https://ui.shadcn.com/docs/installation"
+              readOnly
+            />
+          </div>
+          <Button type="submit" size="sm" className="px-3">
+            <span className="sr-only">Copy</span>
+          </Button>
+        </div>
+        <DialogFooter className="sm:justify-start">
+          <DialogClose asChild>
+            <Button type="button" variant="secondary">
+              Close
+            </Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  </>)
+};
 
 const HomeView = () => {
   return (
