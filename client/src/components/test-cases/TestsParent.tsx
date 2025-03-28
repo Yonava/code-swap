@@ -6,32 +6,43 @@ import { testCases } from '@/mock-data/mock-test-cases';
 
 export const TestCases = () => {
   const [activeTab, setActiveTab] = useState(1);
-  const [testResult, setTestResult] = useState<'pass' | 'fail' | null>(null);
+  const [testResult, setTestResult] = useState<number | null>(null);
+  const [testsRun, setTestsRun] = useState(false);
 
   const localTestCases = testCases;
 
   const runTests = () => {
-    const activeTestCase = localTestCases.find((tc) => tc.id === activeTab);
-    if (activeTestCase) {
-      const passed = activeTestCase.output === activeTestCase.expected;
-      setTestResult(passed ? 'pass' : 'fail');
-    }
+    const passedCount = localTestCases.filter(
+      (tc) => tc.output === tc.expected
+    ).length;
+    setTestResult(passedCount);
+    setTestsRun(true);
   };
 
   return (
     <div className="w-full h-full text-white p-3">
       <div className="flex gap-2 mb-4 items-center">
-        {localTestCases.map((tc) => (
-          <Button
-            key={tc.id}
-            className={`default hover:bg-primary shadow-none ${activeTab === tc.id ? '' : 'bg-transparent'}`}
-            onClick={() => setActiveTab(tc.id)}
-          >
-            Case {tc.id}
-          </Button>
-        ))}
+        {localTestCases.map((tc) => {
+          const isPassed = tc.output === tc.expected;
+          return (
+            <Button
+              key={tc.id}
+              className={`default hover:bg-primary shadow-none ${
+                activeTab === tc.id ? '' : 'bg-transparent'
+              } ${
+                testsRun ? (isPassed ? 'text-green-500' : 'text-red-500') : ''
+              }`}
+              onClick={() => setActiveTab(tc.id)}
+            >
+              Case {tc.id}
+            </Button>
+          );
+        })}
         <div className="flex items-center ml-auto gap-4">
-          <TestResultDisplay result={testResult} />
+          <TestResultDisplay
+            result={testResult}
+            total={localTestCases.length}
+          />
           <Button
             className="bg-green-700 hover:bg-green-600"
             onClick={runTests}

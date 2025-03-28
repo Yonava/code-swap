@@ -23,7 +23,7 @@ const ChallengeView = () => {
           >
             <CodeEditor />
           </TitledContainer>
-          <div className="h-[50%]">
+          <div className="h-[40%]">
             <TitledContainer
               title="Test Cases"
               width="100%"

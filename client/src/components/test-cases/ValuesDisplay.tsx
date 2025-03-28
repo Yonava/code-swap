@@ -14,7 +14,7 @@ export function ValuesDisplay({ input, output, expected }: TestsDisplayProps) {
         value={input}
       />
       <TestField
-        title="Output:"
+        title="Your Output:"
         value={output}
       />
       <TestField

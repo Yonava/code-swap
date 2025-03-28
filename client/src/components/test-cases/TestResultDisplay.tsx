@@ -1,17 +1,17 @@
 interface TestResultDisplayProps {
-  result: 'pass' | 'fail' | null;
+  result: number | null;
+  total: number;
 }
 
-export const TestResultDisplay = (props: TestResultDisplayProps) => {
-  if (props.result === null) return null;
+export const TestResultDisplay = ({
+  result,
+  total,
+}: TestResultDisplayProps) => {
+  if (result === null) return null;
 
   return (
-    <span
-      className={`${
-        props.result === 'pass' ? '!text-green-500' : '!text-red-500'
-      } font-bold text-sm`}
-    >
-      {props.result === 'pass' ? 'Test passed!' : 'Test failed!'}
+    <span className="text-white font-bold text-sm">
+      {result}/{total} Test Cases Passed
     </span>
   );
 };
