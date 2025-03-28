@@ -11,8 +11,8 @@ export const CodeEditor = () => {
   const [code, setCode] = useState(starterSnippet);
   return (
     <CodeMirror
-      style={{ height: '500px' }}
-      height="600px"
+      style={{ height: '100%' }}
+      height="100%"
       width="100%"
       theme="dark"
       extensions={[javascript()]}
