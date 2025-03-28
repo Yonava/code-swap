@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from '../ui/Button';
 import { ValuesDisplay } from './ValuesDIsplay';
 import { TestResultDisplay } from './TestResultDisplay';
+import { TestButtonList } from './TestButtonList';
 import { testCases } from '@/mock-data/mock-test-cases';
 
 export const TestCases = () => {
@@ -22,22 +23,12 @@ export const TestCases = () => {
   return (
     <div className="w-full h-full text-white p-3">
       <div className="flex gap-2 mb-4 items-center">
-        {localTestCases.map((tc) => {
-          const isPassed = tc.output === tc.expected;
-          return (
-            <Button
-              key={tc.id}
-              className={`default hover:bg-primary shadow-none ${
-                activeTab === tc.id ? '' : 'bg-transparent'
-              } ${
-                testsRun ? (isPassed ? 'text-green-500' : 'text-red-500') : ''
-              }`}
-              onClick={() => setActiveTab(tc.id)}
-            >
-              Case {tc.id}
-            </Button>
-          );
-        })}
+        <TestButtonList
+          testCases={localTestCases}
+          activeTab={activeTab}
+          testsRun={testsRun}
+          onTabChange={setActiveTab}
+        />
         <div className="flex items-center ml-auto gap-4">
           <TestResultDisplay
             result={testResult}
