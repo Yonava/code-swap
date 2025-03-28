@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from '../ui/Button';
-import { ValuesDisplay } from './ValuesDIsplay';
+import { ValuesDisplay } from './ValuesDisplay';
 import { TestResultDisplay } from './TestResultDisplay';
 import { TestButtonList } from './TestButtonList';
 import { testCases } from '@/mock-data/mock-test-cases';
