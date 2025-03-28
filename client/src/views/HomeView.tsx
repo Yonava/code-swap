@@ -1,8 +1,9 @@
 import { Button } from '@/components/ui/Button';
-import { Dialog, DialogClose, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { DialogContent } from '@radix-ui/react-dialog';
-import { ReactNode, useState } from 'react';
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
+import { OTPInput } from 'input-otp';
+import { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 type BillboardProps = {
@@ -35,43 +36,44 @@ const Billboard = ({
   );
 };
 
-const StartActions = () => {
-  return (<>
-    <Button>Host</Button>
+const JoinAction = () => {
+  return (
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="secondary">Join</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Share link</DialogTitle>
+          <DialogTitle>Join A Game 🤙</DialogTitle>
           <DialogDescription>
-            Anyone who has this link will be able to view this.
+            Enter a team code (each game has two codes, one for each team)
           </DialogDescription>
         </DialogHeader>
 
         <div className="flex items-center space-x-2">
           <div className="grid flex-1 gap-2">
-            <Input
-              id="link"
-              defaultValue="https://ui.shadcn.com/docs/installation"
-              readOnly
-            />
+            <InputOTP maxLength={4}>
+              <InputOTPGroup>
+                <InputOTPSlot index={0} />
+                <InputOTPSlot index={1} />
+                <InputOTPSlot index={2} />
+                <InputOTPSlot index={3} />
+              </InputOTPGroup>
+            </InputOTP>
           </div>
-          <Button type="submit" size="sm" className="px-3">
-            <span className="sr-only">Copy</span>
-          </Button>
         </div>
-        <DialogFooter className="sm:justify-start">
-          <DialogClose asChild>
-            <Button type="button" variant="secondary">
-              Close
-            </Button>
-          </DialogClose>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
-  </>)
+  )
+}
+
+const StartActions = () => {
+  return (
+    <>
+      <Button>Host</Button>
+      <JoinAction />
+    </>
+  )
 };
 
 const HomeView = () => {
