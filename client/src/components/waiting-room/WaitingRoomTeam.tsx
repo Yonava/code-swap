@@ -17,7 +17,7 @@ type WaitingRoomTeamProps = {
 export const WaitingRoomTeam = ({ defaultName }: WaitingRoomTeamProps) => {
   const [player1, setPlayer1] = useState<Player>(MOCK_PLAYERS[0]);
   const [player2, setPlayer2] = useState<Player>(MOCK_PLAYERS[1]);
-  const joinCode = generateCode();
+  const joinCode = generateCode(4);
 
   return (
     <div className="flex flex-col w-full items-center gap-5 md:gap-18">
