@@ -1,6 +1,7 @@
 import { CodeEditor } from '@/components/CodeEditor';
 import { ProblemStatement } from '@/components/ProblemStatement';
 import { TitledContainer } from '@/components/TitledContainer';
+import { TestCases } from '@/components/test-cases/TestsParent';
 import { WaitingRoom } from '@/components/waiting-room/WaitingRoom';
 
 const ChallengeView = () => {
@@ -16,12 +17,23 @@ const ChallengeView = () => {
             <ProblemStatement />
           </div>
         </TitledContainer>
-        <TitledContainer
-          title="Code"
-          width="75%"
-        >
-          <CodeEditor />
-        </TitledContainer>
+
+        <div className="flex flex-col h-full padding-2 gap-2 w-[75%]">
+          <TitledContainer
+            title="Code"
+            width="100%"
+          >
+            <CodeEditor />
+          </TitledContainer>
+          <div className="h-[40%]">
+            <TitledContainer
+              title="Test Cases"
+              width="100%"
+            >
+              <TestCases />
+            </TitledContainer>
+          </div>
+        </div>
       </div>
     </>
   );
