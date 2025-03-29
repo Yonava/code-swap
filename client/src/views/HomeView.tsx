@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/Button';
 import { ReactNode } from 'react';
+import { useNavigate } from 'react-router';
 import { twMerge } from 'tailwind-merge';
 
 type BillboardProps = {
@@ -32,14 +33,16 @@ const Billboard = ({
   );
 };
 
-const StartActions = () => (
-  <>
-    <Button>Host</Button>
-    <Button variant="secondary">Join</Button>
-  </>
-);
-
 const HomeView = () => {
+  const navigate = useNavigate();
+
+  const StartActions = () => (
+    <>
+      <Button onClick={() => navigate('challenge')}>Host</Button>
+      <Button variant="secondary">Join</Button>
+    </>
+  );
+
   return (
     <div>
       <Billboard
