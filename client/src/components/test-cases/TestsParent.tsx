@@ -16,6 +16,7 @@ export const TestCases = () => {
 
   const runTests = () => {
     setLoading(true);
+    setTestsRun(false);
     setTimeout(() => {
       const passedCount = localTestCases.filter(
         (tc) => tc.output === tc.expected
