@@ -4,7 +4,7 @@ import { PlayerSlot } from './PlayerSlot';
 import pfp from '@/assets/default-pfp.png';
 
 const meta = {
-  title: 'UI/PlayerSlot/FilledPlayerSlot',
+  title: 'UI/WaitingRoom/PlayerSlot/FilledPlayerSlot',
   component: FilledPlayerSlot,
   parameters: {
     layout: 'centered',

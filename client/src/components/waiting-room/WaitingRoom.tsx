@@ -1,15 +1,19 @@
+import { useRef } from 'react';
 import { Button } from '@/components/ui/Button';
 import { DialogBox } from '@/components/DialogBox';
 import { WaitingRoomTeam } from './WaitingRoomTeam';
 
 export const WaitingRoom = () => {
+  const dialogRef = useRef({ closeDialog: () => {} });
+
   function startGame() {
-    console.log('start!');
+    dialogRef.current.closeDialog();
   }
 
   return (
     <DialogBox
       title="Waiting Room"
+      ref={dialogRef}
       isOpen
       disableClose
       hideHeader
@@ -21,7 +25,7 @@ export const WaitingRoom = () => {
       </div>
       <Button
         onClick={startGame}
-        className="self-center w-32"
+        className="self-center w-fit"
       >
         Start Game
       </Button>
