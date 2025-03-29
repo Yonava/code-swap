@@ -16,7 +16,7 @@ ds {
   margin-bottom: var(--margin-bottom-text);
 }
 
-sub-title {
+sub-t {
   color: var(--secondary);
   font-size: var(--font-size-sub-title);
   font-family: var(--font-family-title);
@@ -37,14 +37,14 @@ more {
   margin-bottom: var(--margin-bottom-text);
 }
 
-variable {
-  color: var(--chart-4);
+var {
+  color: var(--chart-2);
   font-size: var(--font-size-text);
   font-style: italic;
   font-family: var(--font-family-math);
 }
 
-lb {
+cb {
   font-family: var(--font-family-code);
   background-color: var(--code-background);
   color: var(--code-blue);
@@ -54,7 +54,7 @@ lb {
   font-size: var(--font-size-text);
 }
 
-ly {
+cy {
   font-family: var(--font-family-code);
   background-color: var(--code-background);
   color: var(--code-yellow);
@@ -64,7 +64,7 @@ ly {
   font-size: var(--font-size-text);
 }
 
-lg {
+cg {
   font-family: var(--font-family-code);
   background-color: var(--code-background);
   color: var(--code-green);
@@ -74,7 +74,7 @@ lg {
   font-size: var(--font-size-text);
 }
 
-lr {
+cr {
   font-family: var(--font-family-code);
   background-color: var(--code-background);
   color: var(--code-red);
@@ -82,4 +82,20 @@ lr {
   padding: var(--code-padding);
   border-radius: var(--code-border-radius);
   font-size: var(--font-size-text);
+}
+l{
+  display: block; 
+  list-style-type: disc;
+  margin: 0.75rem; 
+  padding-left: 1.5rem; 
+  font-family: var(--font-family-text); 
+  font-size: var(--font-size-text); 
+  color: var(--secondary); 
+
+}
+
+i {
+  display: list-item; 
+  margin-bottom: 0.5rem; 
+  font-style: normal;
 }

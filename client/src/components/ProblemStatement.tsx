@@ -7,20 +7,35 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 export const ProblemStatement = () => {
-  const codeSnippet = `console.log('This is a code snippet example.');
-    `;
+  const codeInput = `3`;
+  const codeOutput = `Weird`;
 
   const content = `
-  <challenge>Challenge Title</challenge>
-  <ds> This is the description of the challenge. </ds>
+  <challenge>If-else</challenge>
+  <ds> Practice using if-else statements </ds>
   
-  <sub-title>Example</sub-title>
+  <sub-t>Example</sub-t>
   
-  <ds>This is description of an example of the challenge. Examples can include <variable>math notations(n=2)</variable> and <ly>code</ly> <lb>code</lb> <lr>code</lr> <lg>code</lg>.</ds>
+  <ds>Given an integer, <var>n</var> , perform the following conditional actions:
+  <l>
+    <i>If <var>n</var> is odd, print <cy>Weird</cy>.</i>
+    <i>If <var>n</var> is even and in the inclusive range of <var>2</var> to <var>5</var> , print <cr>Not Weird</cr></i>
+  </l>
+  <sub-t>Input Format</sub-t>
+  <ds>A single line containing a positive integer, <var>n</var></ds>
+
+  <sub-t>Output Format</sub-t>
+  <ds>Print <cg>Weird</cg> if the number is weird. Otherwise, print <cb>Not Weird</cb>.</ds>
+
+  <sub-t>Sample Input 0</sub-t>  
+
+  <snip>${codeInput}</snip>
+
+  <sub-t>Sample Output 0</sub-t>  
+
+  <snip>${codeOutput}</snip>
   
-  <snip>${codeSnippet}</snip>
-  
-  <more>This is an explanation to the description </more>
+  <more><var>n</var> is odd and odd numbers are weird, so print <cy>Weird</cy> </more>
   
   <sub-title>Constrain</sub-title>
   
