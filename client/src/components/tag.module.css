@@ -1,0 +1,101 @@
+@import '../index.css';
+
+challenge {
+  color: var(--background);
+  font-size: var(--font-size-title);
+  font-family: var(--font-family-title);
+  display: block;
+  margin-bottom: var(--margin-bottom-title);
+}
+
+ds {
+  color: var(--secondary);
+  font-size: var(--font-size-text);
+  font-family: var(--font-family-text);
+  display: block;
+  margin-bottom: var(--margin-bottom-text);
+}
+
+sub-t {
+  color: var(--secondary);
+  font-size: var(--font-size-sub-title);
+  font-family: var(--font-family-title);
+  display: block;
+  margin-bottom: var(--margin-bottom-title);
+}
+
+snip{
+  display: block;
+  margin-bottom: var(--margin-bottom-text);
+}
+
+more {
+  color: var(--secondary);
+  font-size: var(--font-size-small);
+  font-family: var(--font-family-text);
+  display: block;
+  margin-bottom: var(--margin-bottom-text);
+}
+
+var {
+  color: var(--chart-2);
+  font-size: var(--font-size-text);
+  font-style: italic;
+  font-family: var(--font-family-math);
+}
+
+cb {
+  font-family: var(--font-family-code);
+  background-color: var(--code-background);
+  color: var(--code-blue);
+  font-weight: bold;
+  padding: var(--code-padding);
+  border-radius: var(--code-border-radius);
+  font-size: var(--font-size-text);
+}
+
+cy {
+  font-family: var(--font-family-code);
+  background-color: var(--code-background);
+  color: var(--code-yellow);
+  font-weight: bold;
+  padding: var(--code-padding);
+  border-radius: var(--code-border-radius);
+  font-size: var(--font-size-text);
+}
+
+cg {
+  font-family: var(--font-family-code);
+  background-color: var(--code-background);
+  color: var(--code-green);
+  font-weight: bold;
+  padding: var(--code-padding);
+  border-radius: var(--code-border-radius);
+  font-size: var(--font-size-text);
+}
+
+cr {
+  font-family: var(--font-family-code);
+  background-color: var(--code-background);
+  color: var(--code-red);
+  font-weight: bold;
+  padding: var(--code-padding);
+  border-radius: var(--code-border-radius);
+  font-size: var(--font-size-text);
+}
+l{
+  display: block; 
+  list-style-type: disc;
+  margin: 0.75rem; 
+  padding-left: 1.5rem; 
+  font-family: var(--font-family-text); 
+  font-size: var(--font-size-text); 
+  color: var(--secondary); 
+
+}
+
+i {
+  display: list-item; 
+  margin-bottom: 0.5rem; 
+  font-style: normal;
+}

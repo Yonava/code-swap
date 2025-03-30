@@ -30,6 +30,24 @@
   --chart-4: hsl(43 74% 66%);
   --chart-5: hsl(27 87% 67%);
   --radius: 0.6rem;
+  --font-family-title: 'Gill Sans', serif;
+  --font-family-text: 'Gill Sans', sans-serif;
+  --font-family-math: 'Cambria Math', 'STIX Math', 'Latin Modern Math', serif;
+  --font-family-code: 'Courier New', Courier, monospace;
+  --font-size-title: 2rem;
+  --font-size-sub-title:1.5rem;
+  --font-size-text: 1rem;
+  --font-size-small: 0.9rem;
+  --code-blue:hsl(230, 50%, 50%);
+  --code-red:hsl(360, 50%, 50%);
+  --code-green:hsl(100, 67%, 28%);
+  --code-yellow:hsl(55, 72%, 58%);
+  --code-background: hsl(0, 0%, 12%);
+  --code-padding: 0.125rem,0.3rem;
+  --code-border-radius:0.25rem;
+  --margin-bottom-title: 1rem;
+  --margin-bottom-text: 0.75rem;
+  
 }
 
 .dark {
@@ -57,6 +75,7 @@
   --chart-3: hsl(30 80% 55%);
   --chart-4: hsl(280 65% 60%);
   --chart-5: hsl(340 75% 55%);
+  
 }
 
 @theme inline {
