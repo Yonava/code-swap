@@ -23,6 +23,10 @@ const meta = {
     footer: {
       description: 'Dialog footer content',
     },
+    ref: {
+      description:
+        'Exposes the closeDialog method, allowing the parent to close the dialog',
+    },
     isOpen: {
       description: 'Automatically open the dialog',
     },
@@ -42,7 +46,8 @@ type Story = StoryObj<typeof DialogBox>;
 /**
  * Dialog with an optional trigger, subtitle, and footer; as well as options to
  * start up open, disable being closed by the user, and hide the title and
- * subtitle. Used for the Waiting Room.
+ * subtitle. The parent may use a ref to forcefully close the dialog. Used for
+ * the Waiting Room.
  */
 export const Default: Story = {
   args: {
