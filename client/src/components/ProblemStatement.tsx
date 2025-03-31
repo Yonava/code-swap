@@ -44,16 +44,26 @@ export const ProblemStatement = () => {
 
   return (
     <div className={classes.container}>
-      <Button>Click me</Button>
-      <ReactMarkdown rehypePlugins={[rehypeRaw]} children={content} components={{
-        snip({node, inline, className, children, ...props}) {
-          return (
-            <SyntaxHighlighter style={vscDarkPlus} language="javascript" PreTag="div" {...props}>
-              {String(children).replace(/\n$/, '')}
-            </SyntaxHighlighter>
-          );
-        }
-      }} />
+      <Button className="bg-primary text-on-primary">Click me</Button>
+      <ReactMarkdown
+        rehypePlugins={[rehypeRaw]}
+        children={content}
+        components={{
+          snip({ node, inline, className, children, ...props }) {
+            return (
+              <SyntaxHighlighter
+                style={vscDarkPlus}
+                customStyle={{ backgroundColor: '#343a3b' }}
+                language="javascript"
+                PreTag="div"
+                {...props}
+              >
+                {String(children).replace(/\n$/, '')}
+              </SyntaxHighlighter>
+            );
+          },
+        }}
+      />
     </div>
   );
 };

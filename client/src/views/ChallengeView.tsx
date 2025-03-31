@@ -8,7 +8,7 @@ const ChallengeView = () => {
   return (
     <>
       <WaitingRoom />
-      <div className="flex bg-gray-900 w-[100vw] h-[100vh] relative p-2 gap-2">
+      <div className="flex w-[100vw] h-[100vh] relative p-2 gap-2 bg-surface">
         <TitledContainer
           title="Challenge Question"
           width="25%"

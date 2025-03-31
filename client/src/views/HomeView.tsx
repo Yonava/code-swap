@@ -38,8 +38,15 @@ const HomeView = () => {
 
   const StartActions = () => (
     <>
-      <Button onClick={() => navigate('challenge')}>Host</Button>
-      <Button variant="secondary">Join</Button>
+      <Button
+        onClick={() => navigate('challenge')}
+        className="text-on-surface bg-surface hover:bg-surface/80"
+      >
+        Host
+      </Button>
+      <Button className="text-surface bg-on-surface hover:bg-on-surface/80">
+        Join
+      </Button>
     </>
   );
 
@@ -49,32 +56,31 @@ const HomeView = () => {
         title="Code Swap"
         description="The most entertaining way to learn the fundamentals of collaborative coding"
         actions={<StartActions />}
-        className="bg-gray-700 text-gray-50 h-[100vh]"
+        className="bg-primary text-on-primary h-[100vh]"
       />
 
       <Billboard
         title="Be Competitive"
         description="go head to head against your friends"
-        className="bg-blue-600 text-gray-50"
         right
       />
 
       <Billboard
         title="Be Creative"
         description="develop unique solutions to interesting problems"
+        className="bg-tertiary text-on-tertiary"
       />
 
       <Billboard
         title="Be Ready"
         description="code editors switch every 60 seconds"
-        className="bg-blue-600 text-gray-50"
         right
       />
 
       <Billboard
         title="Let's Start"
         description="are you hosting or joining a session?"
-        className="bg-gray-700 text-gray-50"
+        className="bg-primary text-on-primary h-[100vh]"
         actions={<StartActions />}
       />
     </div>

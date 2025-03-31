@@ -11,7 +11,7 @@ export const QRCode = ({ joinCode }: QRCodeProps) => {
       qr.toCanvas(
         document.getElementById(joinCode),
         'http://localhost:5173/' + joinCode,
-        { margin: 1, scale: 3 },
+        { margin: 1, scale: 3, color: { light: '#0000' } },
         (error) => {
           if (error) console.error(error);
         }

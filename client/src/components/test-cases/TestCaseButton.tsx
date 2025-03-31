@@ -18,9 +18,9 @@ export const TestCaseButton = ({
   return (
     <Button
       key={id}
-      className={`default hover:bg-primary shadow-none ${
+      className={`default bg-surface-bright hover:bg-surface-bright active:bg-surface-bright/80 shadow-none ${
         isActive ? '' : 'bg-transparent'
-      } ${testsRun ? (isPassed ? 'text-green-500' : 'text-red-500') : ''}`}
+      } ${testsRun ? (isPassed ? 'text-green-400' : 'text-red-400') : ''}`}
       onClick={onClick}
     >
       Case {id}
