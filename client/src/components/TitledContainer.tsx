@@ -18,7 +18,7 @@ export type TitledContainerProps = {
 };
 
 const CONTAINER_CLASSES = [
-  'bg-gray-800',
+  'bg-surface-container',
   'h-full',
   'rounded-md',
   'overflow-hidden',
@@ -26,10 +26,10 @@ const CONTAINER_CLASSES = [
 ].join(' ');
 
 const TITLE_CLASSES = [
-  'bg-gray-700',
+  'bg-surface-bright',
+  'text-on-surface',
   'px-2',
   'font-bold',
-  'text-gray-200',
   'h-[30px]',
   'flex',
   'items-center',

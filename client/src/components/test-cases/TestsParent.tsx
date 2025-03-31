@@ -28,7 +28,7 @@ export const TestCases = () => {
   };
 
   return (
-    <div className="w-full h-full text-white p-3">
+    <div className="w-full h-full text-on-surface p-3">
       <div className="flex gap-2 mb-4 items-center">
         <TestButtonList
           testCases={localTestCases}
@@ -42,7 +42,7 @@ export const TestCases = () => {
             total={localTestCases.length}
           />
           <Button
-            className="bg-green-700 hover:bg-green-600"
+            className="bg-green-600 hover:bg-green-500"
             onClick={runTests}
             disabled={loading}
           >

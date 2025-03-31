@@ -78,7 +78,9 @@ export const DialogBox = ({
       <DialogContent
         onInteractOutside={handleClose}
         onEscapeKeyDown={handleClose}
-        className={cn('!max-w-fit', { '[&>button]:hidden': disableClose })}
+        className={cn('!max-w-fit bg-inverse-surface text-inverse-on-surface', {
+          '[&>button]:hidden': disableClose,
+        })}
       >
         {hideHeader ? (
           <VisuallyHidden>{HeaderContent}</VisuallyHidden>
