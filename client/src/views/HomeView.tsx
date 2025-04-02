@@ -1,8 +1,6 @@
 import { Button } from '@/components/ui/Button';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
-import { OTPInput } from 'input-otp';
 import { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
