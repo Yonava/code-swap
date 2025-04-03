@@ -8,7 +8,8 @@ const PROD_SOCKET_URL = '/';
 export const SOCKET_URL = IS_PROD ? PROD_SOCKET_URL : LOCAL_SOCKET_URL;
 
 type SocketEvent = {
-  join: (userId: string, ack: () => void) => void
+  join: (userId: string, ack: () => void) => void,
+  userCodeEditorStateUpdate: (userId: string, codeEditorState: string) => void,
 }
 
 export const useSocket = () => {
@@ -55,6 +56,11 @@ export const useSocket = () => {
     });
   }
 
+  const updateCodeEditorState = (userId: string, codeEditorState: string) => {
+    if (!activeSocket) throw new Error('socket not connected');
+    activeSocket.emit('userCodeEditorStateUpdate', userId, codeEditorState);
+  }
+
   const isConnected = useMemo(() => {
     if (!activeSocket) return false;
     return activeSocket.connected;
@@ -65,5 +71,6 @@ export const useSocket = () => {
     isConnected,
     isConnecting,
     join,
+    updateCodeEditorState,
   }
 }

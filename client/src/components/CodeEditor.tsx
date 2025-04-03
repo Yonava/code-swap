@@ -1,14 +1,12 @@
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
-import { useState } from 'react';
 
-const starterSnippet = `
-const result = () => {
-  // your solution here
-}`;
+type CodeEditorProps = {
+  value: string;
+  onChange: (value: string) => void;
+};
 
-export const CodeEditor = () => {
-  const [code, setCode] = useState(starterSnippet);
+export const CodeEditor = ({ value, onChange }: CodeEditorProps) => {
   return (
     <CodeMirror
       style={{ height: '500px' }}
@@ -16,8 +14,8 @@ export const CodeEditor = () => {
       width="100%"
       theme="dark"
       extensions={[javascript()]}
-      value={code}
-      onChange={setCode}
+      value={value}
+      onChange={onChange}
     />
   );
 };

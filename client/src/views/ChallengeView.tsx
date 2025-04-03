@@ -7,8 +7,14 @@ import { useSocket } from './useSocket';
 import { useState } from 'react';
 
 const ChallengeView = () => {
-  const { connect, isConnected, isConnecting, join } = useSocket();
+  const { connect, isConnected, isConnecting, join, updateCodeEditorState } = useSocket();
+  const [code, setCode] = useState<string>('console.log("hello world")');
   const [userId, setUserId] = useState<string>('');
+
+  const handleCodeChange = (value: string) => {
+    setCode(value);
+    updateCodeEditorState(userId, value);
+  };
 
   return (
     <>
@@ -25,7 +31,7 @@ const ChallengeView = () => {
           title="Code"
           width="75%"
         >
-          <CodeEditor />
+          <CodeEditor value={code} onChange={handleCodeChange} />
         </TitledContainer>
         <TitledContainer
           title="Experimental Stuff"

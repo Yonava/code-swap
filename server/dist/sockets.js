@@ -8,12 +8,17 @@ const sockets = (httpServer) => {
             origin: '*',
         },
     });
+    const userToCodeEditorState = {};
     io.on('connection', (socket) => {
         console.log('socket connected', socket.id);
         console.log('number of sockets connected', io.engine.clientsCount);
         socket.on('join', async (userId, ack) => {
             console.log(`User ${userId} joined`);
             ack();
+        });
+        socket.on('userCodeEditorStateUpdate', (userId, codeEditorState) => {
+            userToCodeEditorState[userId] = codeEditorState;
+            console.log(`User ${userId} updated code editor state`, userToCodeEditorState);
         });
         socket.on('disconnect', () => {
             console.log('socket disconnected', socket.id);
