@@ -9,25 +9,15 @@ const sockets = (httpServer) => {
         },
     });
     io.on('connection', (socket) => {
-        socket.on('joinRoom', async (joinRoomOptions, callback) => {
-        });
-        socket.on('leaveRoom', (confirmationCallback) => {
-        });
-        socket.on('nodeAdded', (node) => {
-        });
-        socket.on('nodeRemoved', (nodeId) => {
-        });
-        socket.on('nodeMoved', (node) => {
-        });
-        socket.on('edgeAdded', (edge) => {
-        });
-        socket.on('edgeRemoved', (edgeId) => {
-        });
-        socket.on('edgeLabelEdited', (edgeId, newLabel) => {
-        });
-        socket.on('collaboratorMoved', ({ x, y }) => {
+        console.log('socket connected', socket.id);
+        console.log('number of sockets connected', io.engine.clientsCount);
+        socket.on('join', async (userId, ack) => {
+            console.log(`User ${userId} joined`);
+            ack();
         });
         socket.on('disconnect', () => {
+            console.log('socket disconnected', socket.id);
+            console.log('number of sockets connected', io.engine.clientsCount);
         });
         socket.on('error', (error) => {
             console.error(error);

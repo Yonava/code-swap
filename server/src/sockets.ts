@@ -2,7 +2,7 @@ import { Server } from 'socket.io'
 import { createServer } from 'http'
 
 type SocketEvent = {
-  join: (userId: string) => void
+  join: (userId: string, ack: () => void) => void
 }
 
 export const sockets = (httpServer: ReturnType<typeof createServer>) => {
@@ -14,12 +14,17 @@ export const sockets = (httpServer: ReturnType<typeof createServer>) => {
 
   io.on('connection', (socket) => {
 
-    socket.on('join', async (userId) => {
-      console.log(`User ${userId} connected`)
+    console.log('socket connected', socket.id)
+    console.log('number of sockets connected', io.engine.clientsCount)
+
+    socket.on('join', async (userId, ack) => {
+      console.log(`User ${userId} joined`)
+      ack()
     })
 
     socket.on('disconnect', () => {
-
+      console.log('socket disconnected', socket.id)
+      console.log('number of sockets connected', io.engine.clientsCount)
     })
 
     socket.on('error', (error) => {
