@@ -1,4 +1,4 @@
-import { useVerifyFunction } from '../hooks/useTestCaseVerifier';
+import { useVerifyFunction } from '../hooks/testCases/useTestCaseVerifier';
 // const add = (a: number, b: number) => a + b;
 const multiply = (a: number, b: number) => a * b;
 
