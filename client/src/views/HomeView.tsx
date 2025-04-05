@@ -1,6 +1,17 @@
 import { Button } from '@/components/ui/Button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from '@/components/ui/input-otp';
 import { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
@@ -62,8 +73,8 @@ const JoinAction = () => {
         </div>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
 const StartActions = () => {
   return (
@@ -71,7 +82,7 @@ const StartActions = () => {
       <Button>Host</Button>
       <JoinAction />
     </>
-  )
+  );
 };
 
 const HomeView = () => {

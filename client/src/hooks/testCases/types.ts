@@ -51,3 +51,9 @@ export type RunTestCaseOptions = {
 export const DEFAULT_RUN_TEST_CASE_OPTIONS = {
   maxTimeout: 5000,
 } as const;
+
+export type UserFunctionResult<T = any> = {
+  func: ((...args: any[]) => T) | null;
+  error: string | null;
+  isLoading: boolean;
+};
