@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.problems = void 0;
-exports.problems = [
+exports.challenges = void 0;
+exports.challenges = [
     {
         id: "match-array-elements",
         title: "Count Matching Unique Elements in Arrays",

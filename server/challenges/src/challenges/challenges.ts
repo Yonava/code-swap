@@ -1,18 +1,18 @@
-type ProblemTestCase = {
+interface ChallengeTestCase {
   input: any[];
   output: any;
-};
+}
 
-type Problem = {
+interface Challenge {
   id: string;
   title: string;
   description: string;
   startingCode?: string;
-  testCases: ProblemTestCase[];
+  testCases: ChallengeTestCase[];
   restrictions: string[];
-};
+}
 
-const problems: Problem[] = [
+export const challenges: Challenge[] = [
   {
     id: "match-array-elements",
     title: "Count Matching Unique Elements in Arrays",
@@ -82,4 +82,4 @@ const problems: Problem[] = [
     testCases: [],
     restrictions: [],
   },
-];
+] as const;
