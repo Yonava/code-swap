@@ -1,4 +1,8 @@
 import { Button } from '@/components/ui/Button';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
+import { OTPInput } from 'input-otp';
 import { ReactNode } from 'react';
 import { useNavigate } from 'react-router';
 import { twMerge } from 'tailwind-merge';
@@ -31,6 +35,46 @@ const Billboard = ({
       </div>
     </div>
   );
+};
+
+const JoinAction = () => {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="secondary">Join</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Join A Game 🤙</DialogTitle>
+          <DialogDescription>
+            Enter a team code (each game has two codes, one for each team)
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="flex items-center space-x-2">
+          <div className="grid flex-1 gap-2">
+            <InputOTP maxLength={4}>
+              <InputOTPGroup>
+                <InputOTPSlot index={0} />
+                <InputOTPSlot index={1} />
+                <InputOTPSlot index={2} />
+                <InputOTPSlot index={3} />
+              </InputOTPGroup>
+            </InputOTP>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+const StartActions = () => {
+  return (
+    <>
+      <Button>Host</Button>
+      <JoinAction />
+    </>
+  )
 };
 
 const HomeView = () => {
