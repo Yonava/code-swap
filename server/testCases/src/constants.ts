@@ -1,1 +1,3 @@
 export const LOCALHOST_PORT = 3002;
+
+export const CHALLENGE_LOCALHOST_PORT = 3001;

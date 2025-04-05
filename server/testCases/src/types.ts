@@ -1,9 +1,21 @@
-export interface UserFunctionResult<T = any> {
-  func: ((...args: any[]) => T) | null;
-  error: string | null;
-}
+export type CheckedTestCase = {
+  expectedOutput: any;
+  actualOutput: any;
+};
 
-export interface ParseFunctionRequest {
+export type UserFunctionResult = Partial<{
+  func: Function;
+  error: string;
+  testResults: {
+    passed: number;
+    total: number;
+    allPassed: boolean;
+    results: CheckedTestCase[];
+  };
+}>;
+
+export type ParseFunctionRequest = {
   language: "js" | "ts";
   functionString: string;
-}
+  challengeId?: string;
+};
