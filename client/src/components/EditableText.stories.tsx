@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { EditableText } from './EditableText';
 
 const meta = {
-  title: 'UI/EditableText',
+  title: 'UI/WaitingRoom/EditableText',
   component: EditableText,
   parameters: {
     layout: 'centered',

@@ -3,7 +3,7 @@ import { EmptyPlayerSlot } from './EmptyPlayerSlot';
 import { PlayerSlot } from './PlayerSlot';
 
 const meta = {
-  title: 'UI/PlayerSlot/EmptyPlayerSlot',
+  title: 'UI/WaitingRoom/PlayerSlot/EmptyPlayerSlot',
   component: EmptyPlayerSlot,
   parameters: {
     layout: 'centered',
