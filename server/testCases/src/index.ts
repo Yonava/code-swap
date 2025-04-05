@@ -84,6 +84,7 @@ app.post("/test-function", async (req: Request, res: Response) => {
           testResults.push({
             expectedOutput: output,
             actualOutput: userOutput,
+            passed,
           } as any);
         }
 

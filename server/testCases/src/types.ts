@@ -1,6 +1,7 @@
 export type CheckedTestCase = {
   expectedOutput: any;
   actualOutput: any;
+  passed: boolean;
 };
 
 export type UserFunctionResult = Partial<{
