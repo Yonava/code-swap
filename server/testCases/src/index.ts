@@ -86,11 +86,9 @@ const runTestCases = async (func: Function, testCases: any[]) => {
     for (const testCase of testCases) {
       const { input, output } = testCase;
 
-      // Create a function string that can be executed in the worker
       const funcString = func.toString();
       const inputString = JSON.stringify(input);
 
-      // Create a worker script as a string
       const workerScript = `
         const { parentPort } = require('worker_threads');
         
