@@ -7,6 +7,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importDefault(require("express"));
 const http_1 = require("http");
 const constants_1 = require("./constants");
+const worker_threads_1 = require("worker_threads");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const server = (0, http_1.createServer)(app);
@@ -64,13 +65,53 @@ const fetchChallenge = async (challengeId) => {
  * @param testCases The test cases to run
  * @returns Test results or error
  */
-const runTestCases = (func, testCases) => {
+const runTestCases = async (func, testCases) => {
     try {
         const testResults = [];
         let passedCount = 0;
         for (const testCase of testCases) {
             const { input, output } = testCase;
-            const userOutput = func(...input);
+            // Create a function string that can be executed in the worker
+            const funcString = func.toString();
+            const inputString = JSON.stringify(input);
+            // Create a worker script as a string
+            const workerScript = `
+        const { parentPort } = require('worker_threads');
+        
+        // Recreate the function
+        const func = ${funcString};
+        
+        // Parse the input
+        const input = JSON.parse('${inputString.replace(/'/g, "\\'")}');
+        
+        // Execute the function
+        try {
+          const result = func(...input);
+          parentPort.postMessage({ result });
+        } catch (error) {
+          parentPort.postMessage({ error: error.message });
+        }
+      `;
+            let userOutput;
+            let error = null;
+            let timedOut = false;
+            try {
+                userOutput = await runInWorker(workerScript, 2000);
+            }
+            catch (err) {
+                if (err.message.includes("timed out")) {
+                    timedOut = true;
+                    error = "Test execution timed out after 2 seconds";
+                }
+                else {
+                    error = `Error in test execution: ${err.message}`;
+                }
+            }
+            if (timedOut || error) {
+                return {
+                    error: error || "Test execution error",
+                };
+            }
             const passed = JSON.stringify(userOutput) === JSON.stringify(output);
             if (passed)
                 passedCount++;
@@ -92,6 +133,42 @@ const runTestCases = (func, testCases) => {
     catch (error) {
         return { error: `Error running test cases: ${error.message}` };
     }
+};
+/**
+ * Helper function to run a script in a worker thread
+ * @param script script to run
+ * @param timeoutMs maximum time to wait for the script to finish
+ * @returns
+ */
+const runInWorker = (script, timeoutMs) => {
+    return new Promise((resolve, reject) => {
+        const worker = new worker_threads_1.Worker(script, { eval: true });
+        const timeoutId = setTimeout(() => {
+            worker.terminate();
+            reject(new Error("Test execution timed out after " + timeoutMs + " ms"));
+        }, timeoutMs);
+        worker.on("message", (message) => {
+            clearTimeout(timeoutId);
+            if (message.error) {
+                reject(new Error(message.error));
+            }
+            else {
+                resolve(message.result);
+            }
+            worker.terminate();
+        });
+        worker.on("error", (err) => {
+            clearTimeout(timeoutId);
+            reject(err);
+            worker.terminate();
+        });
+        worker.on("exit", (code) => {
+            if (code !== 0) {
+                clearTimeout(timeoutId);
+                reject(new Error(`Worker stopped with exit code ${code}`));
+            }
+        });
+    });
 };
 /**
  * Handles function testing endpoint
@@ -119,7 +196,7 @@ app.post("/test-function", async (req, res) => {
             res.status(status).json({ error: challengeError });
             return;
         }
-        const { testResults, error: testError } = runTestCases(func, challenge.testCases);
+        const { testResults, error: testError } = await runTestCases(func, challenge.testCases);
         if (testError) {
             res.status(400).json({ error: testError });
             return;

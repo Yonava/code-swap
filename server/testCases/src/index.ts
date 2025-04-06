@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express, { Request, Response } from "express";
 import { createServer } from "http";
 import { CHALLENGE_LOCALHOST_PORT, LOCALHOST_PORT } from "./constants";
+import { Worker } from "worker_threads";
 import {
   CheckedTestCase,
   ParseFunctionRequest,
@@ -77,16 +78,59 @@ const fetchChallenge = async (challengeId: string) => {
  * @param testCases The test cases to run
  * @returns Test results or error
  */
-const runTestCases = (func: Function, testCases: any[]) => {
+const runTestCases = async (func: Function, testCases: any[]) => {
   try {
     const testResults: CheckedTestCase[] = [];
     let passedCount = 0;
 
     for (const testCase of testCases) {
       const { input, output } = testCase;
-      const userOutput = func(...input);
-      const passed = JSON.stringify(userOutput) === JSON.stringify(output);
 
+      // Create a function string that can be executed in the worker
+      const funcString = func.toString();
+      const inputString = JSON.stringify(input);
+
+      // Create a worker script as a string
+      const workerScript = `
+        const { parentPort } = require('worker_threads');
+        
+        // Recreate the function
+        const func = ${funcString};
+        
+        // Parse the input
+        const input = JSON.parse('${inputString.replace(/'/g, "\\'")}');
+        
+        // Execute the function
+        try {
+          const result = func(...input);
+          parentPort.postMessage({ result });
+        } catch (error) {
+          parentPort.postMessage({ error: error.message });
+        }
+      `;
+
+      let userOutput;
+      let error = null;
+      let timedOut = false;
+
+      try {
+        userOutput = await runInWorker(workerScript, 2000);
+      } catch (err) {
+        if ((err as Error).message.includes("timed out")) {
+          timedOut = true;
+          error = "Test execution timed out after 2 seconds";
+        } else {
+          error = `Error in test execution: ${(err as Error).message}`;
+        }
+      }
+
+      if (timedOut || error) {
+        return {
+          error: error || "Test execution error",
+        };
+      }
+
+      const passed = JSON.stringify(userOutput) === JSON.stringify(output);
       if (passed) passedCount++;
 
       testResults.push({
@@ -107,6 +151,48 @@ const runTestCases = (func: Function, testCases: any[]) => {
   } catch (error) {
     return { error: `Error running test cases: ${(error as Error).message}` };
   }
+};
+
+/**
+ * Helper function to run a script in a worker thread
+ * @param script script to run
+ * @param timeoutMs maximum time to wait for the script to finish
+ * @returns
+ */
+const runInWorker = (script: string, timeoutMs: number): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    const worker = new Worker(script, { eval: true });
+
+    const timeoutId = setTimeout(() => {
+      worker.terminate();
+      reject(new Error("Test execution timed out after " + timeoutMs + " ms"));
+    }, timeoutMs);
+
+    worker.on("message", (message) => {
+      clearTimeout(timeoutId);
+
+      if (message.error) {
+        reject(new Error(message.error));
+      } else {
+        resolve(message.result);
+      }
+
+      worker.terminate();
+    });
+
+    worker.on("error", (err) => {
+      clearTimeout(timeoutId);
+      reject(err);
+      worker.terminate();
+    });
+
+    worker.on("exit", (code) => {
+      if (code !== 0) {
+        clearTimeout(timeoutId);
+        reject(new Error(`Worker stopped with exit code ${code}`));
+      }
+    });
+  });
 };
 
 /**
@@ -148,7 +234,7 @@ app.post("/test-function", async (req: Request, res: Response) => {
       return;
     }
 
-    const { testResults, error: testError } = runTestCases(
+    const { testResults, error: testError } = await runTestCases(
       func!,
       challenge.testCases
     );
