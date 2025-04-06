@@ -1,5 +1,9 @@
 export type CheckedTestCase = {
   /**
+   * The input to the test case.
+   */
+  input: any;
+  /**
    * The expected output of the test case.
    */
   expectedOutput: any;

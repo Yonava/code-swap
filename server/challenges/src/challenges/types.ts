@@ -23,8 +23,13 @@ export type Challenge = {
    */
   description: string;
   /**
+   * The function parameters for the challenge.
+   */
+  // parameters: string[];
+  /**
    * The starting code for the challenge.
    */
+
   startingCode?: string;
   /**
    * The test cases for the challenge.

@@ -91,6 +91,7 @@ const runTestCases = async (func: string, testCases: any[]) => {
       if (passed) passedCount++;
 
       testResults.push({
+        input,
         expectedOutput: output,
         actualOutput: userOutput,
         passed,

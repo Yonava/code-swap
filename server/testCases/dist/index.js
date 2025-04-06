@@ -75,6 +75,7 @@ const runTestCases = async (func, testCases) => {
             if (passed)
                 passedCount++;
             testResults.push({
+                input,
                 expectedOutput: output,
                 actualOutput: userOutput,
                 passed,
