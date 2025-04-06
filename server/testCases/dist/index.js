@@ -7,7 +7,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importDefault(require("express"));
 const http_1 = require("http");
 const constants_1 = require("./constants");
-const worker_threads_1 = require("worker_threads");
+const vm2_1 = require("vm2");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const server = (0, http_1.createServer)(app);
@@ -60,12 +60,6 @@ const fetchChallenge = async (challengeId) => {
         return { error: `Failed to fetch challenge: ${error.message}` };
     }
 };
-/**
- * Runs test cases against a function
- * @param func The function to test
- * @param testCases The test cases to run
- * @returns Test results or error
- */
 const runTestCases = async (func, testCases) => {
     try {
         const testResults = [];
@@ -74,85 +68,25 @@ const runTestCases = async (func, testCases) => {
             const { input, output } = testCase;
             const funcString = func.toString();
             const inputString = JSON.stringify(input);
-            const workerScript = `
-        const { parentPort } = require('worker_threads');
-        
-        // Disable access to dangerous Node.js APIs
-        const disabledApis = [
-          'fs', 'child_process', 'http', 'https', 'net', 
-          'dgram', 'dns', 'crypto'
-        ];
-        
-        // Override require to prevent loading dangerous modules
-        const originalRequire = require;
-        global.require = function(moduleName) {
-          if (disabledApis.some(api => moduleName === api || moduleName.startsWith(api + '/'))) {
-            throw new Error(\`Access to module "\${moduleName}" is not allowed\`);
-          }
-          return originalRequire(moduleName);
-        };
-        
-        // Prevent access to process features
-        const safeProcess = {
-          env: {},
-          cwd: () => '/sandbox',
-          platform: process.platform,
-          argv: [],
-          argv0: process.argv0,
-        };
-        
-        // Override global process object
-        global.process = safeProcess;
-        process = safeProcess;
-        
-        // Disable setTimeout/setInterval beyond a certain threshold
-        const MAX_TIMEOUT = 1000; // 1 second max
-        const originalSetTimeout = setTimeout;
-        const originalSetInterval = setInterval;
-        
-        global.setTimeout = function(callback, ms, ...args) {
-          if (ms > MAX_TIMEOUT) ms = MAX_TIMEOUT;
-          return originalSetTimeout(callback, ms, ...args);
-        };
-        
-        global.setInterval = function(callback, ms, ...args) {
-          if (ms > MAX_TIMEOUT) ms = MAX_TIMEOUT;
-          return originalSetInterval(callback, ms, ...args);
-        };
-        
-        // Execute in try/catch to prevent global errors
-        try {
-          // Evaluate the function in this restricted context
-          const func = ${funcString};
-          
-          // Parse the input
-          const input = JSON.parse('${inputString.replace(/'/g, "\\'")}');
-          
-          // Execute with memory and time limits
-          const result = func(...input);
-          parentPort.postMessage({ result });
-        } catch (error) {
-          parentPort.postMessage({ error: error.message });
-        }
-      `;
             let userOutput;
             let error = null;
-            let timedOut = false;
             try {
-                userOutput = await runInWorker(workerScript, MAX_TIMEOUT);
+                const vm = new vm2_1.VM({
+                    timeout: MAX_TIMEOUT, // Automatically terminates if too slow
+                    sandbox: {},
+                });
+                const result = vm.run(`
+          const func = ${funcString};
+          func(...${inputString});
+        `);
+                userOutput = result;
             }
             catch (err) {
-                if (err.message.includes("timed out")) {
-                    timedOut = true;
-                    error = "Test execution timed out after 2 seconds";
-                }
-                else {
-                    error = `Error in test execution: ${err.message}`;
-                }
+                error = `Error in test execution: ${err.message}`;
             }
-            if (timedOut || error) {
+            if (error) {
                 return {
-                    error: error || "Test execution error",
+                    error,
                 };
             }
             const passed = JSON.stringify(userOutput) === JSON.stringify(output);
@@ -176,42 +110,6 @@ const runTestCases = async (func, testCases) => {
     catch (error) {
         return { error: `Error running test cases: ${error.message}` };
     }
-};
-/**
- * Helper function to run a script in a worker thread
- * @param script script to run
- * @param timeoutMs maximum time to wait for the script to finish
- * @returns Promise with the result of the script
- */
-const runInWorker = (script, timeoutMs) => {
-    return new Promise((resolve, reject) => {
-        const worker = new worker_threads_1.Worker(script, { eval: true });
-        const timeoutId = setTimeout(() => {
-            worker.terminate();
-            reject(new Error("Test execution timed out after " + timeoutMs + " ms"));
-        }, timeoutMs);
-        worker.on("message", (message) => {
-            clearTimeout(timeoutId);
-            if (message.error) {
-                reject(new Error(message.error));
-            }
-            else {
-                resolve(message.result);
-            }
-            worker.terminate();
-        });
-        worker.on("error", (err) => {
-            clearTimeout(timeoutId);
-            reject(err);
-            worker.terminate();
-        });
-        worker.on("exit", (code) => {
-            if (code !== 0) {
-                clearTimeout(timeoutId);
-                reject(new Error(`Worker stopped with exit code ${code}`));
-            }
-        });
-    });
 };
 /**
  * Handles function testing endpoint
