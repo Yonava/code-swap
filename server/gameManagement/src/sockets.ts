@@ -1,13 +1,19 @@
 import { Server } from 'socket.io'
 import { createServer } from 'http'
 
-type SocketEvent = {
+type ClientSocketEvents = {
   join: (userId: string, ack: () => void) => void,
-  userCodeEditorStateUpdate: (userId: string, codeEditorState: string) => void,
+  clientToServerSync: (payload: { userId: string, codeEditorState: string }) => void,
 }
 
+type ServerSocketEvents = {
+  serverToClientSync: (payload: { timeUntilSwapMs: number }) => void,
+}
+
+export type SocketServer = Server<ClientSocketEvents, ServerSocketEvents, {}, {}>
+
 export const sockets = (httpServer: ReturnType<typeof createServer>) => {
-  const io = new Server<SocketEvent, SocketEvent, {}, {}>(httpServer, {
+  const io: SocketServer = new Server(httpServer, {
     cors: {
       origin: '*',
     },
@@ -25,7 +31,7 @@ export const sockets = (httpServer: ReturnType<typeof createServer>) => {
       ack()
     })
 
-    socket.on('userCodeEditorStateUpdate', (userId, codeEditorState) => {
+    socket.on('clientToServerSync', ({ userId, codeEditorState }) => {
       userToCodeEditorState[userId] = codeEditorState
       console.log(`User ${userId} updated code editor state`, userToCodeEditorState)
     })
