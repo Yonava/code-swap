@@ -94,14 +94,58 @@ const runTestCases = async (func: Function, testCases: any[]) => {
       const workerScript = `
         const { parentPort } = require('worker_threads');
         
-        // Recreate the function
-        const func = ${funcString};
+        // Disable access to dangerous Node.js APIs
+        const disabledApis = [
+          'fs', 'child_process', 'http', 'https', 'net', 
+          'dgram', 'dns', 'crypto'
+        ];
         
-        // Parse the input
-        const input = JSON.parse('${inputString.replace(/'/g, "\\'")}');
+        // Override require to prevent loading dangerous modules
+        const originalRequire = require;
+        global.require = function(moduleName) {
+          if (disabledApis.some(api => moduleName === api || moduleName.startsWith(api + '/'))) {
+            throw new Error(\`Access to module "\${moduleName}" is not allowed\`);
+          }
+          return originalRequire(moduleName);
+        };
         
-        // Execute the function
+        // Prevent access to process features
+        const safeProcess = {
+          env: {},
+          cwd: () => '/sandbox',
+          platform: process.platform,
+          argv: [],
+          argv0: process.argv0,
+        };
+        
+        // Override global process object
+        global.process = safeProcess;
+        process = safeProcess;
+        
+        // Disable setTimeout/setInterval beyond a certain threshold
+        const MAX_TIMEOUT = 1000; // 1 second max
+        const originalSetTimeout = setTimeout;
+        const originalSetInterval = setInterval;
+        
+        global.setTimeout = function(callback, ms, ...args) {
+          if (ms > MAX_TIMEOUT) ms = MAX_TIMEOUT;
+          return originalSetTimeout(callback, ms, ...args);
+        };
+        
+        global.setInterval = function(callback, ms, ...args) {
+          if (ms > MAX_TIMEOUT) ms = MAX_TIMEOUT;
+          return originalSetInterval(callback, ms, ...args);
+        };
+        
+        // Execute in try/catch to prevent global errors
         try {
+          // Evaluate the function in this restricted context
+          const func = ${funcString};
+          
+          // Parse the input
+          const input = JSON.parse('${inputString.replace(/'/g, "\\'")}');
+          
+          // Execute with memory and time limits
           const result = func(...input);
           parentPort.postMessage({ result });
         } catch (error) {
