@@ -17,7 +17,7 @@ export type UserFunctionResult = Partial<{
   /**
    * The function created from the function string.
    */
-  func: Function;
+  func: string;
   /**
    * The error message if the function string did not produce a valid function.
    */

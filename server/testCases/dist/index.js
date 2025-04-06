@@ -14,29 +14,6 @@ const server = (0, http_1.createServer)(app);
 app.use(express_1.default.json());
 const MAX_TIMEOUT = 2000; // 2 seconds
 /**
- * Creates a function from a string and validates it
- * @param functionString The string representation of the function
- * @param language The programming language
- * @returns Object containing function or error
- */
-const createFunctionFromString = (functionString, language) => {
-    if (language !== "js") {
-        return { error: "Unsupported language. Only 'js' is allowed." };
-    }
-    try {
-        const func = new Function(functionString);
-        if (typeof func === "function") {
-            return { func };
-        }
-        else {
-            return { error: "The function string did not produce a valid function." };
-        }
-    }
-    catch (error) {
-        return { error: `Error creating function: ${error.message}` };
-    }
-};
-/**
  * Fetches and validates a challenge by ID
  * @param challengeId The ID of the challenge to fetch
  * @returns The challenge data or error
@@ -60,13 +37,18 @@ const fetchChallenge = async (challengeId) => {
         return { error: `Failed to fetch challenge: ${error.message}` };
     }
 };
+/**
+ * Tests a function against a set of test cases
+ * @param func The function to be tested
+ * @param testCases the test cases to be run
+ * @returns error or results
+ */
 const runTestCases = async (func, testCases) => {
     try {
         const testResults = [];
         let passedCount = 0;
         for (const testCase of testCases) {
             const { input, output } = testCase;
-            const funcString = func.toString();
             const inputString = JSON.stringify(input);
             let userOutput;
             let error = null;
@@ -76,7 +58,7 @@ const runTestCases = async (func, testCases) => {
                     sandbox: {},
                 });
                 const result = vm.run(`
-          const func = ${funcString};
+          const func = (...args) => {${func}};
           func(...${inputString});
         `);
                 userOutput = result;
@@ -116,18 +98,12 @@ const runTestCases = async (func, testCases) => {
  */
 app.post("/test-function", async (req, res) => {
     const { language, functionString, challengeId } = req.body;
-    // Validate required fields
     if (!functionString || !language) {
         res.status(400).json({ error: "Missing required fields" });
         return;
     }
-    const { func, error: functionError } = createFunctionFromString(functionString, language);
-    if (functionError) {
-        res.status(400).json({ error: functionError });
-        return;
-    }
     const result = {
-        func,
+        func: functionString,
         testResults: undefined,
     };
     if (challengeId) {
@@ -137,7 +113,7 @@ app.post("/test-function", async (req, res) => {
             res.status(status).json({ error: challengeError });
             return;
         }
-        const { testResults, error: testError } = await runTestCases(func, challenge.testCases);
+        const { testResults, error: testError } = await runTestCases(functionString, challenge.testCases);
         if (testError) {
             res.status(400).json({ error: testError });
             return;

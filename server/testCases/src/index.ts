@@ -18,33 +18,6 @@ app.use(express.json());
 const MAX_TIMEOUT = 2000; // 2 seconds
 
 /**
- * Creates a function from a string and validates it
- * @param functionString The string representation of the function
- * @param language The programming language
- * @returns Object containing function or error
- */
-const createFunctionFromString = (
-  functionString: string,
-  language: string
-): Pick<UserFunctionResult, "func" | "error"> => {
-  if (language !== "js") {
-    return { error: "Unsupported language. Only 'js' is allowed." };
-  }
-
-  try {
-    const func = new Function(functionString);
-
-    if (typeof func === "function") {
-      return { func };
-    } else {
-      return { error: "The function string did not produce a valid function." };
-    }
-  } catch (error) {
-    return { error: `Error creating function: ${(error as Error).message}` };
-  }
-};
-
-/**
  * Fetches and validates a challenge by ID
  * @param challengeId The ID of the challenge to fetch
  * @returns The challenge data or error
@@ -74,7 +47,13 @@ const fetchChallenge = async (challengeId: string) => {
   }
 };
 
-const runTestCases = async (func: Function, testCases: any[]) => {
+/**
+ * Tests a function against a set of test cases
+ * @param func The function to be tested
+ * @param testCases the test cases to be run
+ * @returns error or results
+ */
+const runTestCases = async (func: string, testCases: any[]) => {
   try {
     const testResults: CheckedTestCase[] = [];
     let passedCount = 0;
@@ -82,7 +61,6 @@ const runTestCases = async (func: Function, testCases: any[]) => {
     for (const testCase of testCases) {
       const { input, output } = testCase;
 
-      const funcString = func.toString();
       const inputString = JSON.stringify(input);
 
       let userOutput: any;
@@ -93,9 +71,8 @@ const runTestCases = async (func: Function, testCases: any[]) => {
           timeout: MAX_TIMEOUT, // Automatically terminates if too slow
           sandbox: {},
         });
-
         const result = vm.run(`
-          const func = ${funcString};
+          const func = (...args) => {${func}};
           func(...${inputString});
         `);
 
@@ -140,24 +117,13 @@ app.post("/test-function", async (req: Request, res: Response) => {
   const { language, functionString, challengeId } =
     req.body as ParseFunctionRequest;
 
-  // Validate required fields
   if (!functionString || !language) {
     res.status(400).json({ error: "Missing required fields" });
     return;
   }
 
-  const { func, error: functionError } = createFunctionFromString(
-    functionString,
-    language
-  );
-
-  if (functionError) {
-    res.status(400).json({ error: functionError });
-    return;
-  }
-
   const result: UserFunctionResult = {
-    func,
+    func: functionString,
     testResults: undefined,
   };
 
@@ -173,7 +139,7 @@ app.post("/test-function", async (req: Request, res: Response) => {
     }
 
     const { testResults, error: testError } = await runTestCases(
-      func!,
+      functionString,
       challenge.testCases
     );
 
