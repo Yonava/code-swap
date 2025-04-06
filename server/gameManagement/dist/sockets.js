@@ -16,7 +16,7 @@ const sockets = (httpServer) => {
             console.log(`User ${userId} joined`);
             ack();
         });
-        socket.on('userCodeEditorStateUpdate', (userId, codeEditorState) => {
+        socket.on('clientToServerSync', ({ userId, codeEditorState }) => {
             userToCodeEditorState[userId] = codeEditorState;
             console.log(`User ${userId} updated code editor state`, userToCodeEditorState);
         });
