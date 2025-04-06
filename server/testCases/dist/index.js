@@ -12,6 +12,7 @@ dotenv_1.default.config();
 const app = (0, express_1.default)();
 const server = (0, http_1.createServer)(app);
 app.use(express_1.default.json());
+const MAX_TIMEOUT = 2000; // 2 seconds
 /**
  * Creates a function from a string and validates it
  * @param functionString The string representation of the function
@@ -94,7 +95,7 @@ const runTestCases = async (func, testCases) => {
             let error = null;
             let timedOut = false;
             try {
-                userOutput = await runInWorker(workerScript, 2000);
+                userOutput = await runInWorker(workerScript, MAX_TIMEOUT);
             }
             catch (err) {
                 if (err.message.includes("timed out")) {
@@ -136,7 +137,7 @@ const runTestCases = async (func, testCases) => {
  * Helper function to run a script in a worker thread
  * @param script script to run
  * @param timeoutMs maximum time to wait for the script to finish
- * @returns
+ * @returns Promise with the result of the script
  */
 const runInWorker = (script, timeoutMs) => {
     return new Promise((resolve, reject) => {
