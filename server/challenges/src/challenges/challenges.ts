@@ -1,16 +1,4 @@
-interface ChallengeTestCase {
-  input: any[];
-  output: any;
-}
-
-interface Challenge {
-  id: string;
-  title: string;
-  description: string;
-  startingCode?: string;
-  testCases: ChallengeTestCase[];
-  restrictions: string[];
-}
+import type { Challenge } from "./types";
 
 export const challenges: Challenge[] = [
   {
