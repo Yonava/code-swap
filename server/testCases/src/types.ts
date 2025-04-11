@@ -48,25 +48,11 @@ export type TestCaseResults = {
    * The results of each individual test case.
    */
   results: TestCaseResult[];
+  /**
+   * The sum of weights of all *PASSED* test cases.
+   */
+  totalDifficultyWeight: number;
 };
-
-/**
- * The result of a challenge submission
- */
-export type ChallengeSubmissionResult = Partial<{
-  /**
-   * The function created from the function string.
-   */
-  func: string;
-  /**
-   * The error message if the function string did not produce a valid function.
-   */
-  error: string;
-  /**
-   * The test results of the function against the test cases.
-   */
-  testCaseResults: TestCaseResults;
-}>;
 
 export type TestCase = {
   /**
@@ -115,7 +101,3 @@ export type Challenge = {
    */
   restrictions: string[];
 };
-
-export type ChallengeFetchResponse = Promise<
-  { challenge: Challenge } | { error: string }
->;

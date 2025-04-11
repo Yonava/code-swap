@@ -3,7 +3,7 @@ import express, { Request, Response } from "express";
 import { createServer } from "http";
 import { CHALLENGE_LOCALHOST_PORT, LOCALHOST_PORT } from "./constants";
 import { VM } from "vm2";
-import { TestCaseResult, TestCase, ChallengeFetchResponse } from "./types";
+import { TestCase, Challenge, TestCaseResults } from "./types";
 
 dotenv.config();
 
@@ -18,7 +18,7 @@ const MAX_TIMEOUT = 2000; // 2 seconds
  * @param challengeId The ID of the challenge to fetch
  * @returns The challenge data or error
  */
-const fetchChallenge = async (challengeId: string): ChallengeFetchResponse => {
+const fetchChallenge = async (challengeId: string) => {
   try {
     const response = await fetch(
       `http://localhost:${CHALLENGE_LOCALHOST_PORT}/challenge/${challengeId}`
@@ -48,10 +48,7 @@ const fetchChallenge = async (challengeId: string): ChallengeFetchResponse => {
  * @param testCases the test cases to be run
  * @returns error or results
  */
-const runTestCase = (
-  func: string,
-  testCase: TestCase
-): TestCaseResult | { error: string } => {
+const runTestCase = (func: string, testCase: TestCase) => {
   try {
     const { input, output, id, difficultyWeight } = testCase;
 
@@ -88,13 +85,45 @@ const runTestCase = (
       difficultyWeight,
     };
 
-    return testResult;
+    return { result: testResult };
   } catch (error) {
     return { error: `Error running test cases: ${(error as Error).message}` };
   }
 };
 
-// const runTestCases = (): TestCaseResults => {};
+const runTestCases = async (func: string, challengeId: Challenge["id"]) => {
+  const { challenge, error } = await fetchChallenge(challengeId);
+  if (error) return { error };
+
+  const { testCases } = challenge;
+  const total = challenge.testCases.length;
+  let totalDifficultyWeight = 0;
+  let testCasesPassed = 0;
+  const testCaseResults: TestCaseResults["results"] = [];
+  try {
+    for (const testCase of testCases) {
+      const { result, error } = runTestCase(func, testCase);
+      if (error) return { error };
+      testCaseResults.push(result!);
+      if (result!.passed) {
+        totalDifficultyWeight += result!.difficultyWeight;
+        testCasesPassed++;
+      }
+    }
+
+    const results = {
+      passed: testCasesPassed,
+      total,
+      allPassed: testCasesPassed === total,
+      testCaseResults,
+      totalDifficultyWeight,
+    };
+
+    return { results };
+  } catch (error) {
+    return { error: `Error running test cases: ${(error as Error).message}` };
+  }
+};
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(__dirname + "/public/"));
