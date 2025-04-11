@@ -59,8 +59,8 @@ const runTestCase = (func, testCase) => {
         `);
             userOutput = result;
         }
-        catch (err) {
-            error = `Error in test execution: ${err.message}`;
+        catch (error) {
+            error = `Error in test execution: ${error.message}`;
         }
         if (error)
             return { error };

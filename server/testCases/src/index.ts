@@ -68,8 +68,8 @@ const runTestCase = (func: string, testCase: TestCase) => {
         `);
 
       userOutput = result;
-    } catch (err: any) {
-      error = `Error in test execution: ${err.message}`;
+    } catch (error) {
+      error = `Error in test execution: ${(error as Error).message}`;
     }
 
     if (error) return { error };
