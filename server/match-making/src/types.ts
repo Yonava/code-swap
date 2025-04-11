@@ -9,38 +9,42 @@ export type Player = {
 
 export type Match = {
   id: string;
-  teams: {
-    team1: Player[];
-    team2: Player[];
-  },
-  host: string;
+  hostId: Player['id'];
+  teams: [[Player | undefined, Player | undefined], [Player | undefined, Player | undefined]];
 }
 
-// a request to join from a user results in either a response confirmation with the match data or a rejection
-export type JoinRequest = {
+export type TeamIndex = 0 | 1;
+
+export type JoinMatchRequest = {
   player: Player;
-  matchId: string;
-  team: 1 | 2;
+  matchId: Match['id'];
+  teamIndex: TeamIndex;
 }
 
-export type JoinResponseAccepted = {
+export type JoinMatchResponseAccepted = {
   match: Match;
 }
 
-export type JoinResponseRejected = {
+export type JoinMatchResponseRejected = {
   error: string;
 }
 
-export type JoinResponse = { playerId: Player['id'] } & (JoinResponseAccepted | JoinResponseRejected)
-
-export type Leave = {}
-
-type ClientSocketEvents = {
-  requestJoin: (req: JoinRequest) => void,
+export type CreateMatchRequest = {
+  player: Player;
 }
 
-type ServerSocketEvents = {
-  responseJoin: (res: JoinResponse) => void,
+export type CreateMatchResponseAccepted = {
+  match: Match;
 }
 
-export type SocketServer = Server<ClientSocketEvents, ServerSocketEvents, {}, {}>
+export type CreateMatchResponseRejected = {
+  error: string;
+}
+
+export type JoinMatchResponse = { playerId: Player['id'] } & (JoinMatchResponseAccepted | JoinMatchResponseRejected)
+export type CreateMatchResponse = { playerId: Player['id'] } & (CreateMatchResponseAccepted | CreateMatchResponseRejected)
+
+export type LeaveMatch = {
+  playerId: Player['id'];
+  matchId: Match['id'];
+}
