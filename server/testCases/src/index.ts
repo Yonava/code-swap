@@ -97,16 +97,23 @@ const runTestCases = async (func: string, challengeId: Challenge["id"]) => {
 
   const { testCases } = challenge;
   const total = challenge.testCases.length;
+
   let totalDifficultyWeight = 0;
   let testCasesPassed = 0;
+
   const testCaseResults: TestCaseResults["results"] = [];
+
   try {
     for (const testCase of testCases) {
       const { result, error } = runTestCase(func, testCase);
+
       if (error) return { error };
+
       testCaseResults.push(result!);
-      if (result!.passed) {
-        totalDifficultyWeight += result!.difficultyWeight;
+      const { passed, difficultyWeight } = result!;
+
+      if (passed) {
+        totalDifficultyWeight += difficultyWeight;
         testCasesPassed++;
       }
     }
