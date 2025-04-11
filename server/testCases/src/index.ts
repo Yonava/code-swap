@@ -132,6 +132,24 @@ const runTestCases = async (func: string, challengeId: Challenge["id"]) => {
   }
 };
 
+app.post("/test", async (req: Request, res: Response) => {
+  const { func, challengeId } = req.body;
+
+  if (!func || !challengeId) {
+    res.status(400).json({ error: "Function and challenge ID are required" });
+    return;
+  }
+
+  const { results, error } = await runTestCases(func, challengeId);
+
+  if (error) {
+    res.status(500).json({ error });
+    return;
+  }
+
+  res.json(results);
+});
+
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(__dirname + "/public/"));
   app.get("*", (req: Request, res: Response) => {

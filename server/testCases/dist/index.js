@@ -22,10 +22,9 @@ const fetchChallenge = async (challengeId) => {
     try {
         const response = await fetch(`http://localhost:${constants_1.CHALLENGE_LOCALHOST_PORT}/challenge/${challengeId}`);
         if (!response.ok) {
-            if (response.status === 404) {
-                return { error: "Challenge id not found" };
-            }
-            return { error: `Failed to fetch challenge: ${response.statusText}` };
+            return response.status === 404
+                ? { error: "Challenge id not found" }
+                : { error: `Failed to fetch challenge: ${response.statusText}` };
         }
         const data = await response.json();
         if (!Array.isArray(data.testCases) || data.testCases.length === 0) {
@@ -43,86 +42,89 @@ const fetchChallenge = async (challengeId) => {
  * @param testCases the test cases to be run
  * @returns error or results
  */
-const runTestCases = async (func, testCases) => {
+const runTestCase = (func, testCase) => {
     try {
-        const testResults = [];
-        let passedCount = 0;
-        for (const testCase of testCases) {
-            const { input, output } = testCase;
-            const inputString = JSON.stringify(input);
-            let userOutput;
-            let error = null;
-            try {
-                const vm = new vm2_1.VM({
-                    timeout: MAX_TIMEOUT, // Automatically terminates if too slow
-                    sandbox: {},
-                });
-                const result = vm.run(`
+        const { input, output, id, difficultyWeight } = testCase;
+        const inputString = JSON.stringify(input);
+        let userOutput;
+        let error = null;
+        try {
+            const vm = new vm2_1.VM({
+                timeout: MAX_TIMEOUT, // Automatically terminates if too slow
+                sandbox: {},
+            });
+            const result = vm.run(`
           const func = (...args) => {${func}};
           func(...${inputString});
         `);
-                userOutput = result;
-            }
-            catch (err) {
-                error = `Error in test execution: ${err.message}`;
-            }
-            if (error) {
-                return {
-                    error,
-                };
-            }
-            const passed = JSON.stringify(userOutput) === JSON.stringify(output);
-            if (passed)
-                passedCount++;
-            testResults.push({
-                input,
-                expectedOutput: output,
-                actualOutput: userOutput,
-                passed,
-            });
+            userOutput = result;
         }
-        return {
-            testResults: {
-                passed: passedCount,
-                total: testCases.length,
-                allPassed: passedCount === testCases.length,
-                results: testResults,
-            },
+        catch (err) {
+            error = `Error in test execution: ${err.message}`;
+        }
+        if (error)
+            return { error };
+        const passed = JSON.stringify(userOutput) === JSON.stringify(output);
+        const testResult = {
+            id,
+            input,
+            expectedOutput: output,
+            actualOutput: userOutput,
+            passed,
+            difficultyWeight,
         };
+        return { result: testResult };
     }
     catch (error) {
         return { error: `Error running test cases: ${error.message}` };
     }
 };
-/**
- * Handles function testing endpoint
- */
-app.post("/test-function", async (req, res) => {
-    const { language, functionString, challengeId } = req.body;
-    if (!functionString || !language) {
-        res.status(400).json({ error: "Missing required fields" });
+const runTestCases = async (func, challengeId) => {
+    const { challenge, error } = await fetchChallenge(challengeId);
+    if (error)
+        return { error };
+    const { testCases } = challenge;
+    const total = challenge.testCases.length;
+    let totalDifficultyWeight = 0;
+    let testCasesPassed = 0;
+    const testCaseResults = [];
+    try {
+        for (const testCase of testCases) {
+            const { result, error } = runTestCase(func, testCase);
+            if (error)
+                return { error };
+            testCaseResults.push(result);
+            const { passed, difficultyWeight } = result;
+            if (passed) {
+                totalDifficultyWeight += difficultyWeight;
+                testCasesPassed++;
+            }
+        }
+        const results = {
+            passed: testCasesPassed,
+            total,
+            allPassed: testCasesPassed === total,
+            testCaseResults,
+            totalDifficultyWeight,
+        };
+        return { results };
+    }
+    catch (error) {
+        return { error: `Error running test cases: ${error.message}` };
+    }
+};
+app.post("/test", async (req, res) => {
+    const { func, challengeId } = req.body;
+    if (!func || !challengeId) {
+        res.status(400).json({ error: "Function and challenge ID are required" });
         return;
     }
-    const result = {
-        func: functionString,
-        testResults: undefined,
-    };
-    if (challengeId) {
-        const { challenge, error: challengeError } = await fetchChallenge(challengeId);
-        if (challengeError) {
-            const status = challengeError.includes("not found") ? 404 : 400;
-            res.status(status).json({ error: challengeError });
-            return;
-        }
-        const { testResults, error: testError } = await runTestCases(functionString, challenge.testCases);
-        if (testError) {
-            res.status(400).json({ error: testError });
-            return;
-        }
-        result.testResults = testResults;
+    const { results, error } = await runTestCases(func, challengeId);
+    if (error) {
+        res.status(500).json({ error });
+        return;
     }
-    res.status(200).json(result);
-    return;
+    res.json(results);
 });
 if (process.env.NODE_ENV === "production") {
     app.use(express_1.default.static(__dirname + "/public/"));

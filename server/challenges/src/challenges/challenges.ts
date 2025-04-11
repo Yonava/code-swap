@@ -16,6 +16,8 @@ export const challenges: Challenge[] = [
           { arr1: [9, 5], arr2: [] },
         ],
         output: [2, 1, 0],
+        difficultyWeight: 1,
+        id: "1",
       },
     ],
     restrictions: [
@@ -41,6 +43,8 @@ export const challenges: Challenge[] = [
           "to code swap. place to quick and in!",
           "Welcome, A, practice, thinking, collaboration, software",
         ],
+        difficultyWeight: 1,
+        id: "1",
       },
     ],
     restrictions: [],
@@ -56,6 +60,8 @@ export const challenges: Challenge[] = [
       {
         input: [2, 1, 6, 14],
         output: [3, 4, 10, 20],
+        difficultyWeight: 1,
+        id: "1",
       },
     ],
     restrictions: [],
