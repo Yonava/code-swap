@@ -1,5 +1,9 @@
 type ChallengeTestCase = {
   /**
+   * The ID of the test case.
+   */
+  id: string;
+  /**
    * The input to the function.
    */
   input: any[];
@@ -7,6 +11,10 @@ type ChallengeTestCase = {
    * The expected output of the function.
    */
   output: any;
+  /**
+   * The weighted difficulty score of the test case
+   */
+  difficultyWeight: number;
 };
 
 export type Challenge = {
@@ -22,10 +30,6 @@ export type Challenge = {
    * The description of the challenge.
    */
   description: string;
-  /**
-   * The function parameters for the challenge.
-   */
-  // parameters: string[];
   /**
    * The starting code for the challenge.
    */

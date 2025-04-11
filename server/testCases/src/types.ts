@@ -1,4 +1,11 @@
-export type CheckedTestCase = {
+/**
+ * Result for a single test case
+ */
+export type TestCaseResult = {
+  /**
+   * The ID of the test case.
+   */
+  id: string;
   /**
    * The input to the test case.
    */
@@ -15,9 +22,38 @@ export type CheckedTestCase = {
    * Whether the test case passed or failed.
    */
   passed: boolean;
+  /**
+   * The weighted difficulty score of the test case
+   */
+  difficultyWeight: number;
 };
 
-export type UserFunctionResult = Partial<{
+/**
+ * Result for all test cases in a challenge
+ */
+export type TestCaseResults = {
+  /**
+   * The number of test cases that passed.
+   */
+  passed: number;
+  /**
+   * The total number of test cases.
+   */
+  total: number;
+  /**
+   * Whether all test cases passed.
+   */
+  allPassed: boolean;
+  /**
+   * The results of each individual test case.
+   */
+  results: TestCaseResult[];
+};
+
+/**
+ * The result of a challenge submission
+ */
+export type ChallengeSubmissionResult = Partial<{
   /**
    * The function created from the function string.
    */
@@ -29,37 +65,57 @@ export type UserFunctionResult = Partial<{
   /**
    * The test results of the function against the test cases.
    */
-  testResults: {
-    /**
-     * The number of test cases that passed.
-     */
-    passed: number;
-    /**
-     * The total number of test cases.
-     */
-    total: number;
-    /**
-     * Whether all test cases passed.
-     */
-    allPassed: boolean;
-    /**
-     * The results of each test case.
-     */
-    results: CheckedTestCase[];
-  };
+  testCaseResults: TestCaseResults;
 }>;
 
-export type ParseFunctionRequest = {
+export type TestCase = {
   /**
-   * The language of the function.
+   * The ID of the test case.
    */
-  language: "js";
+  id: string;
   /**
-   * The function string to be parsed.
+   * The input to the function.
    */
-  functionString: string;
+  input: any[];
   /**
-   * The ID of the challenge to fetch test cases from.
+   * The expected output of the function.
    */
-  challengeId?: string;
+  output: any;
+  /**
+   * The weighted difficulty score of the test case
+   */
+  difficultyWeight: number;
 };
+
+export type Challenge = {
+  /**
+   * The ID of the challenge.
+   */
+  id: string;
+  /**
+   * The title of the challenge.
+   */
+  title: string;
+  /**
+   * The description of the challenge.
+   */
+  description: string;
+  /**
+   * The starting code for the challenge.
+   */
+
+  startingCode?: string;
+  /**
+   * The test cases for the challenge.
+   */
+  testCases: TestCase[];
+  /**
+   * The restrictions for the challenge space.
+   * @example 0 <= input.length <= 10,000
+   */
+  restrictions: string[];
+};
+
+export type ChallengeFetchResponse = Promise<
+  { challenge: Challenge } | { error: string }
+>;
