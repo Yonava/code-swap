@@ -1,4 +1,3 @@
-import { isPlayerInMatch } from './matches';
 import type { Match, Player, TeamIndex } from "./types";
 
 // mimics the behavior of a database
@@ -22,11 +21,6 @@ export const setPlayerMatchId = async (playerId: Player['id'], matchId: Match['i
 }
 export const deletePlayerMatchId = async (playerId: Player['id']) => playerIdToMatchId.delete(playerId);
 
-export const isPlayerInMatch = async (playerId: Player['id']) => {
-  const matchId = await getPlayerMatchId(playerId);
-  return !!matchId;
-}
-
 export const createNewMatch = async (host: Player) => setMatch({
   id: getNewMatchId(),
   teams: [[host, undefined], [undefined, undefined]],
@@ -38,8 +32,8 @@ export const addPlayerToMatch = async ({ matchId, player, teamIndex }: {
   player: Player,
   teamIndex: TeamIndex,
 }) => {
-  const playerInMatch = await isPlayerInMatch(player.id);
-  if (playerInMatch) return 'Player already in match';
+  const existingMatchId = await getPlayerMatchId(player.id);
+  if (existingMatchId) return 'Player already in match';
 
   const match = await getMatch(matchId);
   if (!match) return 'Match not found';
