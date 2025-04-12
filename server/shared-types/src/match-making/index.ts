@@ -39,8 +39,13 @@ export type CreateMatchResponseRejected = {
   error: string;
 }
 
-export type JoinMatchResponse = { playerId: Player['id'] } & (JoinMatchResponseAccepted | JoinMatchResponseRejected)
-export type CreateMatchResponse = { playerId: Player['id'] } & (CreateMatchResponseAccepted | CreateMatchResponseRejected)
+export type JoinMatchResponse = { playerId: Player['id'] } & (
+  JoinMatchResponseAccepted | JoinMatchResponseRejected
+)
+
+export type CreateMatchResponse = { playerId: Player['id'] } & (
+  CreateMatchResponseAccepted | CreateMatchResponseRejected
+)
 
 export type LeaveMatch = {
   playerId: Player['id'];

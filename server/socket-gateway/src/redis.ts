@@ -40,7 +40,7 @@ export class RedisClient {
     this.db = createRedisClient({ nickname: '📚 Database' });
   }
 
-  public static getInstance(): RedisClient {
+  public static getInstance() {
     if (!RedisClient.instance) {
       RedisClient.instance = new RedisClient();
     }
