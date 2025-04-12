@@ -18,8 +18,8 @@ importers:
         specifier: ^4.7.0
         version: 4.7.0
       shared-types:
-        specifier: ../shared-types/code-swap-shared-types-1.0.0.tgz
-        version: '@code-swap/shared-types@file:../shared-types/code-swap-shared-types-1.0.0.tgz'
+        specifier: ../shared-types/code-swap-shared-types-2.0.0.tgz
+        version: '@code-swap/shared-types@file:../shared-types/code-swap-shared-types-2.0.0.tgz'
       socket.io:
         specifier: ^4.8.1
         version: 4.8.1
@@ -42,9 +42,9 @@ importers:
 
 packages:
 
-  '@code-swap/shared-types@file:../shared-types/code-swap-shared-types-1.0.0.tgz':
-    resolution: {integrity: sha512-7y0JOWXslhDVG/0g3ckIA+XX14IW9u0+rDBkFyny65LHuxOaDneOWMHErCE1g6xnzFuSVMq66EFQXk8rqkPO2w==, tarball: file:../shared-types/code-swap-shared-types-1.0.0.tgz}
-    version: 1.0.0
+  '@code-swap/shared-types@file:../shared-types/code-swap-shared-types-2.0.0.tgz':
+    resolution: {integrity: sha512-YFk01oJ05w3oaDjmUezyIyoDAOHS0mRM7oIkI8MvzlhxJU/EU2jBQ7/yCQJbEDGTFhWNW94oH/sumQlVB4z9Vg==, tarball: file:../shared-types/code-swap-shared-types-2.0.0.tgz}
+    version: 2.0.0
 
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -811,7 +811,7 @@ packages:
 
 snapshots:
 
-  '@code-swap/shared-types@file:../shared-types/code-swap-shared-types-1.0.0.tgz': {}
+  '@code-swap/shared-types@file:../shared-types/code-swap-shared-types-2.0.0.tgz': {}
 
   '@cspotcode/source-map-support@0.8.1':
     dependencies:

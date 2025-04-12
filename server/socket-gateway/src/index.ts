@@ -42,10 +42,6 @@ redisSub.on('connect', () => {
   console.log('🐱 Redis Subscriber Connected');
 });
 
-app.get('/', (req, res) => {
-  res.send('Socket Gateway is running');
-});
-
 const playerToSocketIdMap = new Map<Player['id'], string>();
 
 io.on('connection', (socket) => {
