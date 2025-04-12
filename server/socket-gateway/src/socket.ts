@@ -11,10 +11,12 @@ import matchMakingListeners from './match-making/incomingFromClient'
 const SOCKET_LOG_PREFIX = '[Socket Server]';
 export const socketLogger = (msg: string) => console.log(`${SOCKET_LOG_PREFIX}`, msg);
 
+export let io: SocketServerInstance;
+
 export const activateSocketServer = (
   server: HTTPServer<typeof IncomingMessage, typeof ServerResponse>
 ) => {
-  const io: SocketServerInstance = new Server(server, {
+  io = new Server(server, {
     cors: {
       origin: '*',
     },
