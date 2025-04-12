@@ -1,7 +1,7 @@
 import { RedisClient } from "../redis";
 import { MATCH_MAKING_CHANNEL } from "./channels";
-import { CreateMatchRequest, JoinMatchRequest } from '../types';
-import { addPlayerToMatch, createNewMatch } from "../matches";
+import { CreateMatchRequest, JoinMatchRequest, LeaveMatch } from '../types';
+import { addPlayerToMatch, createNewMatch, removePlayerFromMatch } from "../matches";
 
 const redisClient = RedisClient.getInstance();
 const { pub: redisPub, sub: redisSub } = redisClient;
@@ -22,6 +22,7 @@ redisSub.subscribe(SUBSCRIBE.REQUEST_JOIN_MATCH, async (message) => {
   redisPub.publish(PUBLISH.RESPONSE_JOIN_MATCH, JSON.stringify(publishedResponse));
 });
 
-redisSub.subscribe(SUBSCRIBE.LEAVE_MATCH, (message) => {
-  console.log(`Message received: ${message}`);
+redisSub.subscribe(SUBSCRIBE.LEAVE_MATCH, async (message) => {
+  const data: LeaveMatch = JSON.parse(message); // add zod validation
+  await removePlayerFromMatch(data.matchId, data.playerId);
 });

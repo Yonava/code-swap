@@ -23,7 +23,7 @@ const createRedisClient = ({ nickname }) => {
     return client;
 };
 /**
- * singleton redis client for both publishing and subscribing to redis channels
+ * singleton redis client for pub, sub and db
  */
 class RedisClient {
     static instance;
