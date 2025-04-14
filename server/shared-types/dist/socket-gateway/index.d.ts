@@ -1,4 +1,5 @@
 import type { Server, Socket } from "socket.io";
+import type { Socket as ClientSocket } from "socket.io-client";
 import type { JoinMatchRequest, JoinMatchResponse, LeaveMatch, Player } from '../match-making';
 import { MATCH_MAKING_CHANNEL } from "../match-making";
 export declare const SOCKET_GATEWAY_PREFIX = "socketGateway";
@@ -16,6 +17,13 @@ type ServerSocketEvents = {
     [MATCH_MAKING_CHANNEL.RESPONSE_CREATE_MATCH]: (res: JoinMatchResponse) => void;
     [MATCH_MAKING_CHANNEL.RESPONSE_JOIN_MATCH]: (res: JoinMatchResponse) => void;
 };
+/**
+ * for server-side use only
+ */
 export type SocketServerInstance = Server<ClientSocketEvents, ServerSocketEvents, {}, {}>;
 export type PlayerSocketInstance = Socket<ClientSocketEvents, ServerSocketEvents, {}, {}>;
+/**
+ * for client-side use only
+ */
+export type ClientSocketInstance = ClientSocket<ServerSocketEvents, ClientSocketEvents>;
 export {};

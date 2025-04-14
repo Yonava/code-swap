@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "refresh-types": "rm -rf node_modules && pnpm install"
   },
   "dependencies": {
     "@codemirror/lang-javascript": "^6.2.3",
@@ -39,7 +40,8 @@
     "sonner": "^2.0.1",
     "tailwind-merge": "^3.0.2",
     "tailwindcss": "^4.0.8",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "shared-types": "../server/shared-types/code-swap-shared-types-1.0.0.tgz"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.5",
