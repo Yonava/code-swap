@@ -1,13 +1,8 @@
-import { Player } from "shared-types";
-import { PlayerSocketInstance } from "./types";
 import { addPlayerIdSocketIdMapping } from "./registrationDatabase";
-
-export const SOCKET_GATEWAY_PREFIX = 'socketGateway'
-export const SOCKET_GATEWAY_REGISTRATION_EVENT_NAME = `${SOCKET_GATEWAY_PREFIX}.register`;
-
-export type SocketGatewayRegistrationRequest = {
-  playerId: Player['id'];
-}
+import {
+  type PlayerSocketInstance,
+  SOCKET_GATEWAY_REGISTRATION_EVENT_NAME
+} from "shared-types/dist/socket-gateway";
 
 const register = (socket: PlayerSocketInstance) => socket.on(
   SOCKET_GATEWAY_REGISTRATION_EVENT_NAME,

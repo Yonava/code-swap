@@ -3,7 +3,7 @@ dotenv.config();
 import express from 'express';
 import { PORT } from './constants';
 import { RedisClient } from './redis';
-import { getAllMatches } from './matches';
+import { getAllMatches } from './db/matches';
 import './pub-sub/subscribers';
 
 const app = express();

@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const match_making_1 = require("shared-types/dist/match-making");
+const redis_1 = require("../redis");
+const { pub } = redis_1.RedisClient.getInstance();
+const { REQUEST_CREATE_MATCH, REQUEST_JOIN_MATCH, LEAVE_MATCH } = match_making_1.MATCH_MAKING_CHANNEL;
+const requestCreateMatch = (socket) => socket.on(REQUEST_CREATE_MATCH, (req) => pub.publish(REQUEST_CREATE_MATCH, JSON.stringify(req)));
+const requestJoinMatch = (socket) => socket.on(REQUEST_JOIN_MATCH, (req) => pub.publish(REQUEST_JOIN_MATCH, JSON.stringify(req)));
+const leaveMatch = (socket) => socket.on(LEAVE_MATCH, (req) => pub.publish(LEAVE_MATCH, JSON.stringify(req)));
+exports.default = [requestCreateMatch, requestJoinMatch, leaveMatch];

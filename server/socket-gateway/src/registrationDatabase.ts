@@ -1,5 +1,5 @@
-import { Player } from "shared-types/dist/match-making";
-import { PlayerSocketInstance } from "./types";
+import type { Player } from "shared-types/dist/match-making";
+import type { PlayerSocketInstance } from "shared-types/dist/socket-gateway";
 
 /**
  * mocks a redis cache for handling these values at scale

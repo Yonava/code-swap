@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       dotenv:
-        specifier: ^16.4.7
+        specifier: ^16.5.0
         version: 16.5.0
       express:
         specifier: ^5.1.0
@@ -18,8 +18,8 @@ importers:
         specifier: ^4.7.0
         version: 4.7.0
       shared-types:
-        specifier: ../shared-types/code-swap-shared-types-2.0.0.tgz
-        version: '@code-swap/shared-types@file:../shared-types/code-swap-shared-types-2.0.0.tgz'
+        specifier: file:../shared-types/code-swap-shared-types-1.0.0.tgz
+        version: '@code-swap/shared-types@file:../shared-types/code-swap-shared-types-1.0.0.tgz'
       socket.io:
         specifier: ^4.8.1
         version: 4.8.1
@@ -28,7 +28,7 @@ importers:
         specifier: ^5.0.1
         version: 5.0.1
       '@types/node':
-        specifier: ^22.14.0
+        specifier: ^22.14.1
         version: 22.14.1
       nodemon:
         specifier: ^3.1.9
@@ -42,9 +42,9 @@ importers:
 
 packages:
 
-  '@code-swap/shared-types@file:../shared-types/code-swap-shared-types-2.0.0.tgz':
-    resolution: {integrity: sha512-eUJM0jnwiaB7lcpbB/p5C/r0x9K5J5vEs8c9PcsTJEI3hTITLsPQyuez5ZX/gOBhcvAtojgbaYRtT0jdHmUmPQ==, tarball: file:../shared-types/code-swap-shared-types-2.0.0.tgz}
-    version: 2.0.0
+  '@code-swap/shared-types@file:../shared-types/code-swap-shared-types-1.0.0.tgz':
+    resolution: {integrity: sha512-UO/g8y8OpL+RVYS5UwF9XIx8KWEfQlO/qhDFS3/U6pizwp9gts0o1hW7QW+0pJT/lpjg030kfMcZRp0Vuyivvg==, tarball: file:../shared-types/code-swap-shared-types-1.0.0.tgz}
+    version: 1.0.0
 
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -811,7 +811,13 @@ packages:
 
 snapshots:
 
-  '@code-swap/shared-types@file:../shared-types/code-swap-shared-types-2.0.0.tgz': {}
+  '@code-swap/shared-types@file:../shared-types/code-swap-shared-types-1.0.0.tgz':
+    dependencies:
+      socket.io: 4.8.1
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
 
   '@cspotcode/source-map-support@0.8.1':
     dependencies:

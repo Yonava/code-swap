@@ -1,28 +1,41 @@
+import {
+  type CreateMatchRequest,
+  type JoinMatchRequest,
+  type LeaveMatch,
+  MATCH_MAKING_CHANNEL
+} from 'shared-types/dist/match-making';
 import { RedisClient } from "../redis";
-import { MATCH_MAKING_CHANNEL } from "./channels";
-import { CreateMatchRequest, JoinMatchRequest, LeaveMatch } from '../types';
-import { addPlayerToMatch, createNewMatch, removePlayerFromMatch } from "../matches";
+import {
+  addPlayerToMatch,
+  createNewMatch,
+  removePlayerFromMatch
+} from "../matches";
 
-const redisClient = RedisClient.getInstance();
-const { pub: redisPub, sub: redisSub } = redisClient;
+const { pub, sub } = RedisClient.getInstance();
 
-const { PUBLISH, SUBSCRIBE } = MATCH_MAKING_CHANNEL;
+const {
+  REQUEST_CREATE_MATCH,
+  RESPONSE_CREATE_MATCH,
+  REQUEST_JOIN_MATCH,
+  RESPONSE_JOIN_MATCH,
+  LEAVE_MATCH
+} = MATCH_MAKING_CHANNEL;
 
-redisSub.subscribe(SUBSCRIBE.REQUEST_CREATE_MATCH, async (message) => {
+sub.subscribe(REQUEST_CREATE_MATCH, async (message) => {
   const data: CreateMatchRequest = JSON.parse(message); // add zod validation
   const result = await createNewMatch(data.player);
   const publishedResponse = typeof result === 'string' ? { error: result } : { match: result };
-  redisPub.publish(PUBLISH.RESPONSE_CREATE_MATCH, JSON.stringify(publishedResponse));
+  pub.publish(RESPONSE_CREATE_MATCH, JSON.stringify(publishedResponse));
 });
 
-redisSub.subscribe(SUBSCRIBE.REQUEST_JOIN_MATCH, async (message) => {
+sub.subscribe(REQUEST_JOIN_MATCH, async (message) => {
   const data: JoinMatchRequest = JSON.parse(message); // add zod validation
   const result = await addPlayerToMatch(data);
   const publishedResponse = typeof result === 'string' ? { error: result } : { match: result };
-  redisPub.publish(PUBLISH.RESPONSE_JOIN_MATCH, JSON.stringify(publishedResponse));
+  pub.publish(RESPONSE_JOIN_MATCH, JSON.stringify(publishedResponse));
 });
 
-redisSub.subscribe(SUBSCRIBE.LEAVE_MATCH, async (message) => {
+sub.subscribe(LEAVE_MATCH, async (message) => {
   const data: LeaveMatch = JSON.parse(message); // add zod validation
   await removePlayerFromMatch(data.matchId, data.playerId);
 });

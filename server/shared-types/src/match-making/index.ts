@@ -1,3 +1,13 @@
+export const MATCH_MAKING_CHANNEL_PREFIX = 'matchMaking';
+
+export const MATCH_MAKING_CHANNEL = {
+  REQUEST_JOIN_MATCH: `${MATCH_MAKING_CHANNEL_PREFIX}.requestJoinMatch`,
+  REQUEST_CREATE_MATCH: `${MATCH_MAKING_CHANNEL_PREFIX}.requestCreateMatch`,
+  LEAVE_MATCH: `${MATCH_MAKING_CHANNEL_PREFIX}.leaveMatch`,
+  RESPONSE_JOIN_MATCH: `${MATCH_MAKING_CHANNEL_PREFIX}.responseJoinMatch`,
+  RESPONSE_CREATE_MATCH: `${MATCH_MAKING_CHANNEL_PREFIX}.responseCreateMatch`,
+} as const;
+
 export type Player = {
   id: string;
   name: string;

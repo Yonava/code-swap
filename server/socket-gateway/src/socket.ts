@@ -4,14 +4,18 @@ import {
   Server as HTTPServer,
   ServerResponse
 } from "http";
-import type { SocketServerInstance } from "./types";
 import registerListeners from './registerSocket';
 import matchMakingListeners from './match-making/incomingFromClient'
+import type { PlayerSocketInstance, SocketServerInstance } from 'shared-types/dist/socket-gateway';
 
 const SOCKET_LOG_PREFIX = '[Socket Server]';
 export const socketLogger = (msg: string) => console.log(`${SOCKET_LOG_PREFIX}`, msg);
 
 export let io: SocketServerInstance;
+
+const disconnectListener = (socket: PlayerSocketInstance) => socket.on('disconnect', () => {
+  socketLogger(`Player Disconnected with Socket ID: ${socket.id}`);
+})
 
 export const activateSocketServer = (
   server: HTTPServer<typeof IncomingMessage, typeof ServerResponse>
@@ -24,7 +28,8 @@ export const activateSocketServer = (
 
   const socketListeners = [
     registerListeners,
-    matchMakingListeners
+    matchMakingListeners,
+    disconnectListener,
   ].flat()
 
   io.on('connection', (socket) => {

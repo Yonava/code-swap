@@ -1,3 +1,11 @@
+export declare const MATCH_MAKING_CHANNEL_PREFIX = "matchMaking";
+export declare const MATCH_MAKING_CHANNEL: {
+    readonly REQUEST_JOIN_MATCH: "matchMaking.requestJoinMatch";
+    readonly REQUEST_CREATE_MATCH: "matchMaking.requestCreateMatch";
+    readonly LEAVE_MATCH: "matchMaking.leaveMatch";
+    readonly RESPONSE_JOIN_MATCH: "matchMaking.responseJoinMatch";
+    readonly RESPONSE_CREATE_MATCH: "matchMaking.responseCreateMatch";
+};
 export type Player = {
     id: string;
     name: string;
