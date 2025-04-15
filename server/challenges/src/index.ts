@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import { createServer } from "http";
 import { LOCALHOST_PORT } from "./constants";
-import router from "./router";
+import challengeRoutes from "./router";
 
 dotenv.config();
 
@@ -11,7 +11,7 @@ const server = createServer(app);
 
 app.use(express.json());
 
-app.use("/challenges", router);
+app.use("/challenges", challengeRoutes);
 
 // Serve static files in production
 if (process.env.NODE_ENV === "production") {
