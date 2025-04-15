@@ -32,7 +32,7 @@ export const activateSocketServer = (
   ].flat()
 
   io.on('connection', (socket) => {
-    socketLogger(`Socket Connected with ID ${chalk.bold.yellow(socket.id)}`);
+    socketLogger(`New Socket Connected with ID ${chalk.bold.yellow(socket.id)}`);
     socketListeners.forEach(listener => listener(socket));
   })
 

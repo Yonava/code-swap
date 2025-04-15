@@ -16,6 +16,7 @@
     "chalk": "^5.4.1",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
+    "json-colorizer": "^3.0.1",
     "redis": "^4.7.0",
     "shared-types": "../shared-types/code-swap-shared-types-1.0.0.tgz",
     "socket.io": "^4.8.1"

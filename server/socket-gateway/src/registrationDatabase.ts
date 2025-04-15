@@ -17,10 +17,7 @@ export const addPlayerIdSocketIdMapping = async ({ playerId, socketId }: {
 
 export const getSocketIdFromPlayerId = async (playerId: Player['id']) => {
   const socketId = playerIdToSocketIdMap.get(playerId);
-  if (!socketId) {
-    console.error(`Socket ID not found for player ID: ${playerId}`);
-    return null;
-  }
+  if (!socketId) return null;
   return socketId;
 }
 

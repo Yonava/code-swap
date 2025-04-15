@@ -24,7 +24,7 @@ const activateSocketServer = (server) => {
         incomingFromClient_1.default,
     ].flat();
     exports.io.on('connection', (socket) => {
-        (0, exports.socketLogger)(`Socket Connected with ID ${chalk_1.default.bold.yellow(socket.id)}`);
+        (0, exports.socketLogger)(`New Socket Connected with ID ${chalk_1.default.bold.yellow(socket.id)}`);
         socketListeners.forEach(listener => listener(socket));
     });
     return exports.io;

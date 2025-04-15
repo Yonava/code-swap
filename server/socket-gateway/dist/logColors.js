@@ -3,10 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LOG_COLORS = exports.PORT = exports.LOCALHOST_PORT = void 0;
+exports.LOG_COLORS = void 0;
 const chalk_1 = __importDefault(require("chalk"));
-exports.LOCALHOST_PORT = 3000;
-exports.PORT = process.env.PORT || exports.LOCALHOST_PORT;
 exports.LOG_COLORS = {
     error: chalk_1.default.bold.red,
     success: chalk_1.default.bold.green,
