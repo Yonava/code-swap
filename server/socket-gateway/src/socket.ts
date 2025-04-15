@@ -6,10 +6,16 @@ import {
 } from "http";
 import registerListeners from './registerSocket';
 import matchMakingListeners from './match-making/incomingFromClient'
-import type { PlayerSocketInstance, SocketServerInstance } from 'shared-types/dist/socket-gateway';
+import type {
+  PlayerSocketInstance,
+  SocketServerInstance
+} from 'shared-types/dist/socket-gateway';
+import { RedisClient } from './redis';
+
+const { pub } = RedisClient.getInstance();
 
 const SOCKET_LOG_PREFIX = '[Socket Server]';
-export const socketLogger = (msg: string) => console.log(`${SOCKET_LOG_PREFIX}`, msg);
+export const socketLogger = (...msg: unknown[]) => console.log(`${SOCKET_LOG_PREFIX}`, ...msg);
 
 export let io: SocketServerInstance;
 

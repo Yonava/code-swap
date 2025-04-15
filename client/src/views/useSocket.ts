@@ -22,7 +22,7 @@ export const useSocket = () => {
       if (activeSocket) return res(activeSocket)
       setIsConnecting(true);
 
-      const socketInstance = io(SOCKET_URL);
+      const socketInstance: ClientSocketInstance = io(SOCKET_URL);
 
       socketInstance.on('connect', () => {
         if (!socketInstance) throw new Error('this should never happen');
@@ -45,10 +45,17 @@ export const useSocket = () => {
         setIsConnecting(false);
       });
 
-      socketInstance.on('responseJoin', (data: JoinMatchResponse) => {
-        console.log('responseJoin', data);
+      socketInstance.on('matchMaking.responseJoinMatch', (data: JoinMatchResponse) => {
+        console.log('matchMaking.responseJoinMatch', data);
       });
     });
+
+  const register = (playerId: Player['id']) => {
+    if (!activeSocket) throw new Error('socket not connected');
+    activeSocket.emit('socketGateway.register', {
+      playerId,
+    }, () => console.log('socketGateway.register ack'));
+  }
 
   const join = (playerId: Player['id']) => {
     if (!activeSocket) throw new Error('socket not connected');
@@ -73,6 +80,8 @@ export const useSocket = () => {
     connect,
     isConnected,
     isConnecting,
+    activeSocket,
+    register,
     join,
   }
 }

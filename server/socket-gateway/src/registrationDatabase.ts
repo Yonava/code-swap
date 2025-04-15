@@ -26,17 +26,22 @@ export const getSocketIdFromPlayerId = async (playerId: Player['id']) => {
 
 export const getPlayerIdFromSocketId = async (socketId: PlayerSocketInstance['id']) => {
   const playerId = socketIdToPlayerIdMap.get(socketId);
-  if (!playerId) {
-    console.error(`Player ID not found for socket ID: ${socketId}`);
-    return null;
-  }
+  if (!playerId) return null;
   return playerId;
 }
 
-export const removePlayerIdSocketIdMapping = async ({ playerId, socketId }: {
-  playerId: Player['id'],
+export const getAllMappings = async () => ({
+  playerIdToSocketIdMap: Array.from(playerIdToSocketIdMap.entries()),
+  socketIdToPlayerIdMap: Array.from(socketIdToPlayerIdMap.entries()),
+})
+
+export const removePlayerIdSocketIdMapping = async ({ socketId }: {
   socketId: PlayerSocketInstance['id']
 }) => {
-  playerIdToSocketIdMap.delete(playerId);
-  socketIdToPlayerIdMap.delete(socketId);
+  const playerId = socketIdToPlayerIdMap.get(socketId);
+  if (playerId) {
+    playerIdToSocketIdMap.delete(playerId);
+    socketIdToPlayerIdMap.delete(socketId);
+  }
+  return playerId;
 }

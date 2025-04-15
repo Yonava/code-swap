@@ -7,7 +7,7 @@ import { useSocket } from './useSocket';
 import { useState } from 'react';
 
 const ChallengeView = () => {
-  const { connect, isConnected, isConnecting, join } = useSocket();
+  const { connect, isConnected, isConnecting, register, join } = useSocket();
   const [code, setCode] = useState<string>('console.log("hello world")');
   const [playerId, setPlayerId] = useState<string>('');
 
@@ -39,10 +39,10 @@ const ChallengeView = () => {
           <div className="p-2">
             <Input
               className='bg-white mb-2'
-              placeholder='user id'
+              placeholder='playerId'
               onChange={(ev) => setPlayerId(ev.target.value)}
             />
-            <div className="flex gap-1">
+            <div className="flex gap-1 flex-col">
               {
                 !isConnected &&
                 <Button
@@ -70,6 +70,14 @@ const ChallengeView = () => {
                   Connecting...
                 </Button>
               }
+              <Button
+                onClick={() => {
+                  register(playerId)
+                }}
+                disabled={!isConnected}
+              >
+                Register
+              </Button>
               <Button
                 onClick={() => {
                   join(playerId)

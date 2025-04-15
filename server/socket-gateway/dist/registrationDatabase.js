@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removePlayerIdSocketIdMapping = exports.getPlayerIdFromSocketId = exports.getSocketIdFromPlayerId = exports.addPlayerIdSocketIdMapping = void 0;
+exports.removePlayerIdSocketIdMapping = exports.getAllMappings = exports.getPlayerIdFromSocketId = exports.getSocketIdFromPlayerId = exports.addPlayerIdSocketIdMapping = void 0;
 /**
  * mocks a redis cache for handling these values at scale
  */
@@ -22,15 +22,22 @@ const getSocketIdFromPlayerId = async (playerId) => {
 exports.getSocketIdFromPlayerId = getSocketIdFromPlayerId;
 const getPlayerIdFromSocketId = async (socketId) => {
     const playerId = socketIdToPlayerIdMap.get(socketId);
-    if (!playerId) {
-        console.error(`Player ID not found for socket ID: ${socketId}`);
+    if (!playerId)
         return null;
-    }
     return playerId;
 };
 exports.getPlayerIdFromSocketId = getPlayerIdFromSocketId;
-const removePlayerIdSocketIdMapping = async ({ playerId, socketId }) => {
-    playerIdToSocketIdMap.delete(playerId);
-    socketIdToPlayerIdMap.delete(socketId);
+const getAllMappings = async () => ({
+    playerIdToSocketIdMap: Array.from(playerIdToSocketIdMap.entries()),
+    socketIdToPlayerIdMap: Array.from(socketIdToPlayerIdMap.entries()),
+});
+exports.getAllMappings = getAllMappings;
+const removePlayerIdSocketIdMapping = async ({ socketId }) => {
+    const playerId = socketIdToPlayerIdMap.get(socketId);
+    if (playerId) {
+        playerIdToSocketIdMap.delete(playerId);
+        socketIdToPlayerIdMap.delete(socketId);
+    }
+    return playerId;
 };
 exports.removePlayerIdSocketIdMapping = removePlayerIdSocketIdMapping;

@@ -10,7 +10,7 @@ export type SocketGatewayRegistrationRequest = {
   playerId: Player['id'];
 }
 
-type ClientSocketEvents = {
+export type ClientSocketEvents = {
   [SOCKET_GATEWAY_REGISTRATION_EVENT_NAME]: (
     req: SocketGatewayRegistrationRequest,
     ack: () => void
@@ -20,7 +20,7 @@ type ClientSocketEvents = {
   [MATCH_MAKING_CHANNEL.LEAVE_MATCH]: (req: LeaveMatch) => void,
 }
 
-type ServerSocketEvents = {
+export type ServerSocketEvents = {
   [MATCH_MAKING_CHANNEL.RESPONSE_CREATE_MATCH]: (res: JoinMatchResponse) => void,
   [MATCH_MAKING_CHANNEL.RESPONSE_JOIN_MATCH]: (res: JoinMatchResponse) => void,
 }

@@ -7,8 +7,10 @@ exports.activateSocketServer = exports.io = exports.socketLogger = void 0;
 const socket_io_1 = require("socket.io");
 const registerSocket_1 = __importDefault(require("./registerSocket"));
 const incomingFromClient_1 = __importDefault(require("./match-making/incomingFromClient"));
+const redis_1 = require("./redis");
+const { pub } = redis_1.RedisClient.getInstance();
 const SOCKET_LOG_PREFIX = '[Socket Server]';
-const socketLogger = (msg) => console.log(`${SOCKET_LOG_PREFIX}`, msg);
+const socketLogger = (...msg) => console.log(`${SOCKET_LOG_PREFIX}`, ...msg);
 exports.socketLogger = socketLogger;
 const disconnectListener = (socket) => socket.on('disconnect', () => {
     (0, exports.socketLogger)(`Player Disconnected with Socket ID: ${socket.id}`);
