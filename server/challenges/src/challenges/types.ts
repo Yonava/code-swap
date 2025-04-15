@@ -1,4 +1,4 @@
-type ChallengeTestCase = {
+type TestCase<TInput = any[], TOutput = any> = {
   /**
    * The ID of the test case.
    */
@@ -6,11 +6,11 @@ type ChallengeTestCase = {
   /**
    * The input to the function.
    */
-  input: any[];
+  input: TInput;
   /**
    * The expected output of the function.
    */
-  output: any;
+  output: TOutput;
   /**
    * The weighted difficulty score of the test case
    */
@@ -33,12 +33,11 @@ export type Challenge = {
   /**
    * The starting code for the challenge.
    */
-
   startingCode?: string;
   /**
    * The test cases for the challenge.
    */
-  testCases: ChallengeTestCase[];
+  testCases: TestCase[];
   /**
    * The restrictions for the challenge space.
    * @example 0 <= input.length <= 10,000

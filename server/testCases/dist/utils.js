@@ -53,11 +53,14 @@ const runTestCase = (func, testCase) => {
         `);
             userOutput = result;
         }
-        catch (error) {
-            error = `Error in test execution: ${error.message}`;
+        catch (err) {
+            if (err instanceof Error) {
+                error = `Error running test case: ${err.message}`;
+            }
+            else {
+                error = `Error running test case: ${String(err)}`;
+            }
         }
-        if (error)
-            return { error };
         const passed = JSON.stringify(userOutput) === JSON.stringify(output);
         const testResult = {
             id,
@@ -66,15 +69,16 @@ const runTestCase = (func, testCase) => {
             actualOutput: userOutput,
             passed,
             difficultyWeight,
+            error,
         };
         return { result: testResult };
     }
     catch (error) {
         if (error instanceof Error) {
-            return { error: `Error running test cases: ${error.message}` };
+            return { error: `Error running test case: ${error.message}` };
         }
         else {
-            return { error: `Error running test cases: ${String(error)}` };
+            return { error: `Error running test case: ${String(error)}` };
         }
     }
 };
@@ -88,11 +92,9 @@ const runTestCases = async (func, challengeId) => {
     let totalDifficultyWeight = 0;
     let testCasesPassed = 0;
     const testCaseResults = [];
-    try {
-        for (const testCase of testCases) {
-            const { result, error } = (0, exports.runTestCase)(func, testCase);
-            if (error)
-                return { error };
+    for (const testCase of testCases) {
+        const { result } = (0, exports.runTestCase)(func, testCase);
+        if (result) {
             testCaseResults.push(result);
             const { passed, difficultyWeight } = result;
             if (passed) {
@@ -100,17 +102,14 @@ const runTestCases = async (func, challengeId) => {
                 testCasesPassed++;
             }
         }
-        const results = {
-            passed: testCasesPassed,
-            total,
-            allPassed: testCasesPassed === total,
-            testCaseResults,
-            totalDifficultyWeight,
-        };
-        return { results };
     }
-    catch (error) {
-        return { error: `Error running test cases: ${error.message}` };
-    }
+    const results = {
+        passed: testCasesPassed,
+        total,
+        allPassed: testCasesPassed === total,
+        testCaseResults,
+        totalDifficultyWeight,
+    };
+    return { results };
 };
 exports.runTestCases = runTestCases;

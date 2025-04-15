@@ -26,6 +26,10 @@ export type TestCaseResult = {
    * The weighted difficulty score of the test case
    */
   difficultyWeight: number;
+  /**
+   * The error message dirign test excecution, if any.
+   */
+  error?: string;
 };
 
 /**
@@ -54,7 +58,7 @@ export type TestCaseResults = {
   totalDifficultyWeight: number;
 };
 
-export type TestCase = {
+export type TestCase<TInput = any[], TOutput = any> = {
   /**
    * The ID of the test case.
    */
@@ -62,11 +66,11 @@ export type TestCase = {
   /**
    * The input to the function.
    */
-  input: any[];
+  input: TInput;
   /**
    * The expected output of the function.
    */
-  output: any;
+  output: TOutput;
   /**
    * The weighted difficulty score of the test case
    */
@@ -101,3 +105,24 @@ export type Challenge = {
    */
   restrictions: string[];
 };
+
+/**
+ * Return type for a successful test case execution
+ */
+export type TestCaseSuccess = {
+  result: TestCaseResult;
+  error?: undefined;
+};
+
+/**
+ * Return type for a failed test case execution
+ */
+export type TestCaseError = {
+  error: string;
+  result?: undefined;
+};
+
+/**
+ * Discriminated union type for test case execution results
+ */
+export type TestCaseOutcome = TestCaseSuccess | TestCaseError;
