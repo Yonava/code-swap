@@ -8,13 +8,11 @@ const socket_io_1 = require("socket.io");
 const registerSocket_1 = __importDefault(require("./registerSocket"));
 const incomingFromClient_1 = __importDefault(require("./match-making/incomingFromClient"));
 const redis_1 = require("./redis");
+const chalk_1 = __importDefault(require("chalk"));
 const { pub } = redis_1.RedisClient.getInstance();
 const SOCKET_LOG_PREFIX = '[Socket Server]';
 const socketLogger = (...msg) => console.log(`${SOCKET_LOG_PREFIX}`, ...msg);
 exports.socketLogger = socketLogger;
-const disconnectListener = (socket) => socket.on('disconnect', () => {
-    (0, exports.socketLogger)(`Player Disconnected with Socket ID: ${socket.id}`);
-});
 const activateSocketServer = (server) => {
     exports.io = new socket_io_1.Server(server, {
         cors: {
@@ -24,10 +22,9 @@ const activateSocketServer = (server) => {
     const socketListeners = [
         registerSocket_1.default,
         incomingFromClient_1.default,
-        disconnectListener,
     ].flat();
     exports.io.on('connection', (socket) => {
-        (0, exports.socketLogger)(`Player Connected with Socket ID: ${socket.id}`);
+        (0, exports.socketLogger)(`Socket Connected with ID ${chalk_1.default.bold.yellow(socket.id)}`);
         socketListeners.forEach(listener => listener(socket));
     });
     return exports.io;

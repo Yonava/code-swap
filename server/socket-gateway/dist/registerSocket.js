@@ -8,6 +8,11 @@ const socket_1 = require("./socket");
 const socket_gateway_1 = require("shared-types/dist/socket-gateway");
 const chalk_1 = __importDefault(require("chalk"));
 const register = (socket) => socket.on(socket_gateway_1.SOCKET_GATEWAY_REGISTRATION_EVENT_NAME, async ({ playerId }, ack) => {
+    if (!playerId) {
+        (0, socket_1.socketLogger)(`${chalk_1.default.bold.red('Error!')} On incoming request to ${chalk_1.default.bold.blue(socket_gateway_1.SOCKET_GATEWAY_REGISTRATION_EVENT_NAME)}:
+  No Player ID Provided - Registration For Socket ID ${chalk_1.default.bold.yellow(socket.id)} Failed :(`);
+        return;
+    }
     await (0, registrationDatabase_1.addPlayerIdSocketIdMapping)({
         playerId,
         socketId: socket.id
@@ -23,6 +28,10 @@ const unregister = (socket) => socket.on('disconnect', async () => {
     const playerId = await (0, registrationDatabase_1.removePlayerIdSocketIdMapping)({
         socketId: socket.id
     });
+    if (!playerId) {
+        (0, socket_1.socketLogger)(`Unregistered Socket Disconnected with ID: ${chalk_1.default.bold.yellow(socket.id)}`);
+        return;
+    }
     const mappings = await (0, registrationDatabase_1.getAllMappings)();
     (0, socket_1.socketLogger)(socket_gateway_1.SOCKET_GATEWAY_REGISTRATION_EVENT_NAME, mappings);
     (0, socket_1.socketLogger)(`Unregistered ${chalk_1.default.bold.green(playerId)} from ${chalk_1.default.bold.yellow(socket.id)}`);

@@ -6,11 +6,9 @@ import {
 } from "http";
 import registerListeners from './registerSocket';
 import matchMakingListeners from './match-making/incomingFromClient'
-import type {
-  PlayerSocketInstance,
-  SocketServerInstance
-} from 'shared-types/dist/socket-gateway';
+import type { SocketServerInstance } from 'shared-types/dist/socket-gateway';
 import { RedisClient } from './redis';
+import chalk from 'chalk';
 
 const { pub } = RedisClient.getInstance();
 
@@ -18,10 +16,6 @@ const SOCKET_LOG_PREFIX = '[Socket Server]';
 export const socketLogger = (...msg: unknown[]) => console.log(`${SOCKET_LOG_PREFIX}`, ...msg);
 
 export let io: SocketServerInstance;
-
-const disconnectListener = (socket: PlayerSocketInstance) => socket.on('disconnect', () => {
-  socketLogger(`Player Disconnected with Socket ID: ${socket.id}`);
-})
 
 export const activateSocketServer = (
   server: HTTPServer<typeof IncomingMessage, typeof ServerResponse>
@@ -35,11 +29,10 @@ export const activateSocketServer = (
   const socketListeners = [
     registerListeners,
     matchMakingListeners,
-    disconnectListener,
   ].flat()
 
   io.on('connection', (socket) => {
-    socketLogger(`Player Connected with Socket ID: ${socket.id}`);
+    socketLogger(`Socket Connected with ID ${chalk.bold.yellow(socket.id)}`);
     socketListeners.forEach(listener => listener(socket));
   })
 

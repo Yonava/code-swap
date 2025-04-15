@@ -13,6 +13,12 @@ import chalk from 'chalk';
 const register = (socket: PlayerSocketInstance) => socket.on(
   SOCKET_GATEWAY_REGISTRATION_EVENT_NAME,
   async ({ playerId }, ack) => {
+    if (!playerId) {
+      socketLogger(`${chalk.bold.red('Error!')} On incoming request to ${chalk.bold.blue(SOCKET_GATEWAY_REGISTRATION_EVENT_NAME)}:
+  No Player ID Provided - Registration For Socket ID ${chalk.bold.yellow(socket.id)} Failed :(`);
+      return;
+    }
+
     await addPlayerIdSocketIdMapping({
       playerId,
       socketId: socket.id
@@ -34,6 +40,12 @@ const unregister = (socket: PlayerSocketInstance) => socket.on(
     const playerId = await removePlayerIdSocketIdMapping({
       socketId: socket.id
     })
+
+    if (!playerId) {
+      socketLogger(`Unregistered Socket Disconnected with ID: ${chalk.bold.yellow(socket.id)}`);
+      return;
+    }
+
     const mappings = await getAllMappings();
     socketLogger(SOCKET_GATEWAY_REGISTRATION_EVENT_NAME, mappings);
     socketLogger(`Unregistered ${chalk.bold.green(playerId)} from ${chalk.bold.yellow(socket.id)}`);
