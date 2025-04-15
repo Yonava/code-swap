@@ -13,15 +13,7 @@ app.use(express.json());
 
 app.use("/challenges", challengeRoutes);
 
-// Serve static files in production
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(__dirname + "/public/"));
-  app.get("*", (req, res) => {
-    res.sendFile(__dirname + "/public/index.html");
-  });
-}
-
-const PORT = Number(process.env.PORT) || LOCALHOST_PORT;
+const PORT = process.env.PORT || LOCALHOST_PORT;
 
 server.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
