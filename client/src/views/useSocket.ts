@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client'
 import { useState, useMemo } from 'react'
 import type { ClientSocketInstance } from 'shared-types/dist/socket-gateway'
-import type { JoinMatchResponse, Player } from 'shared-types/dist/match-making';
+import type { Player } from 'shared-types/dist/match-making';
 
 const IS_PROD = window.location.hostname !== 'localhost';
 const LOCAL_SOCKET_URL = 'http://localhost:3000';
@@ -45,7 +45,7 @@ export const useSocket = () => {
         setIsConnecting(false);
       });
 
-      socketInstance.on('matchMaking.responseJoinMatch', (data: JoinMatchResponse) => {
+      socketInstance.on('matchMaking.responseJoinMatch', (data) => {
         console.log('matchMaking.responseJoinMatch', data);
       });
     });

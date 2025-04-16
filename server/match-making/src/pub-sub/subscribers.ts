@@ -4,14 +4,12 @@ import {
   type LeaveMatch,
   MATCH_MAKING_CHANNEL
 } from 'shared-types/dist/match-making';
-import { RedisClient } from "../redis";
 import {
   addPlayerToMatch,
   createNewMatch,
   removePlayerFromMatch
 } from "../matches";
-
-const { pub, sub } = RedisClient.getInstance();
+import { listenToInboundRequests } from '../listener';
 
 const {
   REQUEST_CREATE_MATCH,
@@ -21,21 +19,27 @@ const {
   LEAVE_MATCH
 } = MATCH_MAKING_CHANNEL;
 
-sub.subscribe(REQUEST_CREATE_MATCH, async (message) => {
-  const data: CreateMatchRequest = JSON.parse(message); // add zod validation
-  const result = await createNewMatch(data.player);
-  const publishedResponse = typeof result === 'string' ? { error: result } : { match: result };
-  pub.publish(RESPONSE_CREATE_MATCH, JSON.stringify(publishedResponse));
+listenToInboundRequests<CreateMatchRequest>({
+  from: REQUEST_CREATE_MATCH,
+  replyTo: RESPONSE_CREATE_MATCH,
+  fn: async ({ player }) => {
+    const res = await createNewMatch(player);
+    if (typeof res === 'string') return { error: res };
+    return { match: res };
+  }
 });
 
-sub.subscribe(REQUEST_JOIN_MATCH, async (message) => {
-  const data: JoinMatchRequest = JSON.parse(message); // add zod validation
-  const result = await addPlayerToMatch(data);
-  const publishedResponse = typeof result === 'string' ? { error: result } : { match: result };
-  pub.publish(RESPONSE_JOIN_MATCH, JSON.stringify(publishedResponse));
+listenToInboundRequests<JoinMatchRequest>({
+  from: REQUEST_JOIN_MATCH,
+  replyTo: RESPONSE_JOIN_MATCH,
+  fn: async ({ matchId, player, teamIndex }) => {
+    const res = await addPlayerToMatch({ matchId, player, teamIndex });
+    if (typeof res === 'string') return { error: res };
+    return { match: res };
+  }
 });
 
-sub.subscribe(LEAVE_MATCH, async (message) => {
-  const data: LeaveMatch = JSON.parse(message); // add zod validation
-  await removePlayerFromMatch(data.matchId, data.playerId);
+listenToInboundRequests<LeaveMatch>({
+  from: LEAVE_MATCH,
+  fn: ({ matchId, playerId }) => removePlayerFromMatch(matchId, playerId)
 });
