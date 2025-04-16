@@ -22,7 +22,7 @@ const listenToChannel = (args) => sub.subscribe(args.from, async (message) => {
         logRequest({ channel: args.from, payload: message });
         const parsedMessage = JSON.parse(message);
         const result = await args.fn(parsedMessage);
-        if ('replyTo' in args) {
+        if (args.replyTo) {
             const payload = JSON.stringify(result);
             logResponse({ channel: args.replyTo, payload });
             await pub.publish(args.replyTo, payload);

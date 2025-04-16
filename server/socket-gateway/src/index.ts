@@ -4,6 +4,7 @@ import express from 'express';
 import { createServer } from 'http';
 import { PORT } from './constants';
 import { activateSocketServer } from './socket';
+import './match-making/outboundToClient';
 
 const app = express();
 const server = createServer(app);

@@ -15,7 +15,7 @@ const printReceivedSuccess = ({ channel, playerId, payload }: {
   const p = LOG_COLORS.playerId(playerId);
   const c = LOG_COLORS.channel(channel);
   const blob = colorize(JSON.stringify(payload, null, 2));
-  socketLogger(`Inbound Request to from ${p} to ${c}\n${blob}`)
+  socketLogger(`Inbound request from ${p} to ${c}\n${blob}`)
 }
 
 const printReceivedError = ({ channel, socketId }: {

@@ -9,6 +9,7 @@ const express_1 = __importDefault(require("express"));
 const http_1 = require("http");
 const constants_1 = require("./constants");
 const socket_1 = require("./socket");
+require("./match-making/outboundToClient");
 const app = (0, express_1.default)();
 const server = (0, http_1.createServer)(app);
 (0, socket_1.activateSocketServer)(server);

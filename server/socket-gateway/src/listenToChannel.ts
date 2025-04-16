@@ -5,7 +5,7 @@ import { colorize } from "json-colorizer";
 
 const PUB_SUB_PREFIX = '[Live Pub/Sub]';
 
-const pubSubLogger = (...msg: unknown[]) => console.log(PUB_SUB_PREFIX, ...msg);
+export const pubSubLogger = (...msg: unknown[]) => console.log(PUB_SUB_PREFIX, ...msg);
 
 type ChannelName = typeof MATCH_MAKING_CHANNEL[keyof typeof MATCH_MAKING_CHANNEL];
 
@@ -26,7 +26,7 @@ const logRequest = ({ channel, payload }: {
 }) => {
   const c = LOG_COLORS.channel(channel);
   const blob = colorize(payload)
-  pubSubLogger(`Inbound request to ${c}\n${blob}`);
+  pubSubLogger(`Response from ${c}\n${blob}`);
 }
 
 const logResponse = ({ channel, payload }: {
@@ -38,7 +38,7 @@ const logResponse = ({ channel, payload }: {
   pubSubLogger(`Outbound response from ${c}\n${blob}`);
 }
 
-export const listenToInboundRequests = <TDataIn, TDataOut = any>(
+export const listenToChannel = <TDataIn, TDataOut = any>(
   args: ListenToInboundRequest<TDataIn, TDataOut>
 ) => sub.subscribe(args.from, async (message) => {
   try {

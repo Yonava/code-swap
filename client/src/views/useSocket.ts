@@ -9,6 +9,16 @@ const PROD_SOCKET_URL = '/';
 
 export const SOCKET_URL = IS_PROD ? PROD_SOCKET_URL : LOCAL_SOCKET_URL;
 
+const registerSocketListeners = (socket: ClientSocketInstance) => {
+  socket.on('matchMaking.responseCreateMatch', (data) => {
+    console.log('matchMaking.responseCreateMatch', data);
+  })
+
+  socket.on('matchMaking.responseJoinMatch', (data) => {
+    console.log('matchMaking.responseJoinMatch', data);
+  })
+}
+
 export const useSocket = () => {
   const [activeSocket, setActiveSocket] = useState<ClientSocketInstance | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
@@ -29,6 +39,7 @@ export const useSocket = () => {
         console.log('socket connected');
         setActiveSocket(socketInstance);
         setIsConnecting(false);
+        registerSocketListeners(socketInstance);
         res(socketInstance);
       });
 

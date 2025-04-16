@@ -5,12 +5,9 @@ import {
   ServerResponse
 } from "http";
 import registerListeners from './registerSocket';
-import matchMakingListeners from './match-making/incomingFromClient'
+import matchMakingListeners from './match-making/inboundFromClient'
 import type { SocketServerInstance } from 'shared-types/dist/socket-gateway';
-import { RedisClient } from './redis';
-import chalk from 'chalk';
-
-const { pub } = RedisClient.getInstance();
+import { LOG_COLORS } from './constants';
 
 const SOCKET_LOG_PREFIX = '[Socket Server]';
 export const socketLogger = (...msg: unknown[]) => console.log(`${SOCKET_LOG_PREFIX}`, ...msg);
@@ -32,7 +29,7 @@ export const activateSocketServer = (
   ].flat()
 
   io.on('connection', (socket) => {
-    socketLogger(`New Socket Connected with ID ${chalk.bold.yellow(socket.id)}`);
+    socketLogger(`New Socket Connected with ID ${LOG_COLORS.socketId(socket.id)}`);
     socketListeners.forEach(listener => listener(socket));
   })
 
