@@ -7,9 +7,10 @@ import { useSocket } from './useSocket';
 import { useState } from 'react';
 
 const ChallengeView = () => {
-  const { connect, isConnected, isConnecting, register, join } = useSocket();
+  const { connect, isConnected, isConnecting, register, createMatch, joinMatch } = useSocket();
   const [code, setCode] = useState<string>('console.log("hello world")');
-  const [playerId, setPlayerId] = useState<string>('');
+  const [playerId, setPlayerId] = useState('');
+  const [matchId, setMatchId] = useState('');
 
   const handleCodeChange = (value: string) => {
     setCode(value);
@@ -41,6 +42,11 @@ const ChallengeView = () => {
               className='bg-white mb-2'
               placeholder='playerId'
               onChange={(ev) => setPlayerId(ev.target.value)}
+            />
+            <Input
+              className='bg-white mb-2'
+              placeholder='matchId'
+              onChange={(ev) => setMatchId(ev.target.value)}
             />
             <div className="flex gap-1 flex-col">
               {
@@ -80,11 +86,19 @@ const ChallengeView = () => {
               </Button>
               <Button
                 onClick={() => {
-                  join(playerId)
+                  createMatch(playerId)
                 }}
                 disabled={!isConnected}
               >
-                Join
+                Create Match
+              </Button>
+              <Button
+                onClick={() => {
+                  joinMatch(playerId, matchId)
+                }}
+                disabled={!isConnected}
+              >
+                Join Match
               </Button>
             </div>
           </div>

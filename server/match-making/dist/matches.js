@@ -22,7 +22,7 @@ const addPlayerToMatch = async ({ matchId, player, teamIndex }) => {
         return 'Match not found';
     const index = match.teams[teamIndex].findIndex((slot) => slot === undefined);
     if (index === -1)
-        return 'Match is full';
+        return 'Team is full';
     match.teams[teamIndex][index] = player;
     await (0, matches_1.setPlayerMatchId)(player.id, matchId);
     return (0, matches_1.setMatch)(match);

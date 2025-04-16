@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client'
 import { useState, useMemo } from 'react'
 import type { ClientSocketInstance } from 'shared-types/dist/socket-gateway'
-import type { Player } from 'shared-types/dist/match-making';
+import type { Match, Player } from 'shared-types/dist/match-making';
 
 const IS_PROD = window.location.hostname !== 'localhost';
 const LOCAL_SOCKET_URL = 'http://localhost:3000';
@@ -18,6 +18,13 @@ const registerSocketListeners = (socket: ClientSocketInstance) => {
     console.log('matchMaking.responseJoinMatch', data);
   })
 }
+
+const getPlayerObj = (playerId: Player['id']) => ({
+  id: playerId,
+  name: 'John Doe',
+  avatar: 'https://example.com/avatar.png',
+  color: '#FF0000',
+})
 
 export const useSocket = () => {
   const [activeSocket, setActiveSocket] = useState<ClientSocketInstance | null>(null);
@@ -55,10 +62,6 @@ export const useSocket = () => {
         setActiveSocket(null);
         setIsConnecting(false);
       });
-
-      socketInstance.on('matchMaking.responseJoinMatch', (data) => {
-        console.log('matchMaking.responseJoinMatch', data);
-      });
     });
 
   const register = (playerId: Player['id']) => {
@@ -68,17 +71,19 @@ export const useSocket = () => {
     }, () => console.log('socketGateway.register ack'));
   }
 
-  const join = (playerId: Player['id']) => {
+  const joinMatch = (playerId: Player['id'], matchId: Match['id']) => {
     if (!activeSocket) throw new Error('socket not connected');
     activeSocket.emit('matchMaking.requestJoinMatch', {
-      matchId: 'abc123',
-      player: {
-        id: playerId,
-        name: 'John Doe',
-        avatar: 'https://example.com/avatar.png',
-        color: '#FF0000',
-      },
+      matchId,
+      player: getPlayerObj(playerId),
       teamIndex: 0,
+    });
+  }
+
+  const createMatch = (playerId: Player['id']) => {
+    if (!activeSocket) throw new Error('socket not connected');
+    activeSocket.emit('matchMaking.requestCreateMatch', {
+      player: getPlayerObj(playerId)
     });
   }
 
@@ -93,6 +98,7 @@ export const useSocket = () => {
     isConnecting,
     activeSocket,
     register,
-    join,
+    createMatch,
+    joinMatch,
   }
 }

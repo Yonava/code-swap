@@ -31,7 +31,7 @@ export const addPlayerToMatch = async ({ matchId, player, teamIndex }: {
   if (!match) return 'Match not found';
 
   const index = match.teams[teamIndex].findIndex((slot) => slot === undefined);
-  if (index === -1) return 'Match is full';
+  if (index === -1) return 'Team is full';
 
   match.teams[teamIndex][index] = player;
   await setPlayerMatchId(player.id, matchId);
