@@ -27,7 +27,7 @@ export type TestCaseResult = {
    */
   difficultyWeight: number;
   /**
-   * The error message dirign test excecution, if any.
+   * The error message during test excecution, if any.
    */
   error?: string;
 };
