@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const match_making_1 = require("shared-types/dist/match-making");
-const createInboundRequest_1 = require("../createInboundRequest");
+const printInboundRequest_1 = require("../printInboundRequest");
 const redis_1 = require("../redis");
 const registerSocket_1 = require("../registerSocket");
 const constants_1 = require("../constants");
@@ -32,7 +32,7 @@ const requestCreateMatch = (socket) => {
             }
             throw new Error(`Unhandled Registration Failure -> ${String(e)}`);
         }
-        (0, createInboundRequest_1.printReceivedSuccess)({ channel: REQUEST_CREATE_MATCH, playerId, payload: req });
+        (0, printInboundRequest_1.printReceivedSuccess)({ channel: REQUEST_CREATE_MATCH, playerId, payload: req });
         pub.publish(REQUEST_CREATE_MATCH, JSON.stringify(req));
     });
 };
@@ -53,7 +53,7 @@ const requestJoinMatch = (socket) => {
             }
             throw new Error(`Unhandled Registration Failure -> ${String(e)}`);
         }
-        (0, createInboundRequest_1.printReceivedSuccess)({ channel: REQUEST_JOIN_MATCH, playerId, payload: req });
+        (0, printInboundRequest_1.printReceivedSuccess)({ channel: REQUEST_JOIN_MATCH, playerId, payload: req });
         pub.publish(REQUEST_JOIN_MATCH, JSON.stringify(req));
     });
 };
@@ -62,7 +62,7 @@ const leaveMatch = (socket) => {
         const { id: socketId } = socket;
         const playerId = await (0, registrationDatabase_1.getPlayerIdFromSocketId)(socketId);
         if (!playerId)
-            return (0, createInboundRequest_1.printRegistrationNotFoundError)({ channel: LEAVE_MATCH, socketId });
+            return (0, printInboundRequest_1.printRegistrationNotFoundError)({ channel: LEAVE_MATCH, socketId });
         pub.publish(LEAVE_MATCH, JSON.stringify({ playerId }));
     });
 };

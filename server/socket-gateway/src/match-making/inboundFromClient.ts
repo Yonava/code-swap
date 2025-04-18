@@ -1,5 +1,5 @@
 import { MATCH_MAKING_CHANNEL } from "shared-types/dist/match-making";
-import { printReceivedSuccess, printRegistrationNotFoundError } from "../createInboundRequest";
+import { printReceivedSuccess, printRegistrationNotFoundError } from "../printInboundRequest";
 import { PlayerSocketInstance } from "shared-types";
 import { RedisClient } from "../redis";
 import { registerSocket } from "../registerSocket";

@@ -52,7 +52,6 @@ const logSocketLookupError = ({ playerId, payload }) => {
         const { match } = data;
         socket.join(match.id);
         socket_1.io.to(match.id).emit(PLAYER_JOINED, { match });
-        console.log(socket.rooms);
     }
 });
 (0, listenToChannel_1.listenToChannel)({
