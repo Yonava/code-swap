@@ -68,6 +68,7 @@ listenToChannel<JoinMatchResponse>({
     const { match } = data
     socket.join(match.id)
     io.to(match.id).emit(PLAYER_JOINED, { match })
+    console.log(socket.rooms)
   }
 });
 

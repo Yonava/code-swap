@@ -1,12 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createInboundRequest = exports.printReceivedSuccess = void 0;
+exports.printRegistrationNotFoundError = exports.printReceivedSuccess = void 0;
 const socket_1 = require("./socket");
-const redis_1 = require("./redis");
-const registrationDatabase_1 = require("./registrationDatabase");
 const constants_1 = require("./constants");
 const json_colorizer_1 = require("json-colorizer");
-const { pub } = redis_1.RedisClient.getInstance();
 const printReceivedSuccess = ({ channel, playerId, payload }) => {
     const p = constants_1.LOG_COLORS.playerId(playerId);
     const c = constants_1.LOG_COLORS.channel(channel);
@@ -24,15 +21,4 @@ const printRegistrationNotFoundError = ({ channel, socketId }) => {
     const e = constants_1.LOG_COLORS.error('Error!');
     (0, socket_1.socketLogger)(`${e} On inbound request to ${c}: Registration Not Found For Socket ID ${s}`);
 };
-const createInboundRequest = (channel) => (socket) => socket.on(channel, async (req) => {
-    const playerId = await (0, registrationDatabase_1.getPlayerIdFromSocketId)(socket.id);
-    if (!playerId)
-        return printRegistrationNotFoundError({ channel, socketId: socket.id });
-    (0, exports.printReceivedSuccess)({
-        channel,
-        playerId,
-        payload: req
-    });
-    pub.publish(channel, JSON.stringify(req));
-});
-exports.createInboundRequest = createInboundRequest;
+exports.printRegistrationNotFoundError = printRegistrationNotFoundError;

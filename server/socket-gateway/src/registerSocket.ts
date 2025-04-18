@@ -21,14 +21,26 @@ const printRegistrationSuccess = ({
 
 const printUnregistrationSuccess = ({
   playerId,
-  socketId
+  socketId,
+  rooms,
 }: {
   playerId: string,
-  socketId: string
+  socketId: string,
+  rooms: string[],
 }) => {
   const p = LOG_COLORS.playerId(playerId);
   const s = LOG_COLORS.socketId(socketId);
-  socketLogger(`Unregistered ${p} from ${s}`);
+  let str = `Unregistered ${p} from ${s} `
+  if (rooms.length === 0) {
+    str += 'and left no match rooms'
+  } else if (rooms.length === 1) {
+    const room = LOG_COLORS.matchId(rooms[0])
+    str += `and left match room ${room}`
+  } else {
+    const commaSeparatedRooms = LOG_COLORS.matchId(rooms.join(', '))
+    str += `and left ${rooms.length} match rooms: ${commaSeparatedRooms}`
+  }
+  socketLogger(str);
 }
 
 const printUnregistrationNoPlayerId = ({
@@ -40,7 +52,7 @@ const printUnregistrationNoPlayerId = ({
   socketLogger(`Unregistered Socket Disconnected with ID ${s}`);
 }
 
-export const register = async (idPairing: {
+export const registerSocket = async (idPairing: {
   socketId: PlayerSocketInstance['id'],
   playerId: Player['id']
 }) => {
@@ -54,19 +66,20 @@ export const register = async (idPairing: {
 }
 
 export const unregisterListener = (socket: PlayerSocketInstance) => socket.on(
-  'disconnect',
+  'disconnecting',
   async () => {
+    // slice removes default self socket.id room
+    const rooms = Array.from(socket.rooms).slice(1)
     const playerId = await removePlayerIdSocketIdMapping({
       socketId: socket.id
     })
 
     if (!playerId) return printUnregistrationNoPlayerId({ socketId: socket.id })
 
-    // const mappings = await getAllMappings();
-    // socketLogger(SOCKET_GATEWAY_REGISTRATION_EVENT_NAME, mappings);
     printUnregistrationSuccess({
       playerId,
-      socketId: socket.id
+      socketId: socket.id,
+      rooms
     });
   }
 )

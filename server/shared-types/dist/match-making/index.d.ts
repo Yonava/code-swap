@@ -49,5 +49,4 @@ export type CreateMatchResponse = {
 } & (CreateMatchResponseAccepted | CreateMatchResponseRejected);
 export type LeaveMatch = {
     playerId: Player['id'];
-    matchId: Match['id'];
 };

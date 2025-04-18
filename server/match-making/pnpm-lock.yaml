@@ -12,7 +12,7 @@ importers:
         specifier: ^5.4.1
         version: 5.4.1
       dotenv:
-        specifier: ^16.5.0
+        specifier: ^16.4.7
         version: 16.5.0
       express:
         specifier: ^5.1.0
@@ -24,14 +24,14 @@ importers:
         specifier: ^4.7.0
         version: 4.7.0
       shared-types:
-        specifier: file:../shared-types/code-swap-shared-types-1.0.0.tgz
+        specifier: ../shared-types/code-swap-shared-types-1.0.0.tgz
         version: '@code-swap/shared-types@file:../shared-types/code-swap-shared-types-1.0.0.tgz'
     devDependencies:
       '@types/express':
         specifier: ^5.0.1
         version: 5.0.1
       '@types/node':
-        specifier: ^22.14.1
+        specifier: ^22.14.0
         version: 22.14.1
       nodemon:
         specifier: ^3.1.9
@@ -46,7 +46,7 @@ importers:
 packages:
 
   '@code-swap/shared-types@file:../shared-types/code-swap-shared-types-1.0.0.tgz':
-    resolution: {integrity: sha512-XE6c/eAthJse88/6KRJjI1yz2fSxkt16lY8hSzF2puz2kfhbQl6/Cq7QGxMf+1x4hYwBDpltyT9rWOszAqaRiA==, tarball: file:../shared-types/code-swap-shared-types-1.0.0.tgz}
+    resolution: {integrity: sha512-oucOF3Zrl2yP7WyKOWwSrvzqSieyuc8uB93N9HcHBHz8i0NgYZNOs4ADlpNAlvwF8Gcyy87iI+GgDdmkapPAlA==, tarball: file:../shared-types/code-swap-shared-types-1.0.0.tgz}
     version: 1.0.0
 
   '@cspotcode/source-map-support@0.8.1':

@@ -2,7 +2,7 @@ import { MATCH_MAKING_CHANNEL } from "shared-types/dist/match-making";
 import { printReceivedSuccess, printRegistrationNotFoundError } from "../createInboundRequest";
 import { PlayerSocketInstance } from "shared-types";
 import { RedisClient } from "../redis";
-import { register } from "../registerSocket";
+import { registerSocket } from "../registerSocket";
 import { LOG_COLORS } from "../constants";
 import { socketLogger } from "../socket";
 import { getPlayerIdFromSocketId } from "../registrationDatabase";
@@ -38,7 +38,7 @@ const requestCreateMatch = (socket: PlayerSocketInstance) => {
   socket.on(REQUEST_CREATE_MATCH, async (req) => {
     const playerId = req.player.id
     try {
-      await register({ socketId: socket.id, playerId })
+      await registerSocket({ socketId: socket.id, playerId })
     } catch (e) {
       if (e instanceof Error) {
         printRegistrationError({
@@ -60,7 +60,7 @@ const requestJoinMatch = (socket: PlayerSocketInstance) => {
   socket.on(REQUEST_JOIN_MATCH, async (req) => {
     const playerId = req.player.id
     try {
-      await register({ socketId: socket.id, playerId })
+      await registerSocket({ socketId: socket.id, playerId })
     } catch (e) {
       if (e instanceof Error) {
         printRegistrationError({

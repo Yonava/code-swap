@@ -16,6 +16,7 @@ import {
 import { listenToChannel, pubSubLogger } from '../listenToChannel';
 import { PlayerJoinLeave } from 'shared-types';
 import { LOG_COLORS } from '../constants';
+import { getPlayerMatchId } from '../db/matches';
 
 const {
   REQUEST_CREATE_MATCH,
@@ -68,7 +69,12 @@ listenToChannel<JoinMatchRequest, JoinMatchResponse>({
 listenToChannel<LeaveMatch, PlayerJoinLeave>({
   from: LEAVE_MATCH,
   replyTo: PLAYER_LEFT,
-  fn: async ({ matchId, playerId }) => {
+  fn: async ({ playerId }) => {
+    const matchId = await getPlayerMatchId(playerId)
+    if (!matchId) {
+      logError(playerId, '[not found]', REQUEST_CREATE_MATCH, 'Match not found')
+      return
+    }
     const res = await removePlayerFromMatch(matchId, playerId)
     if (typeof res === 'string') {
       logError(playerId, matchId, REQUEST_CREATE_MATCH, res)

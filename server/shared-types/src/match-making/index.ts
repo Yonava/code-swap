@@ -62,5 +62,4 @@ export type CreateMatchResponse = { playerId: Player['id'] } & (
 
 export type LeaveMatch = {
   playerId: Player['id'];
-  matchId: Match['id'];
 }
