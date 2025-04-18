@@ -87,12 +87,18 @@ export const runTestCase = (
       error,
     };
 
-    return { result: testResult };
+    return { success: true, result: testResult };
   } catch (error) {
     if (error instanceof Error) {
-      return { error: `Error running test case: ${error.message}` };
+      return {
+        success: false,
+        error: `Error running test case: ${error.message}`,
+      };
     } else {
-      return { error: `Error running test case: ${String(error)}` };
+      return {
+        success: false,
+        error: `Error running test case: ${String(error)}`,
+      };
     }
   }
 };
@@ -113,9 +119,12 @@ export const runTestCases = async (
   const testCaseResults: TestCaseResults["results"] = [];
 
   for (const testCase of testCases) {
-    const { result } = runTestCase(func, testCase);
+    const testCaseOutcome = runTestCase(func, testCase);
 
-    if (result) {
+    const { success } = testCaseOutcome;
+
+    if (success) {
+      const { result } = testCaseOutcome;
       testCaseResults.push(result);
       const { passed, difficultyWeight } = result;
 

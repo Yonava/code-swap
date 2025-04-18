@@ -58,7 +58,7 @@ export type TestCaseResults = {
   totalDifficultyWeight: number;
 };
 
-export type TestCase<TInput = any[], TOutput = any> = {
+export type TestCase<TInputArgs = any[], TOutput = any> = {
   /**
    * The ID of the test case.
    */
@@ -66,7 +66,7 @@ export type TestCase<TInput = any[], TOutput = any> = {
   /**
    * The input to the function.
    */
-  input: TInput;
+  input: TInputArgs;
   /**
    * The expected output of the function.
    */
@@ -107,19 +107,19 @@ export type Challenge = {
 };
 
 /**
- * Return type for a successful test case execution
+ * Return type for a successful test case execution, does not mean the test case passed
  */
 export type TestCaseSuccess = {
+  success: true;
   result: TestCaseResult;
-  error?: undefined;
 };
 
 /**
  * Return type for a failed test case execution
  */
 export type TestCaseError = {
+  success: false;
   error: string;
-  result?: undefined;
 };
 
 /**
