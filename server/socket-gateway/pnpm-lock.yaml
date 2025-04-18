@@ -49,7 +49,7 @@ importers:
 packages:
 
   '@code-swap/shared-types@file:../shared-types/code-swap-shared-types-1.0.0.tgz':
-    resolution: {integrity: sha512-h3F39cYZiBGg9HU1gRjSzt7zIyX3qprIbbApmDhABGS+r1F0TVcVZEF6uiAZ9jLSxe/blntoEaEGAjKNk3jiLg==, tarball: file:../shared-types/code-swap-shared-types-1.0.0.tgz}
+    resolution: {integrity: sha512-Yh92grrB/fzwVC/cuM4hIIx2PlEsBZJ6IYq3FKvPWsOxwCF+vS7cHwUPSAuYBG6Qm8TLxoPg6bCsNQab8v8EFg==, tarball: file:../shared-types/code-swap-shared-types-1.0.0.tgz}
     version: 1.0.0
 
   '@cspotcode/source-map-support@0.8.1':

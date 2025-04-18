@@ -4,7 +4,7 @@ import {
   Server as HTTPServer,
   ServerResponse
 } from "http";
-import registerListeners from './registerSocket';
+import { unregisterListener } from './registerSocket';
 import matchMakingListeners from './match-making/inboundFromClient'
 import type { SocketServerInstance } from 'shared-types/dist/socket-gateway';
 import { LOG_COLORS } from './constants';
@@ -24,7 +24,7 @@ export const activateSocketServer = (
   });
 
   const socketListeners = [
-    registerListeners,
+    unregisterListener,
     matchMakingListeners,
   ].flat()
 

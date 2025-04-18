@@ -17,6 +17,14 @@ const registerSocketListeners = (socket: ClientSocketInstance) => {
   socket.on('matchMaking.responseJoinMatch', (data) => {
     console.log('matchMaking.responseJoinMatch', data);
   })
+
+  socket.on('matchMaking.playerJoined', (data) => {
+    console.log('matchMaking.playerJoined', data)
+  })
+
+  socket.on('matchMaking.playerLeft', (data) => {
+    console.log('matchMaking.playerLeft', data)
+  })
 }
 
 const getPlayerObj = (playerId: Player['id']) => ({
@@ -64,13 +72,6 @@ export const useSocket = () => {
       });
     });
 
-  const register = (playerId: Player['id']) => {
-    if (!activeSocket) throw new Error('socket not connected');
-    activeSocket.emit('socketGateway.register', {
-      playerId,
-    }, () => console.log('socketGateway.register ack'));
-  }
-
   const joinMatch = (playerId: Player['id'], matchId: Match['id']) => {
     if (!activeSocket) throw new Error('socket not connected');
     activeSocket.emit('matchMaking.requestJoinMatch', {
@@ -78,6 +79,12 @@ export const useSocket = () => {
       player: getPlayerObj(playerId),
       teamIndex: 0,
     });
+  }
+
+  const leaveMatch = () => {
+    if (!activeSocket) throw new Error('socket not connected');
+    activeSocket.emit('matchMaking.leaveMatch')
+    activeSocket.disconnect()
   }
 
   const createMatch = (playerId: Player['id']) => {
@@ -97,8 +104,8 @@ export const useSocket = () => {
     isConnected,
     isConnecting,
     activeSocket,
-    register,
     createMatch,
     joinMatch,
+    leaveMatch,
   }
 }

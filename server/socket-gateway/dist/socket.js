@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.activateSocketServer = exports.io = exports.socketLogger = void 0;
 const socket_io_1 = require("socket.io");
-const registerSocket_1 = __importDefault(require("./registerSocket"));
+const registerSocket_1 = require("./registerSocket");
 const inboundFromClient_1 = __importDefault(require("./match-making/inboundFromClient"));
 const constants_1 = require("./constants");
 const SOCKET_LOG_PREFIX = '[Socket Server]';
@@ -18,7 +18,7 @@ const activateSocketServer = (server) => {
         },
     });
     const socketListeners = [
-        registerSocket_1.default,
+        registerSocket_1.unregisterListener,
         inboundFromClient_1.default,
     ].flat();
     exports.io.on('connection', (socket) => {

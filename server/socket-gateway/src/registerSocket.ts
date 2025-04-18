@@ -1,13 +1,10 @@
 import {
   addPlayerIdSocketIdMapping,
-  getAllMappings,
   removePlayerIdSocketIdMapping
 } from "./registrationDatabase";
 import { socketLogger } from "./socket";
-import {
-  type PlayerSocketInstance,
-  SOCKET_GATEWAY_REGISTRATION_EVENT_NAME
-} from "shared-types/dist/socket-gateway";
+import type { PlayerSocketInstance } from "shared-types/dist/socket-gateway";
+import type { Player } from "shared-types/dist/match-making";
 import { LOG_COLORS } from "./constants";
 
 const printRegistrationSuccess = ({
@@ -43,41 +40,20 @@ const printUnregistrationNoPlayerId = ({
   socketLogger(`Unregistered Socket Disconnected with ID ${s}`);
 }
 
-const printRegistrationError = ({
-  socketId
-}: {
-  socketId: string
+export const register = async (idPairing: {
+  socketId: PlayerSocketInstance['id'],
+  playerId: Player['id']
 }) => {
-  const s = LOG_COLORS.socketId(socketId);
-  const c = LOG_COLORS.channel(SOCKET_GATEWAY_REGISTRATION_EVENT_NAME);
-  const e = LOG_COLORS.error('Error!');
-  socketLogger(`${e} On inbound request to ${c}: No Player ID Provided - Registration For Socket ID ${s} Failed :(`);
+  if (!idPairing.playerId) throw new Error('no player id provided')
+  try {
+    await addPlayerIdSocketIdMapping(idPairing)
+    printRegistrationSuccess(idPairing);
+  } catch (e) {
+    throw e
+  }
 }
 
-const register = (socket: PlayerSocketInstance) => socket.on(
-  SOCKET_GATEWAY_REGISTRATION_EVENT_NAME,
-  async ({ playerId }, ack) => {
-    if (!playerId) return printRegistrationError({ socketId: socket.id })
-
-    await addPlayerIdSocketIdMapping({
-      playerId,
-      socketId: socket.id
-    })
-    // maybe add some match lookup logic and create socket rooms matching
-    // match id
-
-    // const mappings = await getAllMappings();
-    // socketLogger(SOCKET_GATEWAY_REGISTRATION_EVENT_NAME, mappings);
-    printRegistrationSuccess({
-      playerId,
-      socketId: socket.id
-    });
-
-    ack()
-  }
-)
-
-const unregister = (socket: PlayerSocketInstance) => socket.on(
+export const unregisterListener = (socket: PlayerSocketInstance) => socket.on(
   'disconnect',
   async () => {
     const playerId = await removePlayerIdSocketIdMapping({
@@ -94,5 +70,3 @@ const unregister = (socket: PlayerSocketInstance) => socket.on(
     });
   }
 )
-
-export default [register, unregister]

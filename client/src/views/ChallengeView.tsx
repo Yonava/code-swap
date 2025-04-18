@@ -7,7 +7,7 @@ import { useSocket } from './useSocket';
 import { useState } from 'react';
 
 const ChallengeView = () => {
-  const { connect, isConnected, isConnecting, register, createMatch, joinMatch } = useSocket();
+  const { connect, isConnected, isConnecting, createMatch, joinMatch, leaveMatch } = useSocket();
   const [code, setCode] = useState<string>('console.log("hello world")');
   const [playerId, setPlayerId] = useState('');
   const [matchId, setMatchId] = useState('');
@@ -78,14 +78,6 @@ const ChallengeView = () => {
               }
               <Button
                 onClick={() => {
-                  register(playerId)
-                }}
-                disabled={!isConnected}
-              >
-                Register
-              </Button>
-              <Button
-                onClick={() => {
                   createMatch(playerId)
                 }}
                 disabled={!isConnected}
@@ -99,6 +91,12 @@ const ChallengeView = () => {
                 disabled={!isConnected}
               >
                 Join Match
+              </Button>
+              <Button
+                onClick={leaveMatch}
+                disabled={!isConnected}
+              >
+                Leave Match
               </Button>
             </div>
           </div>
