@@ -2,6 +2,8 @@ import { io } from 'socket.io-client'
 import { useState, useMemo } from 'react'
 import type { ClientSocketInstance } from 'shared-types/dist/socket-gateway'
 import type { Match, Player } from 'shared-types/dist/match-making';
+import type { MatchActionDispatcher } from './MatchContext';
+import { MATCH_ACTIONS } from './MatchActions';
 
 const IS_PROD = window.location.hostname !== 'localhost';
 const LOCAL_SOCKET_URL = 'http://localhost:3000';
@@ -9,7 +11,12 @@ const PROD_SOCKET_URL = '/';
 
 export const SOCKET_URL = IS_PROD ? PROD_SOCKET_URL : LOCAL_SOCKET_URL;
 
-const registerSocketListeners = (socket: ClientSocketInstance) => {
+const { SET_LIVE_MATCH, SET_MATCH_ID } = MATCH_ACTIONS
+
+const registerSocketListeners = (
+  socket: ClientSocketInstance,
+  matchDispatcher: MatchActionDispatcher
+) => {
   socket.on('matchMaking.responseCreateMatch', (data) => {
     console.log('matchMaking.responseCreateMatch', data);
   })
@@ -18,12 +25,16 @@ const registerSocketListeners = (socket: ClientSocketInstance) => {
     console.log('matchMaking.responseJoinMatch', data);
   })
 
-  socket.on('matchMaking.playerJoined', (data) => {
-    console.log('matchMaking.playerJoined', data)
+  socket.on('matchMaking.playerJoined', ({ match }) => {
+    console.log('matchMaking.playerJoined', match)
+    matchDispatcher({ type: SET_LIVE_MATCH, payload: match })
+    matchDispatcher({ type: SET_MATCH_ID, payload: match.id })
   })
 
-  socket.on('matchMaking.playerLeft', (data) => {
-    console.log('matchMaking.playerLeft', data)
+  socket.on('matchMaking.playerLeft', ({ match }) => {
+    console.log('matchMaking.playerLeft', match)
+    matchDispatcher({ type: SET_LIVE_MATCH, payload: match })
+    matchDispatcher({ type: SET_MATCH_ID, payload: match.id })
   })
 }
 
@@ -34,7 +45,7 @@ const getPlayerObj = (playerId: Player['id']) => ({
   color: '#FF0000',
 })
 
-export const useSocket = () => {
+export const useMatchSocket = (matchDispatcher: MatchActionDispatcher) => {
   const [activeSocket, setActiveSocket] = useState<ClientSocketInstance | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
 
@@ -54,7 +65,7 @@ export const useSocket = () => {
         console.log('socket connected');
         setActiveSocket(socketInstance);
         setIsConnecting(false);
-        registerSocketListeners(socketInstance);
+        registerSocketListeners(socketInstance, matchDispatcher);
         res(socketInstance);
       });
 
