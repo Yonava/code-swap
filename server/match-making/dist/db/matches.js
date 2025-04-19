@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllPlayerIdMatchIdPairings = exports.deletePlayerMatchId = exports.setPlayerMatchId = exports.getPlayerMatchId = exports.getAllMatches = exports.deleteMatch = exports.setMatch = exports.getMatch = exports.getNewMatchId = void 0;
+exports.getAllPlayerIdMatchIdPairings = exports.deletePlayerMatchId = exports.setPlayerMatchId = exports.getPlayerMatchId = exports.getAllMatches = exports.deleteMatch = exports.setMatch = exports.getMatch = exports.getNewMatchId = exports.matchDbLogger = void 0;
+const MATCH_DB_PREFIX = '[Match DB]';
+const matchDbLogger = (...msg) => console.log(MATCH_DB_PREFIX, ...msg);
+exports.matchDbLogger = matchDbLogger;
 // mimics the behavior of a database
 const matches = new Map();
 const playerIdToMatchId = new Map();

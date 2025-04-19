@@ -86,10 +86,15 @@ export const useMatchSocket = (ctx: TMatchContext) => {
 
   const joinMatch = () => {
     if (!activeSocket) throw new Error('socket not connected');
+
+    const [matchId, teamIndexStr] = ctx.matchId.split('-')
+    const teamIndex = Number(teamIndexStr)
+    if (teamIndex !== 0 && teamIndex !== 1) throw new Error('invalid team index')
+
     activeSocket.emit('matchMaking.requestJoinMatch', {
-      matchId: ctx.matchId,
+      matchId,
+      teamIndex,
       player: getPlayerObj(ctx.playerId),
-      teamIndex: 0,
     });
   }
 

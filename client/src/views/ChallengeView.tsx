@@ -5,7 +5,7 @@ import { useState, useContext } from 'react';
 import { ExperimentalPanel } from './ExperimentalPanel';
 import { WaitingRoom } from '@/components/waiting-room/WaitingRoom';
 import MatchContext from './MatchContext';
-import { useMatchSocket } from './useSocket';
+import { useMatchSocket } from './useMatchSocket';
 
 const ChallengeView = () => {
   const [code, setCode] = useState<string>('console.log("hello world")');
