@@ -31,7 +31,7 @@ const logError = (playerId, matchId, channel, issue) => {
     fn: async ({ matchId, player, teamIndex }) => {
         const res = await (0, matches_1.addPlayerToMatch)({ matchId, player, teamIndex });
         if (typeof res === 'string') {
-            logError(player.id, matchId, REQUEST_CREATE_MATCH, res);
+            logError(player.id, matchId, REQUEST_JOIN_MATCH, res);
             return { error: res, playerId: player.id };
         }
         return { match: res, playerId: player.id };
@@ -43,12 +43,12 @@ const logError = (playerId, matchId, channel, issue) => {
     fn: async ({ playerId }) => {
         const matchId = await (0, matches_2.getPlayerMatchId)(playerId);
         if (!matchId) {
-            logError(playerId, '[not found]', REQUEST_CREATE_MATCH, 'Match not found');
+            logError(playerId, '[not found]', LEAVE_MATCH, 'Match not found');
             return;
         }
         const res = await (0, matches_1.removePlayerFromMatch)(matchId, playerId);
         if (typeof res === 'string') {
-            logError(playerId, matchId, REQUEST_CREATE_MATCH, res);
+            logError(playerId, matchId, LEAVE_MATCH, res);
             return;
         }
         return { match: res };

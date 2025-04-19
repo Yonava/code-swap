@@ -59,7 +59,7 @@ listenToChannel<JoinMatchRequest, JoinMatchResponse>({
   fn: async ({ matchId, player, teamIndex }) => {
     const res = await addPlayerToMatch({ matchId, player, teamIndex });
     if (typeof res === 'string') {
-      logError(player.id, matchId, REQUEST_CREATE_MATCH, res)
+      logError(player.id, matchId, REQUEST_JOIN_MATCH, res)
       return { error: res, playerId: player.id };
     }
     return { match: res, playerId: player.id };
@@ -72,12 +72,12 @@ listenToChannel<LeaveMatch, PlayerJoinLeave>({
   fn: async ({ playerId }) => {
     const matchId = await getPlayerMatchId(playerId)
     if (!matchId) {
-      logError(playerId, '[not found]', REQUEST_CREATE_MATCH, 'Match not found')
+      logError(playerId, '[not found]', LEAVE_MATCH, 'Match not found')
       return
     }
     const res = await removePlayerFromMatch(matchId, playerId)
     if (typeof res === 'string') {
-      logError(playerId, matchId, REQUEST_CREATE_MATCH, res)
+      logError(playerId, matchId, LEAVE_MATCH, res)
       return
     }
     return { match: res }
