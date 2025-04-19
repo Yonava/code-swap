@@ -26,28 +26,28 @@ export const WaitingRoom = ({ startMatch, leaveMatch }: WaitingRoomProps) => {
       hideHeader
     >
       <div className="flex flex-col gap-10 min-h-[500px] min-w-[80vw]">
-        matchId: {match.id}, isHost: {isHost}
+        matchId: {match.id}, isHost: {isHost ? 'yes' : 'no'}
         <div className="grow flex flex-col md:flex-row gap-y-10 md:mt-8">
           <WaitingRoomTeam
-            defaultName={`${match.id}-0`}
+            defaultName={`Team 1 (${match.id}-0)`}
             team={match.teams[0]}
           />
           <WaitingRoomTeam
-            defaultName={`${match.id}-1`}
+            defaultName={`Team 2 (${match.id}-1)`}
             team={match.teams[1]}
           ></WaitingRoomTeam>
         </div>
-        <div>
-          <Button
+        <div className='flex gap-1 justify-center'>
+          {isHost && <Button
             onClick={startMatch}
-            className="self-center w-32"
+            className="self-center w-32 bg-green-600"
             disabled={!canStartMatch}
           >
             Start Match
-          </Button>
+          </Button>}
           <Button
             onClick={leaveMatch}
-            className="self-center w-32"
+            className="self-center w-32 bg-red-600"
           >
             Leave Match
           </Button>
