@@ -1,10 +1,10 @@
 import { TitledContainer } from "@/components/TitledContainer";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useContext } from "react";
 import MatchContext from "./MatchContext";
 import { MATCH_ACTIONS } from "./MatchActions";
-import type { MatchSocket } from "./useSocket";
+import type { MatchSocket } from "./useMatchSocket";
 
 export const ExperimentalPanel = ({ socket }: { socket: MatchSocket }) => {
   const { matchId, playerId, dispatch } = useContext(MatchContext)
@@ -40,9 +40,7 @@ export const ExperimentalPanel = ({ socket }: { socket: MatchSocket }) => {
         <div className="flex gap-1 flex-col">
           {
             !socket.isConnected &&
-            <Button
-              onClick={() => socket.connect()}
-            >
+            <Button onClick={socket.connect}>
               Connect
             </Button>
           }
@@ -66,17 +64,13 @@ export const ExperimentalPanel = ({ socket }: { socket: MatchSocket }) => {
             </Button>
           }
           <Button
-            onClick={() => {
-              socket.createMatch(playerId)
-            }}
+            onClick={socket.createMatch}
             disabled={!socket.isConnected}
           >
             Create Match
           </Button>
           <Button
-            onClick={() => {
-              socket.joinMatch(playerId, matchId)
-            }}
+            onClick={socket.joinMatch}
             disabled={!socket.isConnected}
           >
             Join Match
