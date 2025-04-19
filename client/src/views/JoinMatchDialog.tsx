@@ -3,13 +3,21 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp"
 import { useQuery } from "@tanstack/react-query"
 import { ReactNode, useState } from "react"
-import { Match } from "shared-types/dist/match-making"
+import { Match, TeamIndex } from "shared-types/dist/match-making"
 import axios from 'axios'
+import { useNavigate } from "react-router"
 
 const SelectTeam = ({ match }: { match: Match }) => {
   const [team1, team2] = match.teams
   const [t1p1, t1p2] = team1
   const [t2p1, t2p2] = team2
+
+  const nav = useNavigate()
+
+  const goToMatch = (matchId: Match['id'], team: TeamIndex) => {
+    const URL = `/challenge?matchId=${matchId}&team=${team}`
+    nav(URL)
+  }
 
   return (
     <div>
@@ -17,10 +25,16 @@ const SelectTeam = ({ match }: { match: Match }) => {
         Pick A Team
       </h2>
       <div className="flex gap-1">
-        <Button disabled={!!t1p1 && !!t1p2}>
+        <Button
+          onClick={() => goToMatch(match.id, 0)}
+          disabled={!!t1p1 && !!t1p2}
+        >
           Join Team 1 [{t1p1?.id ?? 'Empty'}, {t1p2?.id ?? 'Empty'}]
         </Button>
-        <Button disabled={!!t2p1 && !!t2p2}>
+        <Button
+          onClick={() => goToMatch(match.id, 1)}
+          disabled={!!t2p1 && !!t2p2}
+        >
           Join Team 2 [{t2p1?.id ?? 'Empty'}, {t2p2?.id ?? 'Empty'}]
         </Button>
       </div>
@@ -38,7 +52,7 @@ const JoinActionDialog = ({ children }: { children: ReactNode }) => {
     return data
   }
 
-  const { data: match, isLoading: matchLoading } = useQuery<Match | 'match not found'>({
+  const { data: match } = useQuery<Match | 'match not found'>({
     queryKey: ['join-match', matchId],
     queryFn: fetchMatch,
     enabled: matchId.length === 4,
