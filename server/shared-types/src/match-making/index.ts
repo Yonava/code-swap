@@ -6,6 +6,9 @@ export const MATCH_MAKING_CHANNEL = {
   LEAVE_MATCH: `${MATCH_MAKING_CHANNEL_PREFIX}.leaveMatch`,
   RESPONSE_JOIN_MATCH: `${MATCH_MAKING_CHANNEL_PREFIX}.responseJoinMatch`,
   RESPONSE_CREATE_MATCH: `${MATCH_MAKING_CHANNEL_PREFIX}.responseCreateMatch`,
+  PLAYER_JOINED: `${MATCH_MAKING_CHANNEL_PREFIX}.playerJoined`,
+  PLAYER_LEFT: `${MATCH_MAKING_CHANNEL_PREFIX}.playerLeft`,
+  MATCH_READY: `${MATCH_MAKING_CHANNEL_PREFIX}.matchReady`,
 } as const;
 
 export type Player = {
@@ -59,5 +62,4 @@ export type CreateMatchResponse = { playerId: Player['id'] } & (
 
 export type LeaveMatch = {
   playerId: Player['id'];
-  matchId: Match['id'];
 }

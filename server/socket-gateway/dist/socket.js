@@ -5,11 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.activateSocketServer = exports.io = exports.socketLogger = void 0;
 const socket_io_1 = require("socket.io");
-const registerSocket_1 = __importDefault(require("./registerSocket"));
-const incomingFromClient_1 = __importDefault(require("./match-making/incomingFromClient"));
-const redis_1 = require("./redis");
-const chalk_1 = __importDefault(require("chalk"));
-const { pub } = redis_1.RedisClient.getInstance();
+const registerSocket_1 = require("./registerSocket");
+const inboundFromClient_1 = __importDefault(require("./match-making/inboundFromClient"));
+const constants_1 = require("./constants");
 const SOCKET_LOG_PREFIX = '[Socket Server]';
 const socketLogger = (...msg) => console.log(`${SOCKET_LOG_PREFIX}`, ...msg);
 exports.socketLogger = socketLogger;
@@ -20,11 +18,11 @@ const activateSocketServer = (server) => {
         },
     });
     const socketListeners = [
-        registerSocket_1.default,
-        incomingFromClient_1.default,
+        registerSocket_1.unregisterListener,
+        inboundFromClient_1.default,
     ].flat();
     exports.io.on('connection', (socket) => {
-        (0, exports.socketLogger)(`New Socket Connected with ID ${chalk_1.default.bold.yellow(socket.id)}`);
+        (0, exports.socketLogger)(`New Socket Connected with ID ${constants_1.LOG_COLORS.socketId(socket.id)}`);
         socketListeners.forEach(listener => listener(socket));
     });
     return exports.io;

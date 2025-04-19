@@ -5,6 +5,9 @@ export declare const MATCH_MAKING_CHANNEL: {
     readonly LEAVE_MATCH: "matchMaking.leaveMatch";
     readonly RESPONSE_JOIN_MATCH: "matchMaking.responseJoinMatch";
     readonly RESPONSE_CREATE_MATCH: "matchMaking.responseCreateMatch";
+    readonly PLAYER_JOINED: "matchMaking.playerJoined";
+    readonly PLAYER_LEFT: "matchMaking.playerLeft";
+    readonly MATCH_READY: "matchMaking.matchReady";
 };
 export type Player = {
     id: string;
@@ -46,5 +49,4 @@ export type CreateMatchResponse = {
 } & (CreateMatchResponseAccepted | CreateMatchResponseRejected);
 export type LeaveMatch = {
     playerId: Player['id'];
-    matchId: Match['id'];
 };

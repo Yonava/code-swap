@@ -1,5 +1,8 @@
 import type { Match, Player } from "shared-types/dist/match-making";
 
+const MATCH_DB_PREFIX = '[Match DB]'
+export const matchDbLogger = (...msg: unknown[]) => console.log(MATCH_DB_PREFIX, ...msg)
+
 // mimics the behavior of a database
 const matches = new Map<Match['id'], Match>();
 const playerIdToMatchId = new Map<Player['id'], Match['id']>();
@@ -20,3 +23,4 @@ export const setPlayerMatchId = async (playerId: Player['id'], matchId: Match['i
   return matchId;
 }
 export const deletePlayerMatchId = async (playerId: Player['id']) => playerIdToMatchId.delete(playerId);
+export const getAllPlayerIdMatchIdPairings = async () => Array.from(playerIdToMatchId.entries());

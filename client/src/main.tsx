@@ -1,8 +1,8 @@
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router';
-import ChallengeView from './views/ChallengeView';
 import HomeView from './views/HomeView';
 import { StrictMode } from 'react';
+import ChallengeRoot from './views/ChallengeRoot';
 import './index.css';
 
 const app = document.getElementById('root')!;
@@ -17,7 +17,7 @@ ReactDOM.createRoot(app).render(
         />
         <Route
           path="challenge"
-          element={<ChallengeView />}
+          element={<ChallengeRoot />}
         />
         <Route
           path="*"

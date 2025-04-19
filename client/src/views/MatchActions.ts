@@ -1,0 +1,9 @@
+
+export const MATCH_ACTIONS = {
+  SET_MATCH_ID: 'SET_MATCH_ID',
+  SET_PLAYER_ID: 'SET_PLAYER_ID',
+  SET_LIVE_MATCH: 'SET_LIVE_MATCH',
+  CLEAR_MATCH_DATA: 'CLEAR_MATCH_DATA',
+} as const
+
+export type MatchActionNames = typeof MATCH_ACTIONS

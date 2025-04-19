@@ -15,5 +15,6 @@ exports.LOG_COLORS = {
     debug: chalk_1.default.bold.cyan,
     socketId: chalk_1.default.bold.yellow,
     playerId: chalk_1.default.bold.green,
+    matchId: chalk_1.default.bold.magenta,
     channel: chalk_1.default.bold.blue,
 };

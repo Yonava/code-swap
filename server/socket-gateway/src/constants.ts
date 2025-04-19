@@ -12,5 +12,6 @@ export const LOG_COLORS = {
 
   socketId: chalk.bold.yellow,
   playerId: chalk.bold.green,
+  matchId: chalk.bold.magenta,
   channel: chalk.bold.blue,
 }

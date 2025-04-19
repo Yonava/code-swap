@@ -1,13 +1,10 @@
 import {
   addPlayerIdSocketIdMapping,
-  getAllMappings,
   removePlayerIdSocketIdMapping
 } from "./registrationDatabase";
 import { socketLogger } from "./socket";
-import {
-  type PlayerSocketInstance,
-  SOCKET_GATEWAY_REGISTRATION_EVENT_NAME
-} from "shared-types/dist/socket-gateway";
+import type { PlayerSocketInstance } from "shared-types/dist/socket-gateway";
+import type { Player } from "shared-types/dist/match-making";
 import { LOG_COLORS } from "./constants";
 
 const printRegistrationSuccess = ({
@@ -24,14 +21,26 @@ const printRegistrationSuccess = ({
 
 const printUnregistrationSuccess = ({
   playerId,
-  socketId
+  socketId,
+  rooms,
 }: {
   playerId: string,
-  socketId: string
+  socketId: string,
+  rooms: string[],
 }) => {
   const p = LOG_COLORS.playerId(playerId);
   const s = LOG_COLORS.socketId(socketId);
-  socketLogger(`Unregistered ${p} from ${s}`);
+  let str = `Unregistered ${p} from ${s} `
+  if (rooms.length === 0) {
+    str += 'and left no match rooms'
+  } else if (rooms.length === 1) {
+    const room = LOG_COLORS.matchId(rooms[0])
+    str += `and left match room ${room}`
+  } else {
+    const commaSeparatedRooms = LOG_COLORS.matchId(rooms.join(', '))
+    str += `and left ${rooms.length} match rooms: ${commaSeparatedRooms}`
+  }
+  socketLogger(str);
 }
 
 const printUnregistrationNoPlayerId = ({
@@ -43,56 +52,34 @@ const printUnregistrationNoPlayerId = ({
   socketLogger(`Unregistered Socket Disconnected with ID ${s}`);
 }
 
-const printRegistrationError = ({
-  socketId
-}: {
-  socketId: string
+export const registerSocket = async (idPairing: {
+  socketId: PlayerSocketInstance['id'],
+  playerId: Player['id']
 }) => {
-  const s = LOG_COLORS.socketId(socketId);
-  const c = LOG_COLORS.channel(SOCKET_GATEWAY_REGISTRATION_EVENT_NAME);
-  const e = LOG_COLORS.error('Error!');
-  socketLogger(`${e} On inbound request to ${c}: No Player ID Provided - Registration For Socket ID ${s} Failed :(`);
+  if (!idPairing.playerId) throw new Error('no player id provided')
+  try {
+    await addPlayerIdSocketIdMapping(idPairing)
+    printRegistrationSuccess(idPairing);
+  } catch (e) {
+    throw e
+  }
 }
 
-const register = (socket: PlayerSocketInstance) => socket.on(
-  SOCKET_GATEWAY_REGISTRATION_EVENT_NAME,
-  async ({ playerId }, ack) => {
-    if (!playerId) return printRegistrationError({ socketId: socket.id })
-
-    await addPlayerIdSocketIdMapping({
-      playerId,
-      socketId: socket.id
-    })
-    // maybe add some match lookup logic and create socket rooms matching
-    // match id
-
-    // const mappings = await getAllMappings();
-    // socketLogger(SOCKET_GATEWAY_REGISTRATION_EVENT_NAME, mappings);
-    printRegistrationSuccess({
-      playerId,
-      socketId: socket.id
-    });
-
-    ack()
-  }
-)
-
-const unregister = (socket: PlayerSocketInstance) => socket.on(
-  'disconnect',
+export const unregisterListener = (socket: PlayerSocketInstance) => socket.on(
+  'disconnecting',
   async () => {
+    // slice removes default self socket.id room
+    const rooms = Array.from(socket.rooms).slice(1)
     const playerId = await removePlayerIdSocketIdMapping({
       socketId: socket.id
     })
 
     if (!playerId) return printUnregistrationNoPlayerId({ socketId: socket.id })
 
-    // const mappings = await getAllMappings();
-    // socketLogger(SOCKET_GATEWAY_REGISTRATION_EVENT_NAME, mappings);
     printUnregistrationSuccess({
       playerId,
-      socketId: socket.id
+      socketId: socket.id,
+      rooms
     });
   }
 )
-
-export default [register, unregister]
