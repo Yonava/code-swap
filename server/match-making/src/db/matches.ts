@@ -20,3 +20,4 @@ export const setPlayerMatchId = async (playerId: Player['id'], matchId: Match['i
   return matchId;
 }
 export const deletePlayerMatchId = async (playerId: Player['id']) => playerIdToMatchId.delete(playerId);
+export const getAllPlayerIdMatchIdPairings = async () => Array.from(playerIdToMatchId.entries());

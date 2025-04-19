@@ -12,8 +12,11 @@ export const createNewMatch = async (host: Player) => {
   const existingMatchId = await getPlayerMatchId(host.id);
   if (existingMatchId) return `Player already in match ${existingMatchId}`;
 
+  const id = getNewMatchId()
+  await setPlayerMatchId(host.id, id);
+
   return setMatch({
-    id: getNewMatchId(),
+    id,
     teams: [[host, undefined], [undefined, undefined]],
     hostId: host.id,
   })

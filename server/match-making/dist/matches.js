@@ -6,8 +6,10 @@ const createNewMatch = async (host) => {
     const existingMatchId = await (0, matches_1.getPlayerMatchId)(host.id);
     if (existingMatchId)
         return `Player already in match ${existingMatchId}`;
+    const id = (0, matches_1.getNewMatchId)();
+    await (0, matches_1.setPlayerMatchId)(host.id, id);
     return (0, matches_1.setMatch)({
-        id: (0, matches_1.getNewMatchId)(),
+        id,
         teams: [[host, undefined], [undefined, undefined]],
         hostId: host.id,
     });

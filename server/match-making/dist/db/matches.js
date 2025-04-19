@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deletePlayerMatchId = exports.setPlayerMatchId = exports.getPlayerMatchId = exports.getAllMatches = exports.deleteMatch = exports.setMatch = exports.getMatch = exports.getNewMatchId = void 0;
+exports.getAllPlayerIdMatchIdPairings = exports.deletePlayerMatchId = exports.setPlayerMatchId = exports.getPlayerMatchId = exports.getAllMatches = exports.deleteMatch = exports.setMatch = exports.getMatch = exports.getNewMatchId = void 0;
 // mimics the behavior of a database
 const matches = new Map();
 const playerIdToMatchId = new Map();
@@ -26,3 +26,5 @@ const setPlayerMatchId = async (playerId, matchId) => {
 exports.setPlayerMatchId = setPlayerMatchId;
 const deletePlayerMatchId = async (playerId) => playerIdToMatchId.delete(playerId);
 exports.deletePlayerMatchId = deletePlayerMatchId;
+const getAllPlayerIdMatchIdPairings = async () => Array.from(playerIdToMatchId.entries());
+exports.getAllPlayerIdMatchIdPairings = getAllPlayerIdMatchIdPairings;
