@@ -1,8 +1,8 @@
 import { io } from 'socket.io-client'
 import { useState, useMemo } from 'react'
 import type { ClientSocketInstance } from 'shared-types/dist/socket-gateway'
-import type { Match, Player } from 'shared-types/dist/match-making';
-import type { MatchActionDispatcher } from './MatchContext';
+import type { Player } from 'shared-types/dist/match-making';
+import type { MatchActionDispatcher, TMatchContext } from './MatchContext';
 import { MATCH_ACTIONS } from './MatchActions';
 
 const IS_PROD = window.location.hostname !== 'localhost';
@@ -11,7 +11,7 @@ const PROD_SOCKET_URL = '/';
 
 export const SOCKET_URL = IS_PROD ? PROD_SOCKET_URL : LOCAL_SOCKET_URL;
 
-const { SET_LIVE_MATCH, SET_MATCH_ID } = MATCH_ACTIONS
+const { SET_LIVE_MATCH, SET_MATCH_ID, CLEAR_MATCH_DATA } = MATCH_ACTIONS
 
 const registerSocketListeners = (
   socket: ClientSocketInstance,
@@ -45,7 +45,7 @@ const getPlayerObj = (playerId: Player['id']) => ({
   color: '#FF0000',
 })
 
-export const useMatchSocket = (matchDispatcher: MatchActionDispatcher) => {
+export const useMatchSocket = (ctx: TMatchContext) => {
   const [activeSocket, setActiveSocket] = useState<ClientSocketInstance | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
 
@@ -65,7 +65,7 @@ export const useMatchSocket = (matchDispatcher: MatchActionDispatcher) => {
         console.log('socket connected');
         setActiveSocket(socketInstance);
         setIsConnecting(false);
-        registerSocketListeners(socketInstance, matchDispatcher);
+        registerSocketListeners(socketInstance, ctx.dispatch);
         res(socketInstance);
       });
 
@@ -80,14 +80,15 @@ export const useMatchSocket = (matchDispatcher: MatchActionDispatcher) => {
         console.log('socket disconnected');
         setActiveSocket(null);
         setIsConnecting(false);
+        ctx.dispatch({ type: CLEAR_MATCH_DATA })
       });
     });
 
-  const joinMatch = (playerId: Player['id'], matchId: Match['id']) => {
+  const joinMatch = () => {
     if (!activeSocket) throw new Error('socket not connected');
     activeSocket.emit('matchMaking.requestJoinMatch', {
-      matchId,
-      player: getPlayerObj(playerId),
+      matchId: ctx.matchId,
+      player: getPlayerObj(ctx.playerId),
       teamIndex: 0,
     });
   }
@@ -98,12 +99,14 @@ export const useMatchSocket = (matchDispatcher: MatchActionDispatcher) => {
     activeSocket.disconnect()
   }
 
-  const createMatch = (playerId: Player['id']) => {
+  const createMatch = () => {
     if (!activeSocket) throw new Error('socket not connected');
     activeSocket.emit('matchMaking.requestCreateMatch', {
-      player: getPlayerObj(playerId)
+      player: getPlayerObj(ctx.playerId)
     });
   }
+
+  const startMatch = () => { }
 
   const isConnected = useMemo(() => {
     if (!activeSocket) return false;
@@ -118,5 +121,8 @@ export const useMatchSocket = (matchDispatcher: MatchActionDispatcher) => {
     createMatch,
     joinMatch,
     leaveMatch,
+    startMatch,
   }
 }
+
+export type MatchSocket = ReturnType<typeof useMatchSocket>

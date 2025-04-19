@@ -5,7 +5,7 @@ const matches_1 = require("./db/matches");
 const createNewMatch = async (host) => {
     const existingMatchId = await (0, matches_1.getPlayerMatchId)(host.id);
     if (existingMatchId)
-        return 'Player already in match';
+        return `Player already in match ${existingMatchId}`;
     return (0, matches_1.setMatch)({
         id: (0, matches_1.getNewMatchId)(),
         teams: [[host, undefined], [undefined, undefined]],
@@ -16,7 +16,7 @@ exports.createNewMatch = createNewMatch;
 const addPlayerToMatch = async ({ matchId, player, teamIndex }) => {
     const existingMatchId = await (0, matches_1.getPlayerMatchId)(player.id);
     if (existingMatchId)
-        return 'Player already in match';
+        return `Player already in match ${existingMatchId}`;
     const match = await (0, matches_1.getMatch)(matchId);
     if (!match)
         return 'Match not found';

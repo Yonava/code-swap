@@ -14,27 +14,45 @@ export type MatchAction =
   | { type: MatchActionNames['CLEAR_MATCH_DATA'] };
 
 export type MatchActionDispatcher = Dispatch<MatchAction>
+export type MatchPhase = 'matchMaking' | 'livePlay' | 'scoring' | 'inactive'
 
-export type MatchContextType = {
-  matchId: string;
-  playerId: string;
-  liveMatch: Match | undefined;
-  dispatch: MatchActionDispatcher
+export type TMatchContext = {
+  matchId: string,
+  playerId: string,
+  liveMatch: Match | undefined,
+  liveChallenge: undefined,
+  liveScoreboard: undefined,
+  matchPhase: MatchPhase,
+  dispatch: MatchActionDispatcher,
 };
 
-const DEFAULT_MATCH_DATA: MatchContextType = {
+const getMatchPhase = (matchContext: TMatchContext): MatchPhase => {
+  if (matchContext.liveScoreboard !== undefined) return 'scoring'
+  if (matchContext.liveChallenge !== undefined) return 'matchMaking'
+  if (matchContext.liveMatch !== undefined) return 'matchMaking'
+  return 'inactive'
+}
+
+const newStateDefaults = () => ({
   matchId: '',
   playerId: '',
   liveMatch: undefined,
+  liveChallenge: undefined,
+  liveScoreboard: undefined,
+  matchPhase: 'inactive',
+} as const)
+
+const DEFAULT_MATCH_DATA: TMatchContext = {
+  ...newStateDefaults(),
   dispatch: () => { },
 };
 
-const MatchContext = createContext<MatchContextType>(DEFAULT_MATCH_DATA);
+const MatchContext = createContext<TMatchContext>(DEFAULT_MATCH_DATA);
 
 const matchReducer = (
-  state: MatchContextType,
+  state: TMatchContext,
   action: MatchAction,
-): MatchContextType => {
+): TMatchContext => {
   switch (action.type) {
     case MATCH_ACTIONS.SET_MATCH_ID:
       return { ...state, matchId: action.payload };
@@ -43,7 +61,7 @@ const matchReducer = (
     case MATCH_ACTIONS.SET_LIVE_MATCH:
       return { ...state, liveMatch: action.payload };
     case MATCH_ACTIONS.CLEAR_MATCH_DATA:
-      return { ...state, matchId: '', playerId: '', liveMatch: undefined };
+      return { ...state, ...newStateDefaults() };
     default:
       return state;
   }
@@ -52,10 +70,13 @@ const matchReducer = (
 export const MatchContextProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(matchReducer, DEFAULT_MATCH_DATA);
 
-  const contextValue: MatchContextType = {
+  const contextValue: TMatchContext = {
     matchId: state.matchId,
     playerId: state.playerId,
     liveMatch: state.liveMatch,
+    liveChallenge: state.liveChallenge,
+    liveScoreboard: state.liveScoreboard,
+    matchPhase: getMatchPhase(state),
     dispatch,
   };
 

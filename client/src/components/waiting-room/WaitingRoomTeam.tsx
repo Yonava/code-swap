@@ -1,20 +1,16 @@
-import { useState } from 'react';
-
 import { EditableText } from '@/components/EditableText';
 import { EmptyPlayerSlot } from './EmptyPlayerSlot';
 import { FilledPlayerSlot } from './FilledPlayerSlot';
 import { PlayerSlot } from './PlayerSlot';
-
-import { MOCK_PLAYERS } from '@/mock-data/mock-players';
-import { Player } from '@/types/Player';
+import type { Match } from 'shared-types/dist/match-making';
 
 type WaitingRoomTeamProps = {
   defaultName: string;
+  team: Match['teams'][number]
 };
 
-export const WaitingRoomTeam = ({ defaultName }: WaitingRoomTeamProps) => {
-  const [player1, setPlayer1] = useState<Player>(MOCK_PLAYERS[0]);
-  const [player2, setPlayer2] = useState<Player>(MOCK_PLAYERS[1]);
+export const WaitingRoomTeam = ({ defaultName, team }: WaitingRoomTeamProps) => {
+  const [player1, player2] = team
 
   return (
     <div className="flex flex-col w-full items-center gap-5 md:gap-18">

@@ -10,7 +10,7 @@ import {
 
 export const createNewMatch = async (host: Player) => {
   const existingMatchId = await getPlayerMatchId(host.id);
-  if (existingMatchId) return 'Player already in match';
+  if (existingMatchId) return `Player already in match ${existingMatchId}`;
 
   return setMatch({
     id: getNewMatchId(),
@@ -25,7 +25,7 @@ export const addPlayerToMatch = async ({ matchId, player, teamIndex }: {
   teamIndex: TeamIndex,
 }) => {
   const existingMatchId = await getPlayerMatchId(player.id);
-  if (existingMatchId) return 'Player already in match';
+  if (existingMatchId) return `Player already in match ${existingMatchId}`;
 
   const match = await getMatch(matchId);
   if (!match) return 'Match not found';

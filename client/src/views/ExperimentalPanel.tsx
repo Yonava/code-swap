@@ -1,15 +1,13 @@
 import { TitledContainer } from "@/components/TitledContainer";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/input";
 import { useContext } from "react";
 import MatchContext from "./MatchContext";
 import { MATCH_ACTIONS } from "./MatchActions";
-import { useMatchSocket } from "./useSocket";
+import type { MatchSocket } from "./useSocket";
 
-export const ExperimentalPanel = () => {
+export const ExperimentalPanel = ({ socket }: { socket: MatchSocket }) => {
   const { matchId, playerId, dispatch } = useContext(MatchContext)
-
-  const socket = useMatchSocket(dispatch)
 
   const setPlayerId = (payload: string) => dispatch({
     type: MATCH_ACTIONS.SET_PLAYER_ID,

@@ -1,22 +1,23 @@
 import { CodeEditor } from '@/components/CodeEditor';
 // import { ProblemStatement } from '@/components/ProblemStatement';
 import { TitledContainer } from '@/components/TitledContainer';
-import { useState } from 'react';
-import { MatchContextProvider } from './MatchContext';
+import { useState, useContext } from 'react';
 import { ExperimentalPanel } from './ExperimentalPanel';
+import { WaitingRoom } from '@/components/waiting-room/WaitingRoom';
+import MatchContext from './MatchContext';
+import { useMatchSocket } from './useSocket';
 
 const ChallengeView = () => {
   const [code, setCode] = useState<string>('console.log("hello world")');
+  const handleCodeChange = (value: string) => setCode(value);
 
-  const handleCodeChange = (value: string) => {
-    setCode(value);
-  };
+  const ctx = useContext(MatchContext)
+  const socket = useMatchSocket(ctx)
 
   return (
     <>
-      <MatchContextProvider>
-        <div className="flex bg-gray-900 w-[100vw] h-[100vh] relative p-2 gap-2">
-          {/* <TitledContainer
+      <div className="flex bg-gray-900 w-[100vw] h-[100vh] relative p-2 gap-2">
+        {/* <TitledContainer
           title="Challenge Question"
           width="25%"
         >
@@ -24,15 +25,19 @@ const ChallengeView = () => {
             <ProblemStatement />
           </div>
         </TitledContainer> */}
-          <TitledContainer
-            title="Code"
-            width="75%"
-          >
-            <CodeEditor value={code} onChange={handleCodeChange} />
-          </TitledContainer>
-          <ExperimentalPanel />
-        </div>
-      </MatchContextProvider>
+        <TitledContainer
+          title="Code"
+          width="75%"
+        >
+          <CodeEditor value={code} onChange={handleCodeChange} />
+        </TitledContainer>
+        <ExperimentalPanel socket={socket} />
+      </div>
+
+      <WaitingRoom
+        startMatch={socket.startMatch}
+        leaveMatch={socket.leaveMatch}
+      />
     </>
   );
 };
