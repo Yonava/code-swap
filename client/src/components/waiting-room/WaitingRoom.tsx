@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { DialogBox } from '@/components/DialogBox';
 import { WaitingRoomTeam } from './WaitingRoomTeam';
 import { useNavigate } from 'react-router';
-import { useMatchContext } from '@/views/useMatchContext';
+import { useMatchContext } from '@/state/match/useMatchContext';
 
 export const WaitingRoom = () => {
   const { playerId, match, leaveMatch } = useMatchContext()

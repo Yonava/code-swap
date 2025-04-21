@@ -1,8 +1,7 @@
 import { cn } from '@/lib/utils';
 import { ProfilePicture } from '@/components/ProfilePicture';
 import type { Player } from 'shared-types/dist/match-making';
-import { useContext } from 'react';
-import MatchContext from '@/views/MatchContext';
+import { useMatchContext } from '@/state/match/useMatchContext';
 
 type FilledPlayerSlotProps = {
   player: Player;
@@ -13,7 +12,7 @@ export const FilledPlayerSlot = ({
   player,
   className,
 }: FilledPlayerSlotProps) => {
-  const { playerId } = useContext(MatchContext)
+  const { playerId } = useMatchContext()
   return (
     <div className={cn('flex items-center gap-4', className)}>
       <ProfilePicture src={player.avatar} />

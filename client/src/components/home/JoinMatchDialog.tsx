@@ -15,7 +15,7 @@ const SelectTeam = ({ match }: { match: Match }) => {
   const nav = useNavigate()
 
   const goToMatch = (matchId: Match['id'], team: TeamIndex) => {
-    const URL = `/challenge?matchId=${matchId}&team=${team}`
+    const URL = `/challenge?matchId=${matchId}-${team}`
     nav(URL)
   }
 

@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Player } from "shared-types/dist/match-making";
 
 export const names = [
@@ -48,3 +49,23 @@ export const getPlayerObj = (playerId: Player['id']) => ({
   avatar: 'https://example.com/avatar.png',
   color: '#FF0000',
 });
+
+export const useOnUnmount = (callback: () => void) => {
+  const cbRef = useRef(callback);
+  cbRef.current = callback;
+
+  useEffect(() => {
+    return () => { cbRef.current() };
+  }, []);
+}
+
+export const useOnMount = (callback: () => void) => {
+  const hasRun = useRef(false)
+
+  useEffect(() => {
+    if (hasRun.current) return
+    hasRun.current = true
+    callback()
+    // eslint-disable-next-line
+  }, [])
+}

@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
-import JoinActionDialog from './JoinMatchDialog';
 import { useNavigate } from 'react-router';
+import JoinActionDialog from '@/components/home/JoinMatchDialog';
 
 type BillboardProps = {
   title: ReactNode;

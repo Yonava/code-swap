@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-query'
 import './index.css';
 import ChallengeView from './views/ChallengeView';
-import { MatchContextProvider } from './views/MatchContext';
+import { MatchContextProvider } from './state/match/MatchContext';
 
 const app = document.getElementById('root')!;
 const queryClient = new QueryClient()
