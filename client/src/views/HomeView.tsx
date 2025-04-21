@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 import JoinActionDialog from './JoinMatchDialog';
+import { useNavigate } from 'react-router';
 
 type BillboardProps = {
   title: ReactNode;
@@ -34,9 +35,10 @@ const Billboard = ({
 };
 
 const StartActions = () => {
+  const nav = useNavigate()
   return (
     <>
-      <Button>Host</Button>
+      <Button onClick={() => nav('/challenge?matchId=new')}>Host</Button>
       <JoinActionDialog>
         <Button variant="secondary">Join</Button>
       </JoinActionDialog>
