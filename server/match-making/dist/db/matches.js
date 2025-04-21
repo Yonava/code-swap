@@ -8,7 +8,7 @@ exports.matchDbLogger = matchDbLogger;
 const matches = new Map();
 const playerIdToMatchId = new Map();
 const getNewMatchId = () => {
-    const id = Math.random().toString(36).substring(2, 7);
+    const id = Math.random().toString(36).substring(2, 6);
     return matches.has(id) ? (0, exports.getNewMatchId)() : id;
 };
 exports.getNewMatchId = getNewMatchId;

@@ -11,6 +11,9 @@ importers:
       chalk:
         specifier: ^5.4.1
         version: 5.4.1
+      cors:
+        specifier: ^2.8.5
+        version: 2.8.5
       dotenv:
         specifier: ^16.4.7
         version: 16.5.0
@@ -27,6 +30,9 @@ importers:
         specifier: ../shared-types/code-swap-shared-types-1.0.0.tgz
         version: '@code-swap/shared-types@file:../shared-types/code-swap-shared-types-1.0.0.tgz'
     devDependencies:
+      '@types/cors':
+        specifier: ^2.8.17
+        version: 2.8.17
       '@types/express':
         specifier: ^5.0.1
         version: 5.0.1

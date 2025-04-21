@@ -1,8 +1,8 @@
-import { Button } from '@/components/ui/Button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
+import { Button } from '@/components/ui/button';
 import { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
+import { useNavigate } from 'react-router';
+import JoinActionDialog from '@/components/home/JoinMatchDialog';
 
 type BillboardProps = {
   title: ReactNode;
@@ -34,42 +34,14 @@ const Billboard = ({
   );
 };
 
-const JoinAction = () => {
-  return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="secondary">Join</Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Join A Game 🤙</DialogTitle>
-          <DialogDescription>
-            Enter a team code (each game has two codes, one for each team)
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="flex items-center space-x-2">
-          <div className="grid flex-1 gap-2">
-            <InputOTP maxLength={4}>
-              <InputOTPGroup>
-                <InputOTPSlot index={0} />
-                <InputOTPSlot index={1} />
-                <InputOTPSlot index={2} />
-                <InputOTPSlot index={3} />
-              </InputOTPGroup>
-            </InputOTP>
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
-  )
-}
-
 const StartActions = () => {
+  const nav = useNavigate()
   return (
     <>
-      <Button>Host</Button>
-      <JoinAction />
+      <Button onClick={() => nav('/challenge?matchId=new')}>Host</Button>
+      <JoinActionDialog>
+        <Button variant="secondary">Join</Button>
+      </JoinActionDialog>
     </>
   )
 };

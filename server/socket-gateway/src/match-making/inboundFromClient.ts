@@ -46,7 +46,7 @@ const requestCreateMatch = (socket: PlayerSocketInstance) => {
           channel: REQUEST_CREATE_MATCH,
           issue: e.message
         })
-        socket.emit(RESPONSE_CREATE_MATCH, { playerId, error: e.message })
+        return socket.emit(RESPONSE_CREATE_MATCH, { playerId, error: e.message })
       }
       throw new Error(`Unhandled Registration Failure -> ${String(e)}`)
     }
@@ -68,7 +68,7 @@ const requestJoinMatch = (socket: PlayerSocketInstance) => {
           channel: REQUEST_JOIN_MATCH,
           issue: e.message
         })
-        socket.emit(RESPONSE_JOIN_MATCH, { playerId, error: e.message })
+        return socket.emit(RESPONSE_JOIN_MATCH, { playerId, error: e.message })
       }
       throw new Error(`Unhandled Registration Failure -> ${String(e)}`)
     }

@@ -8,7 +8,7 @@ const matches = new Map<Match['id'], Match>();
 const playerIdToMatchId = new Map<Player['id'], Match['id']>();
 
 export const getNewMatchId: () => string = () => {
-  const id = Math.random().toString(36).substring(2, 7);
+  const id = Math.random().toString(36).substring(2, 6);
   return matches.has(id) ? getNewMatchId() : id;
 };
 
