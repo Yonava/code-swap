@@ -17,6 +17,7 @@ const {
   RESPONSE_JOIN_MATCH,
 
   LEAVE_MATCH,
+  MATCH_READY,
 } = MATCH_MAKING_CHANNEL;
 
 const printRegistrationError = ({
@@ -84,6 +85,15 @@ const leaveMatch = (socket: PlayerSocketInstance) => {
     const playerId = await getPlayerIdFromSocketId(socketId);
     if (!playerId) return printRegistrationNotFoundError({ channel: LEAVE_MATCH, socketId })
     pub.publish(LEAVE_MATCH, JSON.stringify({ playerId }))
+  })
+}
+
+const startMatch = (socket: PlayerSocketInstance) => {
+  socket.on(MATCH_READY, async () => {
+    const { id: socketId } = socket
+    const playerId = await getPlayerIdFromSocketId(socketId);
+    if (!playerId) return printRegistrationNotFoundError({ channel: LEAVE_MATCH, socketId })
+    // pub.publish()
   })
 }
 
