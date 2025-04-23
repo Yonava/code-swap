@@ -2,12 +2,17 @@ import { MATCH_MAKING_CHANNEL } from "shared-types/dist/match-making";
 import { RedisClient } from "./redis";
 import { LOG_COLORS } from "./constants";
 import { colorize } from "json-colorizer";
+import { GAME_MANAGEMENT_CHANNELS } from "shared-types";
 
 const PUB_SUB_PREFIX = '[Live Pub/Sub]';
 
 export const pubSubLogger = (...msg: unknown[]) => console.log(PUB_SUB_PREFIX, ...msg);
 
-type ChannelName = typeof MATCH_MAKING_CHANNEL[keyof typeof MATCH_MAKING_CHANNEL];
+type MatchMakingChannels = typeof MATCH_MAKING_CHANNEL
+type MatchMakingChannelName = MatchMakingChannels[keyof MatchMakingChannels]
+type GameManagementChannels = typeof GAME_MANAGEMENT_CHANNELS
+type GameManagementChannelName = GameManagementChannels[keyof GameManagementChannels]
+type ChannelName = MatchMakingChannelName | GameManagementChannelName
 
 type ListenToInboundRequest<TDataIn, TDataOut = any> = {
   from: ChannelName

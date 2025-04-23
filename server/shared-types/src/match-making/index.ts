@@ -63,3 +63,7 @@ export type CreateMatchResponse = { playerId: Player['id'] } & (
 export type LeaveMatch = {
   playerId: Player['id'];
 }
+
+export type MatchReady = {
+  playerId: Player['id']
+}

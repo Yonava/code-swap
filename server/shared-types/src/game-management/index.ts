@@ -1,13 +1,18 @@
 import { Challenge } from "../challenges"
-import { Player } from "../match-making"
+import { Match, Player } from "../match-making"
 
 export const GAME_MANAGEMENT_CHANNEL_PREFIX = 'gameManagement'
 
 export const GAME_MANAGEMENT_CHANNELS = {
   START_MATCH: `${GAME_MANAGEMENT_CHANNEL_PREFIX}.startMatch`,
   START_CHALLENGE: `${GAME_MANAGEMENT_CHANNEL_PREFIX}.startChallenge`,
-  END_CHALLENGE: `${GAME_MANAGEMENT_CHANNEL_PREFIX}.endChallenge`
+  END_CHALLENGE: `${GAME_MANAGEMENT_CHANNEL_PREFIX}.endChallenge`,
+  UPDATE_CODE_SUBMISSION: `${GAME_MANAGEMENT_CHANNEL_PREFIX}.updateCodeSubmission`
 } as const
+
+export type StartMatch = {
+  match: Match
+}
 
 export type StartChallenge = {
   /**

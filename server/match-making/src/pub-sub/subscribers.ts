@@ -1,12 +1,13 @@
 import {
   type CreateMatchRequest,
-  CreateMatchResponse,
+  type CreateMatchResponse,
   type JoinMatchRequest,
-  JoinMatchResponse,
+  type JoinMatchResponse,
   type LeaveMatch,
-  Match,
+  type Match,
+  type Player,
   MATCH_MAKING_CHANNEL,
-  Player
+  MatchReady,
 } from 'shared-types/dist/match-making';
 import {
   addPlayerToMatch,
@@ -14,9 +15,13 @@ import {
   removePlayerFromMatch
 } from "../matches";
 import { listenToChannel, pubSubLogger } from '../listenToChannel';
-import { PlayerJoinLeave } from 'shared-types';
+import {
+  GAME_MANAGEMENT_CHANNELS,
+  type PlayerJoinLeave,
+  type StartMatch
+} from 'shared-types';
 import { LOG_COLORS } from '../constants';
-import { getPlayerMatchId } from '../db/matches';
+import { getMatch, getPlayerMatchId } from '../db/matches';
 
 const {
   REQUEST_CREATE_MATCH,
@@ -25,6 +30,7 @@ const {
   RESPONSE_JOIN_MATCH,
   LEAVE_MATCH,
   PLAYER_LEFT,
+  MATCH_READY,
 } = MATCH_MAKING_CHANNEL;
 
 const logError = (
@@ -83,3 +89,29 @@ listenToChannel<LeaveMatch, PlayerJoinLeave>({
     return { match: res }
   }
 });
+
+listenToChannel<MatchReady, StartMatch>({
+  from: MATCH_READY,
+  replyTo: GAME_MANAGEMENT_CHANNELS.START_MATCH,
+  fn: async ({ playerId }) => {
+    const matchId = await getPlayerMatchId(playerId)
+    if (!matchId) {
+      logError(playerId, '[not found]', MATCH_READY, 'Match not found')
+      return
+    }
+
+    const match = await getMatch(matchId)
+    if (!match) {
+      logError(playerId, matchId, MATCH_READY, 'Player has matchId that does not exist')
+      return
+    }
+
+    const isHost = match.hostId === playerId
+    if (!isHost) {
+      logError(playerId, matchId, MATCH_READY, 'Player doesn\'t have host permissions')
+      return
+    }
+
+    return { match }
+  }
+})

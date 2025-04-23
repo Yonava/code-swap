@@ -1,6 +1,6 @@
 import { MATCH_MAKING_CHANNEL } from "shared-types/dist/match-making";
 import { printReceivedSuccess, printRegistrationNotFoundError } from "../printInboundRequest";
-import { PlayerSocketInstance } from "shared-types";
+import type { PlayerSocketInstance } from "shared-types";
 import { RedisClient } from "../redis";
 import { registerSocket } from "../registerSocket";
 import { LOG_COLORS } from "../constants";
@@ -92,9 +92,10 @@ const startMatch = (socket: PlayerSocketInstance) => {
   socket.on(MATCH_READY, async () => {
     const { id: socketId } = socket
     const playerId = await getPlayerIdFromSocketId(socketId);
-    if (!playerId) return printRegistrationNotFoundError({ channel: LEAVE_MATCH, socketId })
-    // pub.publish()
+    if (!playerId) return printRegistrationNotFoundError({ channel: MATCH_READY, socketId })
+
+    pub.publish(MATCH_READY, JSON.stringify({ playerId }))
   })
 }
 
-export default [requestCreateMatch, requestJoinMatch, leaveMatch]
+export default [requestCreateMatch, requestJoinMatch, leaveMatch, startMatch]
