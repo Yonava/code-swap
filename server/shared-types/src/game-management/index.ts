@@ -1,5 +1,5 @@
 import { Challenge } from "../challenges"
-import { FullMatch, Player } from "../match-making"
+import { FullMatch, Match, Player } from "../match-making"
 
 export const GAME_MANAGEMENT_CHANNEL_PREFIX = 'gameManagement'
 
@@ -10,11 +10,17 @@ export const GAME_MANAGEMENT_CHANNEL = {
   UPDATE_CODE_SUBMISSION: `${GAME_MANAGEMENT_CHANNEL_PREFIX}.updateCodeSubmission`
 } as const
 
+export type GameManagementChannel = typeof GAME_MANAGEMENT_CHANNEL[keyof typeof GAME_MANAGEMENT_CHANNEL]
+
 export type StartMatch = {
   match: FullMatch
 }
 
 export type StartChallenge = {
+  /**
+   * match id the challenge is being sent to, for routing purposes
+   */
+  matchId: Match['id']
   /**
    * the round of the challenge. Each challenge question is associated with one round
    */

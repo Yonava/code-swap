@@ -9,6 +9,7 @@ export declare const MATCH_MAKING_CHANNEL: {
     readonly PLAYER_LEFT: "matchMaking.playerLeft";
     readonly MATCH_READY: "matchMaking.matchReady";
 };
+export type MatchMakingChannel = typeof MATCH_MAKING_CHANNEL[keyof typeof MATCH_MAKING_CHANNEL];
 export type Player = {
     id: string;
     name: string;

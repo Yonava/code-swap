@@ -18,3 +18,4 @@ __exportStar(require("./match-making"), exports);
 __exportStar(require("./socket-gateway"), exports);
 __exportStar(require("./challenges"), exports);
 __exportStar(require("./game-management"), exports);
+__exportStar(require("./util"), exports);

@@ -55,7 +55,7 @@ importers:
 packages:
 
   '@code-swap/shared-types@file:../shared-types/code-swap-shared-types-1.0.0.tgz':
-    resolution: {integrity: sha512-Ho70lepEBmnbqiqf7eChkz6NeJToW98V5qG83nmZwC7OAEzhXRLmTZP9ItTbtQeTPajOCWeJCo0v9gm4Iqvd6g==, tarball: file:../shared-types/code-swap-shared-types-1.0.0.tgz}
+    resolution: {integrity: sha512-5FspCbnNsMLZP1mqF1hytVN2V0rqkWXbeO/kXbaVxKsPAK3WSFKFaoOoP9vh75mCIrQvvEtJXvWNkOWyU1/qig==, tarball: file:../shared-types/code-swap-shared-types-1.0.0.tgz}
     version: 1.0.0
 
   '@cspotcode/source-map-support@0.8.1':

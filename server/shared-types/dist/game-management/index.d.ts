@@ -1,5 +1,5 @@
 import { Challenge } from "../challenges";
-import { FullMatch, Player } from "../match-making";
+import { FullMatch, Match, Player } from "../match-making";
 export declare const GAME_MANAGEMENT_CHANNEL_PREFIX = "gameManagement";
 export declare const GAME_MANAGEMENT_CHANNEL: {
     readonly START_MATCH: "gameManagement.startMatch";
@@ -7,10 +7,15 @@ export declare const GAME_MANAGEMENT_CHANNEL: {
     readonly END_CHALLENGE: "gameManagement.endChallenge";
     readonly UPDATE_CODE_SUBMISSION: "gameManagement.updateCodeSubmission";
 };
+export type GameManagementChannel = typeof GAME_MANAGEMENT_CHANNEL[keyof typeof GAME_MANAGEMENT_CHANNEL];
 export type StartMatch = {
     match: FullMatch;
 };
 export type StartChallenge = {
+    /**
+     * match id the challenge is being sent to, for routing purposes
+     */
+    matchId: Match['id'];
     /**
      * the round of the challenge. Each challenge question is associated with one round
      */

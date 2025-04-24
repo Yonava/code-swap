@@ -1,29 +1,22 @@
-import { MATCH_MAKING_CHANNEL } from "shared-types/dist/match-making";
 import { RedisClient } from "./redis";
 import { LOG_COLORS } from "./constants";
 import { colorize } from "json-colorizer";
-import { GAME_MANAGEMENT_CHANNELS } from "shared-types";
+import { AnyChannel } from "shared-types";
 
 const PUB_SUB_PREFIX = '[Live Pub/Sub]';
 
 export const pubSubLogger = (...msg: unknown[]) => console.log(PUB_SUB_PREFIX, ...msg);
 
-type MatchMakingChannels = typeof MATCH_MAKING_CHANNEL
-type MatchMakingChannelName = MatchMakingChannels[keyof MatchMakingChannels]
-type GameManagementChannels = typeof GAME_MANAGEMENT_CHANNELS
-type GameManagementChannelName = GameManagementChannels[keyof GameManagementChannels]
-type ChannelName = MatchMakingChannelName | GameManagementChannelName
-
 type ListenToInboundRequest<TDataIn, TDataOut = any> = {
-  from: ChannelName
-  replyTo?: ChannelName
+  from: AnyChannel
+  replyTo?: AnyChannel
   fn: (message: TDataIn) => Promise<TDataOut | undefined>;
 }
 
 const { pub, sub } = RedisClient.getInstance();
 
 const logRequest = ({ channel, payload }: {
-  channel: ChannelName
+  channel: AnyChannel
   payload: string
 }) => {
   const c = LOG_COLORS.channel(channel);
@@ -32,7 +25,7 @@ const logRequest = ({ channel, payload }: {
 }
 
 const logResponse = ({ channel, payload }: {
-  channel: ChannelName
+  channel: AnyChannel
   payload: string
 }) => {
   const c = LOG_COLORS.channel(channel);

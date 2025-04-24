@@ -11,6 +11,8 @@ export const MATCH_MAKING_CHANNEL = {
   MATCH_READY: `${MATCH_MAKING_CHANNEL_PREFIX}.matchReady`,
 } as const;
 
+export type MatchMakingChannel = typeof MATCH_MAKING_CHANNEL[keyof typeof MATCH_MAKING_CHANNEL]
+
 export type Player = {
   id: string;
   name: string;
