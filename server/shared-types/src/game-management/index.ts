@@ -3,7 +3,7 @@ import { Match, Player } from "../match-making"
 
 export const GAME_MANAGEMENT_CHANNEL_PREFIX = 'gameManagement'
 
-export const GAME_MANAGEMENT_CHANNELS = {
+export const GAME_MANAGEMENT_CHANNEL = {
   START_MATCH: `${GAME_MANAGEMENT_CHANNEL_PREFIX}.startMatch`,
   START_CHALLENGE: `${GAME_MANAGEMENT_CHANNEL_PREFIX}.startChallenge`,
   END_CHALLENGE: `${GAME_MANAGEMENT_CHANNEL_PREFIX}.endChallenge`,

@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^5.4.1",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "socket.io": "^4.8.1"
