@@ -5,12 +5,11 @@ import type {
   CreateMatchResponse,
   JoinMatchRequest,
   JoinMatchResponse,
-  LeaveMatch,
   Match,
   Player
 } from '../match-making'
 import { MATCH_MAKING_CHANNEL } from "../match-making";
-import { EndChallenge, GAME_MANAGEMENT_CHANNEL_PREFIX, GAME_MANAGEMENT_CHANNELS, StartChallenge } from "../game-management";
+import { EndChallenge, GAME_MANAGEMENT_CHANNEL, StartChallenge } from "../game-management";
 import { ChallengeCodeUpdate } from "../challenges";
 
 export type SocketGatewayRegistrationRequest = {
@@ -30,7 +29,7 @@ export type ClientSocketEvents = {
   [MATCH_MAKING_CHANNEL.LEAVE_MATCH]: () => void,
   [MATCH_MAKING_CHANNEL.MATCH_READY]: () => void,
 
-  [GAME_MANAGEMENT_CHANNELS.UPDATE_CODE_SUBMISSION]: (data: ChallengeCodeUpdate) => void,
+  [GAME_MANAGEMENT_CHANNEL.UPDATE_CODE_SUBMISSION]: (data: ChallengeCodeUpdate) => void,
 }
 
 export type ServerSocketEvents = {
@@ -39,8 +38,8 @@ export type ServerSocketEvents = {
   [MATCH_MAKING_CHANNEL.PLAYER_JOINED]: (data: PlayerJoinLeave) => void,
   [MATCH_MAKING_CHANNEL.PLAYER_LEFT]: (data: PlayerJoinLeave) => void,
 
-  [GAME_MANAGEMENT_CHANNELS.START_CHALLENGE]: (data: StartChallenge) => void,
-  [GAME_MANAGEMENT_CHANNELS.END_CHALLENGE]: (data: EndChallenge) => void,
+  [GAME_MANAGEMENT_CHANNEL.START_CHALLENGE]: (data: StartChallenge) => void,
+  [GAME_MANAGEMENT_CHANNEL.END_CHALLENGE]: (data: EndChallenge) => void,
 }
 
 /**

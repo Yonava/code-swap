@@ -20,6 +20,11 @@ export type Match = {
     hostId: Player['id'];
     teams: [[Player | undefined, Player | undefined], [Player | undefined, Player | undefined]];
 };
+export type FullMatch = {
+    id: string;
+    hostId: Player['id'];
+    teams: [[Player, Player], [Player, Player]];
+};
 export type TeamIndex = 0 | 1;
 export type JoinMatchRequest = {
     player: Player;

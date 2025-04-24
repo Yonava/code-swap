@@ -8,9 +8,15 @@ importers:
 
   .:
     dependencies:
+      '@types/cors':
+        specifier: ^2.8.17
+        version: 2.8.17
       chalk:
         specifier: ^5.4.1
         version: 5.4.1
+      cors:
+        specifier: ^2.8.5
+        version: 2.8.5
       dotenv:
         specifier: ^16.4.7
         version: 16.4.7

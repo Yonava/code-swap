@@ -6,6 +6,7 @@ import {
   type LeaveMatch,
   type Match,
   type Player,
+  FullMatch,
   MATCH_MAKING_CHANNEL,
   MatchReady,
 } from 'shared-types/dist/match-making';
@@ -16,7 +17,7 @@ import {
 } from "../matches";
 import { listenToChannel, pubSubLogger } from '../listenToChannel';
 import {
-  GAME_MANAGEMENT_CHANNELS,
+  GAME_MANAGEMENT_CHANNEL,
   type PlayerJoinLeave,
   type StartMatch
 } from 'shared-types';
@@ -92,7 +93,7 @@ listenToChannel<LeaveMatch, PlayerJoinLeave>({
 
 listenToChannel<MatchReady, StartMatch>({
   from: MATCH_READY,
-  replyTo: GAME_MANAGEMENT_CHANNELS.START_MATCH,
+  replyTo: GAME_MANAGEMENT_CHANNEL.START_MATCH,
   fn: async ({ playerId }) => {
     const matchId = await getPlayerMatchId(playerId)
     if (!matchId) {
@@ -112,6 +113,11 @@ listenToChannel<MatchReady, StartMatch>({
       return
     }
 
-    return { match }
+    const allPlayerSlotsFilled = match.teams.flat().every(Boolean)
+    if (!allPlayerSlotsFilled) {
+      logError(playerId, matchId, MATCH_READY, 'Tried to begin match without required players')
+    }
+
+    return { match: match as FullMatch }
   }
 })

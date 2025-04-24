@@ -1,5 +1,5 @@
 import { Challenge } from "../challenges"
-import { Match, Player } from "../match-making"
+import { FullMatch, Player } from "../match-making"
 
 export const GAME_MANAGEMENT_CHANNEL_PREFIX = 'gameManagement'
 
@@ -11,7 +11,7 @@ export const GAME_MANAGEMENT_CHANNEL = {
 } as const
 
 export type StartMatch = {
-  match: Match
+  match: FullMatch
 }
 
 export type StartChallenge = {
@@ -24,7 +24,7 @@ export type StartChallenge = {
    * A player submission period is the window that a user can write code for a challenge
    * and game management will consider it within the valid time box
    */
-  endsAt: string,
+  endsAt: number,
   /**
    * maps a player id to the challenge question they are receiving
    */
@@ -42,5 +42,5 @@ export type EndChallenge = {
    * unix timestamp of when the next challenge will start.
    * `undefined` if that was the last challenge
    */
-  startsAt: string | undefined
+  startsAt: number | undefined
 }
