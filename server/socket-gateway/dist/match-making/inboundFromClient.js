@@ -8,7 +8,7 @@ const constants_1 = require("../constants");
 const socket_1 = require("../socket");
 const registrationDatabase_1 = require("../registrationDatabase");
 const { pub } = redis_1.RedisClient.getInstance();
-const { REQUEST_CREATE_MATCH, RESPONSE_CREATE_MATCH, REQUEST_JOIN_MATCH, RESPONSE_JOIN_MATCH, LEAVE_MATCH, } = match_making_1.MATCH_MAKING_CHANNEL;
+const { REQUEST_CREATE_MATCH, RESPONSE_CREATE_MATCH, REQUEST_JOIN_MATCH, RESPONSE_JOIN_MATCH, LEAVE_MATCH, MATCH_READY, } = match_making_1.MATCH_MAKING_CHANNEL;
 const printRegistrationError = ({ socketId, channel, issue, }) => {
     const s = constants_1.LOG_COLORS.socketId(socketId);
     const c = constants_1.LOG_COLORS.channel(channel);
@@ -63,7 +63,18 @@ const leaveMatch = (socket) => {
         const playerId = await (0, registrationDatabase_1.getPlayerIdFromSocketId)(socketId);
         if (!playerId)
             return (0, printInboundRequest_1.printRegistrationNotFoundError)({ channel: LEAVE_MATCH, socketId });
+        (0, printInboundRequest_1.printReceivedSuccess)({ channel: LEAVE_MATCH, playerId });
         pub.publish(LEAVE_MATCH, JSON.stringify({ playerId }));
     });
 };
-exports.default = [requestCreateMatch, requestJoinMatch, leaveMatch];
+const matchReady = (socket) => {
+    socket.on(MATCH_READY, async () => {
+        const { id: socketId } = socket;
+        const playerId = await (0, registrationDatabase_1.getPlayerIdFromSocketId)(socketId);
+        if (!playerId)
+            return (0, printInboundRequest_1.printRegistrationNotFoundError)({ channel: MATCH_READY, socketId });
+        (0, printInboundRequest_1.printReceivedSuccess)({ channel: MATCH_READY, playerId });
+        pub.publish(MATCH_READY, JSON.stringify({ playerId }));
+    });
+};
+exports.default = [requestCreateMatch, requestJoinMatch, leaveMatch, matchReady];

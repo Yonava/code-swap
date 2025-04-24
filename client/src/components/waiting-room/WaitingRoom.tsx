@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 import { useMatchContext } from '@/state/match/useMatchContext';
 
 export const WaitingRoom = () => {
-  const { playerId, match, leaveMatch } = useMatchContext()
+  const { playerId, match, leaveMatch, matchReady } = useMatchContext()
   const navigate = useNavigate()
 
   if (!match) return null;
@@ -35,6 +35,7 @@ export const WaitingRoom = () => {
         </div>
         <div className='flex gap-1 justify-center'>
           {isHost && <Button
+            onClick={matchReady}
             className="self-center w-32 bg-green-600"
             disabled={!canStartMatch}
           >

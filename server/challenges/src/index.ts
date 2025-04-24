@@ -14,5 +14,5 @@ app.use(express.json());
 app.use("/challenges", challengeRoutes);
 
 app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
+  console.log(`🧠 Challenges Live on Port ${PORT}`);
 });

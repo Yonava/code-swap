@@ -6,6 +6,7 @@ import { registerSocket } from "../registerSocket";
 import { LOG_COLORS } from "../constants";
 import { socketLogger } from "../socket";
 import { getPlayerIdFromSocketId } from "../registrationDatabase";
+import { pubSubLogger } from "../listenToChannel";
 
 const { pub } = RedisClient.getInstance()
 
@@ -84,18 +85,20 @@ const leaveMatch = (socket: PlayerSocketInstance) => {
     const { id: socketId } = socket
     const playerId = await getPlayerIdFromSocketId(socketId);
     if (!playerId) return printRegistrationNotFoundError({ channel: LEAVE_MATCH, socketId })
+    printReceivedSuccess({ channel: LEAVE_MATCH, playerId })
     pub.publish(LEAVE_MATCH, JSON.stringify({ playerId }))
   })
 }
 
-const startMatch = (socket: PlayerSocketInstance) => {
+const matchReady = (socket: PlayerSocketInstance) => {
   socket.on(MATCH_READY, async () => {
     const { id: socketId } = socket
     const playerId = await getPlayerIdFromSocketId(socketId);
     if (!playerId) return printRegistrationNotFoundError({ channel: MATCH_READY, socketId })
 
+    printReceivedSuccess({ channel: MATCH_READY, playerId })
     pub.publish(MATCH_READY, JSON.stringify({ playerId }))
   })
 }
 
-export default [requestCreateMatch, requestJoinMatch, leaveMatch, startMatch]
+export default [requestCreateMatch, requestJoinMatch, leaveMatch, matchReady]

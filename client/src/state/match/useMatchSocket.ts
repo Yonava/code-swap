@@ -104,10 +104,17 @@ export const useMatchSocketEmitters = (socket: ClientSocketInstance | null) => {
     socket.disconnect();
   }, [socket]);
 
+  const matchReady = useCallback(() => {
+    if (!socket) return console.warn('socket left unset')
+
+    socket.emit('matchMaking.matchReady')
+  }, [socket])
+
   return {
     createMatch,
     joinMatch,
-    leaveMatch
+    leaveMatch,
+    matchReady,
   }
 };
 

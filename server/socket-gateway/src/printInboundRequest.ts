@@ -6,7 +6,7 @@ import { colorize } from 'json-colorizer'
 export const printReceivedSuccess = ({ channel, playerId, payload }: {
   channel: keyof ClientSocketEvents,
   playerId: string,
-  payload: unknown
+  payload?: unknown
 }) => {
   const p = LOG_COLORS.playerId(playerId);
   const c = LOG_COLORS.channel(channel);
