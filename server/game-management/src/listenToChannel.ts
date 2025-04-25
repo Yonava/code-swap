@@ -15,7 +15,7 @@ type ListenToInboundRequest<TDataIn, TDataOut = any> = {
 
 const { pub, sub } = RedisClient.getInstance();
 
-const logRequest = ({ channel, payload }: {
+export const logRequest = ({ channel, payload }: {
   channel: AnyChannel
   payload: string
 }) => {
@@ -24,7 +24,7 @@ const logRequest = ({ channel, payload }: {
   pubSubLogger(`Inbound request to ${c}\n${blob}`);
 }
 
-const logResponse = ({ channel, payload }: {
+export const logResponse = ({ channel, payload }: {
   channel: AnyChannel
   payload: string
 }) => {

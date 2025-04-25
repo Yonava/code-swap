@@ -11,11 +11,13 @@ export type GameManagementChannel = typeof GAME_MANAGEMENT_CHANNEL[keyof typeof 
 export type StartMatch = {
     match: FullMatch;
 };
-export type StartChallenge = {
+type MatchIdForRouting = {
     /**
      * match id the challenge is being sent to, for routing purposes
      */
     matchId: Match['id'];
+};
+export type StartChallenge = {
     /**
      * the round of the challenge. Each challenge question is associated with one round
      */
@@ -36,11 +38,12 @@ export type StartChallenge = {
          */
         code: string;
     }>;
-};
+} & MatchIdForRouting;
 export type EndChallenge = {
     /**
      * unix timestamp of when the next challenge will start.
      * `undefined` if that was the last challenge
      */
     startsAt: number | undefined;
-};
+} & MatchIdForRouting;
+export {};
