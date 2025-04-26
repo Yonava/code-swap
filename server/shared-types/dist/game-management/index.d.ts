@@ -51,4 +51,7 @@ export type EndChallenge = {
  * the object the players client stores
  */
 export type ClientChallenge = Pick<StartChallenge, 'endsAt' | 'round'> & ChallengeData;
+export type UpdateCodeSubmission = {
+    playerId: Player['id'];
+} & ChallengeData;
 export {};

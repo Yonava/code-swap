@@ -6,7 +6,6 @@ import { registerSocket } from "../registerSocket";
 import { LOG_COLORS } from "../constants";
 import { socketLogger } from "../socket";
 import { getPlayerIdFromSocketId } from "../registrationDatabase";
-import { pubSubLogger } from "../listenToChannel";
 
 const { pub } = RedisClient.getInstance()
 
