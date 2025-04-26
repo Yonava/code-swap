@@ -7,6 +7,7 @@ exports.activateSocketServer = exports.io = exports.socketLogger = void 0;
 const socket_io_1 = require("socket.io");
 const registerSocket_1 = require("./registerSocket");
 const inboundFromClient_1 = __importDefault(require("./match-making/inboundFromClient"));
+const inboundFromClient_2 = __importDefault(require("./game-management/inboundFromClient"));
 const constants_1 = require("./constants");
 const SOCKET_LOG_PREFIX = '[Socket Server]';
 const socketLogger = (...msg) => console.log(`${SOCKET_LOG_PREFIX}`, ...msg);
@@ -20,6 +21,7 @@ const activateSocketServer = (server) => {
     const socketListeners = [
         registerSocket_1.unregisterListener,
         inboundFromClient_1.default,
+        inboundFromClient_2.default,
     ].flat();
     exports.io.on('connection', (socket) => {
         (0, exports.socketLogger)(`New Socket Connected with ID ${constants_1.LOG_COLORS.socketId(socket.id)}`);

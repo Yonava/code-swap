@@ -9,7 +9,7 @@ const SUBMIT_INTERVAL_MS = 5000
 
 
 const useUpdateCodeSubmission = (editorState: string, challengeId: Challenge['id'] | undefined) => {
-  const { updateCodeSubmission } = useMatchContext();
+  const { updateCodeSubmission, playerId, match } = useMatchContext();
 
   const editorStateRef = useRef(editorState)
   const lastSubmissionRef = useRef('');
@@ -20,17 +20,19 @@ const useUpdateCodeSubmission = (editorState: string, challengeId: Challenge['id
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (!challengeId) return clearInterval(interval)
+      if (!challengeId || !match?.id) return clearInterval(interval)
       if (editorStateRef.current === lastSubmissionRef.current) return;
       updateCodeSubmission({
         code: editorStateRef.current,
-        challengeId
+        challengeId,
+        playerId,
+        matchId: match.id,
       });
       lastSubmissionRef.current = editorStateRef.current;
     }, SUBMIT_INTERVAL_MS);
 
     return () => clearInterval(interval);
-  }, [challengeId, updateCodeSubmission]);
+  }, [challengeId, match?.id, playerId, updateCodeSubmission]);
 
   return lastSubmissionRef
 };
@@ -38,8 +40,7 @@ const useUpdateCodeSubmission = (editorState: string, challengeId: Challenge['id
 export const CodeEditor = () => {
   const { challenge, newChallengeTime } = useMatchContext()
 
-  const betweenChallenges = useMemo(() => !!newChallengeTime, [newChallengeTime])
-  const editorDisabled = useMemo(() => betweenChallenges || !challenge, [betweenChallenges, challenge])
+  const editorDisabled = useMemo(() => !!newChallengeTime || !challenge, [challenge, newChallengeTime])
 
   const [codeEditorState, setCodeEditorState] = useState(NO_CODE_AVAILABLE)
   const lastSubmission = useUpdateCodeSubmission(codeEditorState, challenge?.challengeId)

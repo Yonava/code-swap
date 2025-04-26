@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       axios:
-        specifier: ^1.9.0
+        specifier: ^1.8.4
         version: 1.9.0
       chalk:
         specifier: ^5.4.1
@@ -18,7 +18,7 @@ importers:
         specifier: ^2.8.5
         version: 2.8.5
       dotenv:
-        specifier: ^16.5.0
+        specifier: ^16.4.7
         version: 16.5.0
       express:
         specifier: ^5.1.0
@@ -30,7 +30,7 @@ importers:
         specifier: ^4.7.0
         version: 4.7.0
       shared-types:
-        specifier: file:../shared-types/code-swap-shared-types-1.0.0.tgz
+        specifier: ../shared-types/code-swap-shared-types-1.0.0.tgz
         version: '@code-swap/shared-types@file:../shared-types/code-swap-shared-types-1.0.0.tgz'
     devDependencies:
       '@types/cors':
@@ -40,10 +40,10 @@ importers:
         specifier: ^5.0.1
         version: 5.0.1
       '@types/node':
-        specifier: ^22.15.2
+        specifier: ^22.14.0
         version: 22.15.2
       nodemon:
-        specifier: ^3.1.10
+        specifier: ^3.1.9
         version: 3.1.10
       ts-node:
         specifier: ^10.9.2
@@ -55,7 +55,7 @@ importers:
 packages:
 
   '@code-swap/shared-types@file:../shared-types/code-swap-shared-types-1.0.0.tgz':
-    resolution: {integrity: sha512-1QiXjyPfSLMeQbSo1huOb3+mkytLN0YgKW/AqkMPqF3j0TwbAl0KvcIzA6Z/oBx/KJDV7HG+0+h7jh7Pm4EZrw==, tarball: file:../shared-types/code-swap-shared-types-1.0.0.tgz}
+    resolution: {integrity: sha512-kuG+PdUFrS2m71gCK/Tvp4InRsWElRotMbY587SD1a91IBB/qMQ/wEouqLKicXjTIWAjv4kk0By6r6zTbgIQCA==, tarball: file:../shared-types/code-swap-shared-types-1.0.0.tgz}
     version: 1.0.0
 
   '@cspotcode/source-map-support@0.8.1':

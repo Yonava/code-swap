@@ -53,5 +53,5 @@ export type EndChallenge = {
 export type ClientChallenge = Pick<StartChallenge, 'endsAt' | 'round'> & ChallengeData;
 export type UpdateCodeSubmission = {
     playerId: Player['id'];
-} & ChallengeData;
+} & ChallengeData & MatchIdForRouting;
 export {};

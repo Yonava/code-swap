@@ -26,24 +26,24 @@ export const packChallengesByRound = (challenges: Challenge[]) => {
  * number of rounds per match.
  * a round is a set of two challenges that are swapped between players in a team n number of times
  */
-const NUMBER_OF_ROUNDS = 1
+export const NUMBER_OF_ROUNDS = 1
 
 /**
  * number of times the editor will swap with a teammate per challenge/round
  * ie 1 means each player gets 1 stab at the challenge, 2 means player 1 gets 2 stabs at challenge 1
  * while player 2 gets 1 stab at challenge 1 but 2 stabs at challenge 2
  */
-export const NUMBER_OF_SWAPS_PER_ROUND = 1
+export const NUMBER_OF_SWAPS_PER_ROUND = 3
 
 /**
  * time from start of challenge to end of challenge
  */
-const TIME_FROM_START_TO_END = 20_000
+const TIME_FROM_START_TO_END = 5_000
 
 /**
  * time between the end of a challenge and the start of a new challenge event
  */
-const TIME_FROM_END_TO_START = 10_000
+const TIME_FROM_END_TO_START = 30_000
 
 /**
  * can be used as time from end to end as well
@@ -56,7 +56,7 @@ export const TIME_FROM_START_TO_START = TIME_FROM_START_TO_END + TIME_FROM_END_T
  * @param match
  * @param challengesByRound a list of challenges paired together by round
  */
-const createChallengeRounds = (match: FullMatch, challengesByRound: [Challenge, Challenge][]) => {
+export const createChallengeRounds = (match: FullMatch, challengesByRound: [Challenge, Challenge][]) => {
   if (challengesByRound.length === 0) {
     throw new Error('cannot create challenge rounds with no rounds')
   }

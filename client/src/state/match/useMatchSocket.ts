@@ -39,7 +39,7 @@ export const connectSocket = <T extends EventsMap, K extends EventsMap>(options:
 }
 
 import { matchCtxRef } from './MatchContext';
-import { ChallengeData } from 'shared-types/dist/game-management';
+import { ChallengeData, UpdateCodeSubmission } from 'shared-types/dist/game-management';
 
 export const useMatchSocketListeners = () => {
   const navigate = useNavigate();
@@ -139,7 +139,7 @@ export const useMatchSocketEmitters = (socket: ClientSocketInstance | null) => {
     socket.emit('matchMaking.matchReady')
   }, [socket])
 
-  const updateCodeSubmission = useCallback((data: ChallengeData) => {
+  const updateCodeSubmission = useCallback((data: UpdateCodeSubmission) => {
     if (!socket) return console.warn('socket left unset')
 
     socket.emit('gameManagement.updateCodeSubmission', data)

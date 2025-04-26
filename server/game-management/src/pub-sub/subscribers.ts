@@ -2,13 +2,19 @@ import { listenToChannel, logResponse } from '../listenToChannel';
 import {
   GAME_MANAGEMENT_CHANNEL,
   StartMatch,
-  FullMatch,
+  UpdateCodeSubmission,
 } from 'shared-types';
 import { RedisClient } from '../redis';
-import { fetchChallenges, NUMBER_OF_ROUNDS, packChallengesByRound, TIME_FROM_START_TO_START } from '../createChallengeRounds';
+import {
+  createChallengeRounds,
+  fetchChallenges,
+  NUMBER_OF_ROUNDS,
+  packChallengesByRound,
+  TIME_FROM_START_TO_START
+} from '../createChallengeRounds';
 
 const { pub } = RedisClient.getInstance()
-const { START_MATCH, START_CHALLENGE, END_CHALLENGE } = GAME_MANAGEMENT_CHANNEL
+const { START_MATCH, START_CHALLENGE, END_CHALLENGE, UPDATE_CODE_SUBMISSION } = GAME_MANAGEMENT_CHANNEL
 
 listenToChannel<StartMatch>({
   from: START_MATCH,
@@ -33,6 +39,9 @@ listenToChannel<StartMatch>({
   }
 })
 
-function createChallengeRounds(match: FullMatch, challengesByRound: any): [any, any] {
-  throw new Error('Function not implemented.');
-}
+listenToChannel<UpdateCodeSubmission>({
+  from: UPDATE_CODE_SUBMISSION,
+  fn: async ({ playerId, matchId, challengeId, code }) => {
+    console.log('updating', playerId, challengeId, code)
+  }
+})
