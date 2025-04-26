@@ -2,8 +2,7 @@ import type { Server, Socket } from "socket.io";
 import type { Socket as ClientSocket } from "socket.io-client";
 import type { CreateMatchRequest, CreateMatchResponse, JoinMatchRequest, JoinMatchResponse, Match, Player } from '../match-making';
 import { MATCH_MAKING_CHANNEL } from "../match-making";
-import { EndChallenge, GAME_MANAGEMENT_CHANNEL, StartChallenge } from "../game-management";
-import { ChallengeCodeUpdate } from "../challenges";
+import { ChallengeData, EndChallenge, GAME_MANAGEMENT_CHANNEL, StartChallenge } from "../game-management";
 export type SocketGatewayRegistrationRequest = {
     playerId: Player['id'];
 };
@@ -18,7 +17,7 @@ export type ClientSocketEvents = {
     [MATCH_MAKING_CHANNEL.REQUEST_JOIN_MATCH]: (req: JoinMatchRequest) => void;
     [MATCH_MAKING_CHANNEL.LEAVE_MATCH]: () => void;
     [MATCH_MAKING_CHANNEL.MATCH_READY]: () => void;
-    [GAME_MANAGEMENT_CHANNEL.UPDATE_CODE_SUBMISSION]: (data: ChallengeCodeUpdate) => void;
+    [GAME_MANAGEMENT_CHANNEL.UPDATE_CODE_SUBMISSION]: (data: ChallengeData) => void;
 };
 export type ServerSocketEvents = {
     [MATCH_MAKING_CHANNEL.RESPONSE_CREATE_MATCH]: (res: CreateMatchResponse) => void;

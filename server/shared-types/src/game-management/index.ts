@@ -23,7 +23,7 @@ type MatchIdForRouting = {
   matchId: Match['id']
 }
 
-type ChallengeData = {
+export type ChallengeData = {
   challengeId: Challenge['id'],
   /**
    * this code will replace the content in the players editor

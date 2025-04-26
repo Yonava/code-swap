@@ -46,6 +46,7 @@ const DEFAULT_MATCH_DATA: TMatchContext = {
   createMatch: () => { },
   leaveMatch: () => { },
   matchReady: () => { },
+  updateCodeSubmission: () => { }
 };
 
 export const matchCtxRef = { current: DEFAULT_MATCH_DATA };

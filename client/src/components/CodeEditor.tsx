@@ -1,13 +1,54 @@
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import { useMatchContext } from '@/state/match/useMatchContext';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Challenge } from 'shared-types/dist/challenges';
+
+const NO_CODE_AVAILABLE = 'no code available';
+const SUBMIT_INTERVAL_MS = 5000
+
+
+const useUpdateCodeSubmission = (editorState: string, challengeId: Challenge['id'] | undefined) => {
+  const { updateCodeSubmission } = useMatchContext();
+
+  const editorStateRef = useRef(editorState)
+  const lastSubmissionRef = useRef('');
+
+  useEffect(() => {
+    editorStateRef.current = editorState
+  }, [editorState])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!challengeId) return clearInterval(interval)
+      if (editorStateRef.current === lastSubmissionRef.current) return;
+      updateCodeSubmission({
+        code: editorStateRef.current,
+        challengeId
+      });
+      lastSubmissionRef.current = editorStateRef.current;
+    }, SUBMIT_INTERVAL_MS);
+
+    return () => clearInterval(interval);
+  }, [challengeId, updateCodeSubmission]);
+
+  return lastSubmissionRef
+};
 
 export const CodeEditor = () => {
   const { challenge, newChallengeTime } = useMatchContext()
 
   const betweenChallenges = useMemo(() => !!newChallengeTime, [newChallengeTime])
   const editorDisabled = useMemo(() => betweenChallenges || !challenge, [betweenChallenges, challenge])
+
+  const [codeEditorState, setCodeEditorState] = useState(NO_CODE_AVAILABLE)
+  const lastSubmission = useUpdateCodeSubmission(codeEditorState, challenge?.challengeId)
+
+  useEffect(() => {
+    if (!challenge) return setCodeEditorState(NO_CODE_AVAILABLE)
+    lastSubmission.current = challenge.code
+    setCodeEditorState(challenge.code)
+  }, [challenge, lastSubmission])
 
   return (
     <CodeMirror
@@ -17,7 +58,8 @@ export const CodeEditor = () => {
       width="100%"
       theme="dark"
       extensions={[javascript()]}
-      value={challenge?.code ?? 'no code available'}
+      value={codeEditorState}
+      onChange={(code) => setCodeEditorState(code)}
     />
   );
 };
