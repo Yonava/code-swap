@@ -9,6 +9,7 @@ export declare const MATCH_MAKING_CHANNEL: {
     readonly PLAYER_LEFT: "matchMaking.playerLeft";
     readonly MATCH_READY: "matchMaking.matchReady";
 };
+export type MatchMakingChannel = typeof MATCH_MAKING_CHANNEL[keyof typeof MATCH_MAKING_CHANNEL];
 export type Player = {
     id: string;
     name: string;
@@ -19,6 +20,11 @@ export type Match = {
     id: string;
     hostId: Player['id'];
     teams: [[Player | undefined, Player | undefined], [Player | undefined, Player | undefined]];
+};
+export type FullMatch = {
+    id: string;
+    hostId: Player['id'];
+    teams: [[Player, Player], [Player, Player]];
 };
 export type TeamIndex = 0 | 1;
 export type JoinMatchRequest = {
@@ -48,5 +54,8 @@ export type CreateMatchResponse = {
     playerId: Player['id'];
 } & (CreateMatchResponseAccepted | CreateMatchResponseRejected);
 export type LeaveMatch = {
+    playerId: Player['id'];
+};
+export type MatchReady = {
     playerId: Player['id'];
 };

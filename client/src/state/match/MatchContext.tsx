@@ -42,7 +42,8 @@ const DEFAULT_MATCH_DATA: TMatchContext = {
   dispatch: () => { },
   joinMatch: () => { },
   createMatch: () => { },
-  leaveMatch: () => { }
+  leaveMatch: () => { },
+  matchReady: () => { },
 };
 
 const MatchContext = createContext<TMatchContext>(DEFAULT_MATCH_DATA);
@@ -50,7 +51,7 @@ const MatchContext = createContext<TMatchContext>(DEFAULT_MATCH_DATA);
 export const MatchContextProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(matchReducer, DEFAULT_MATCH_DATA);
   const [socket, setSocket] = useState<ClientSocketInstance | null>(null);
-  const { leaveMatch, joinMatch, createMatch } = useMatchSocketEmitters(socket)
+  const socketEmitters = useMatchSocketEmitters(socket)
   const initListeners = useMatchSocketListeners(dispatch)
 
   useOnUnmount(() => socket?.disconnect());
@@ -95,7 +96,7 @@ export const MatchContextProvider = ({ children }: { children: ReactNode }) => {
       return
     }
 
-    if (matchIdParam === 'new') return createMatch(playerId)
+    if (matchIdParam === 'new') return socketEmitters.createMatch(playerId)
 
     const [matchId, teamIndexStr] = matchIdParam.split('-')
 
@@ -113,7 +114,7 @@ export const MatchContextProvider = ({ children }: { children: ReactNode }) => {
       return
     }
 
-    joinMatch(playerId, matchId, teamIndex)
+    socketEmitters.joinMatch(playerId, matchId, teamIndex)
     // eslint-disable-next-line
   }, [socket])
 
@@ -125,9 +126,7 @@ export const MatchContextProvider = ({ children }: { children: ReactNode }) => {
     matchPhase: getMatchPhase(state),
     dispatch,
 
-    leaveMatch,
-    joinMatch,
-    createMatch,
+    ...socketEmitters,
   };
 
   return (

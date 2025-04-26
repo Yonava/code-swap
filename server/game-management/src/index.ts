@@ -1,25 +1,25 @@
 import dotenv from 'dotenv';
-import express from 'express';
-import { sockets } from './sockets';
-import { createServer } from 'http';
-import { LOCALHOST_PORT } from './constants';
-
 dotenv.config();
+import express from 'express';
+import cors from 'cors'
+import { PORT } from './constants';
+import { RedisClient } from './redis';
+import './pub-sub/subscribers';
 
 const app = express();
-const server = createServer(app);
 
+app.use(cors())
 app.use(express.json());
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(__dirname + '/public/'));
-  app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));
-}
+app.get('/health', (req, res) => {
+  const { pub, sub } = RedisClient.getInstance();
+  res.status(200).json({
+    status: 'ok',
+    redisPub: pub.isReady,
+    redisSub: sub.isReady,
+  });
+})
 
-const PORT = process.env.PORT || LOCALHOST_PORT;
-
-server.listen(Number(PORT), () => {
-  console.log(`Server listening on port ${PORT}`);
+app.listen(PORT, () => {
+  console.log(`🎮 Game Management Live on Port ${PORT}`);
 });
-
-sockets(server);

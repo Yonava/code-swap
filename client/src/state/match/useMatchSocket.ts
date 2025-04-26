@@ -64,6 +64,14 @@ export const useMatchSocketListeners = (matchDispatcher: MatchActionDispatcher) 
       console.log('matchMaking.playerLeft', match);
       matchDispatcher({ type: MATCH_ACTIONS.SET_LIVE_MATCH, payload: match });
     });
+
+    socket.on('gameManagement.startChallenge', (data) => {
+      console.log('gameManagement.startChallenge', data)
+    })
+
+    socket.on('gameManagement.endChallenge', (data) => {
+      console.log('gameManagement.endChallenge', data)
+    })
   }
 };
 
@@ -96,10 +104,17 @@ export const useMatchSocketEmitters = (socket: ClientSocketInstance | null) => {
     socket.disconnect();
   }, [socket]);
 
+  const matchReady = useCallback(() => {
+    if (!socket) return console.warn('socket left unset')
+
+    socket.emit('matchMaking.matchReady')
+  }, [socket])
+
   return {
     createMatch,
     joinMatch,
-    leaveMatch
+    leaveMatch,
+    matchReady,
   }
 };
 

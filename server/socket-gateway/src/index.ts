@@ -5,6 +5,7 @@ import { createServer } from 'http';
 import { PORT } from './constants';
 import { activateSocketServer } from './socket';
 import './match-making/outboundToClient';
+import './game-management/outboundToClient'
 
 const app = express();
 const server = createServer(app);
