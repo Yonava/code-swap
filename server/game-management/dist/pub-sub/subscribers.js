@@ -40,11 +40,11 @@ const NUMBER_OF_SWAPS_PER_ROUND = 3;
 /**
  * time from start of challenge to end of challenge
  */
-const TIME_FROM_START_TO_END = 3_000;
+const TIME_FROM_START_TO_END = 10_000;
 /**
  * time between the end of a challenge and the start of a new challenge event
  */
-const TIME_FROM_END_TO_START = 1_000;
+const TIME_FROM_END_TO_START = 3_000;
 /**
  * can be used as time from end to end as well
  */

@@ -1,12 +1,10 @@
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
+import { useMatchContext } from '@/state/match/useMatchContext';
 
-type CodeEditorProps = {
-  value: string;
-  onChange: (value: string) => void;
-};
+export const CodeEditor = () => {
+  const { challenge } = useMatchContext()
 
-export const CodeEditor = ({ value, onChange }: CodeEditorProps) => {
   return (
     <CodeMirror
       style={{ height: '500px' }}
@@ -14,8 +12,7 @@ export const CodeEditor = ({ value, onChange }: CodeEditorProps) => {
       width="100%"
       theme="dark"
       extensions={[javascript()]}
-      value={value}
-      onChange={onChange}
+      value={challenge?.code ?? 'no code available'}
     />
   );
 };

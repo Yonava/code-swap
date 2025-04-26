@@ -25,9 +25,9 @@ ReactDOM.createRoot(app).render(
           <Route
             path="challenge"
             element={
-              <MatchContextProvider>
-                <ChallengeView />
-              </MatchContextProvider>
+              // <MatchContextProvider>
+              <ChallengeView />
+              // </MatchContextProvider>
             }
           />
           <Route

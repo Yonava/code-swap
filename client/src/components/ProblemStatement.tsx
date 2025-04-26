@@ -1,20 +1,52 @@
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
-import mycssclassed from './classes';
-import { Button } from './ui/Button';
+import { useMatchContext } from '@/state/match/useMatchContext';
+import { useMemo } from 'react';
+import { Challenge } from 'shared-types/dist/challenges';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
+import { CountdownTimer } from './CountdownTimer';
 
 export const ProblemStatement = () => {
-  const content = `
-  <header>head</header>
-  <code>head2</code>
-  `;
+  const { challenge: challengeCtx } = useMatchContext()
+  const challengeId = useMemo(() => challengeCtx ? challengeCtx.challengeId : undefined, [challengeCtx])
+
+  const fetchChallenge = async () => {
+    if (!challengeId) throw 'query fn should not be enabled'
+    const MATCH_URL = (challengeId: Challenge['id']) => `http://localhost:3003/challenges/${challengeId}`
+    const { data } = await axios.get<Challenge>(MATCH_URL(challengeId))
+    return data
+  }
+
+  const { data: challenge } = useQuery<Challenge>({
+    queryKey: ['problem-statement-lookup', challengeId],
+    queryFn: fetchChallenge,
+    enabled: !!challengeId,
+  })
+
+  const problemStatement = useMemo(() => {
+    if (!challenge) return 'no problem statement available'
+    return `
+      ${challenge.title} ->
+
+      ${challenge.description}
+    `
+  }, [challenge])
+
   return (
-    <div>
-      <Button>Click me</Button>
-      <ReactMarkdown
-        rehypePlugins={[rehypeRaw]}
-        children={content + ' ' + mycssclassed}
-      />
+    <div className="relative h-full">
+      <div>
+        <ReactMarkdown
+          rehypePlugins={[rehypeRaw]}
+          children={problemStatement}
+        />
+      </div>
+
+      {challengeCtx && (
+        <div className='absolute bottom-0'>
+          <CountdownTimer timeAtZero={challengeCtx.endsAt} />
+        </div>
+      )}
     </div>
   );
 };
