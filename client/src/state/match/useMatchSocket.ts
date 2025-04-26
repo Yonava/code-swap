@@ -69,6 +69,7 @@ export const useMatchSocketListeners = () => {
     });
 
     socket.on('gameManagement.startChallenge', ({ round, endsAt, challenges }) => {
+      console.log('gameManagement.startChallenge')
       const ctx = matchCtxRef.current;
       const { challengeId, code } = challenges[ctx.playerId];
       ctx.dispatch({
@@ -80,10 +81,19 @@ export const useMatchSocketListeners = () => {
           code,
         },
       });
+      ctx.dispatch({
+        type: MATCH_ACTIONS.SET_NEW_CHALLENGE_TIME,
+        payload: undefined,
+      })
     });
 
     socket.on('gameManagement.endChallenge', (data) => {
       console.log('gameManagement.endChallenge', data);
+      matchCtxRef.current.dispatch({
+        type: MATCH_ACTIONS.SET_NEW_CHALLENGE_TIME,
+        payload: data?.startsAt
+      })
+
       if (!('startsAt' in data)) matchCtxRef.current.dispatch(({
         type: MATCH_ACTIONS.SET_CHALLENGE,
         // @ts-expect-error temporary before we add a scorecard

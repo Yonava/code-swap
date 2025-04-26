@@ -25,6 +25,7 @@ export type TMatchContext = {
 
   match: Match | undefined,
   challenge: ClientChallenge | undefined,
+  newChallengeTime: number | undefined,
   scoreboard: undefined,
 
   matchPhase: MatchPhase,
@@ -125,6 +126,7 @@ export const MatchContextProvider = ({ children }: { children: ReactNode }) => {
     playerId: state.playerId,
     match: state.match,
     challenge: state.challenge,
+    newChallengeTime: state.newChallengeTime,
     scoreboard: state.scoreboard,
     matchPhase: getMatchPhase(state),
     dispatch,

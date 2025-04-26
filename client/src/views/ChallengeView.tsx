@@ -24,7 +24,7 @@ const ChallengeView = () => {
         </TitledContainer>
       </div>
 
-      {/* <WaitingRoom /> */}
+      <WaitingRoom />
     </>
   );
 };

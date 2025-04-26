@@ -10,8 +10,6 @@ export const WaitingRoom = () => {
 
   if (!match) return null;
 
-  console.log(matchPhase)
-
   const isHost = match.hostId === playerId
   const allPlayerSlotsFilled = match.teams.flat().every(Boolean)
   const canStartMatch = isHost && allPlayerSlotsFilled
