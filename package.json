@@ -21,5 +21,14 @@
   "description": "",
   "devDependencies": {
     "concurrently": "^9.1.2"
-  }
+  },
+  "workspaces": [
+    "packages/client",
+    "packages/socket-gateway",
+    "packages/game-management",
+    "packages/match-making",
+    "packages/scoring",
+    "packages/challenges",
+    "packages/shared-types"
+  ]
 }

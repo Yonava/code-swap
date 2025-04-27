@@ -20,7 +20,7 @@
     "express": "^5.1.0",
     "json-colorizer": "^3.0.1",
     "redis": "^4.7.0",
-    "shared-types": "../shared-types/code-swap-shared-types-1.0.0.tgz"
+    "shared-types": "workspace:*"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
