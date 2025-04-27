@@ -10,9 +10,13 @@ const cors_1 = __importDefault(require("cors"));
 const constants_1 = require("./constants");
 const redis_1 = require("./redis");
 require("./pub-sub/subscribers");
+const codeSubmissions_1 = __importDefault(require("./rest/codeSubmissions"));
+const playerToTeam_1 = __importDefault(require("./rest/playerToTeam"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
+app.use('/submissions', codeSubmissions_1.default);
+app.use('/playerToTeam', playerToTeam_1.default);
 app.get('/health', (req, res) => {
     const { pub, sub } = redis_1.RedisClient.getInstance();
     res.status(200).json({

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createChallengeRounds = exports.TIME_FROM_START_TO_START = exports.NUMBER_OF_SWAPS_PER_ROUND = exports.NUMBER_OF_ROUNDS = exports.packChallengesByRound = exports.fetchChallenges = void 0;
+exports.createChallengeRounds = exports.TIME_FROM_START_TO_START = exports.TIME_FROM_START_TO_END = exports.NUMBER_OF_SWAPS_PER_ROUND = exports.NUMBER_OF_ROUNDS = exports.packChallengesByRound = exports.fetchChallenges = void 0;
 const axios_1 = __importDefault(require("axios"));
 const fetchChallenges = async (count) => {
     const CHALLENGE_URL = `http://localhost:3003/challenges/random?count=${count}`;
@@ -38,15 +38,15 @@ exports.NUMBER_OF_SWAPS_PER_ROUND = 3;
 /**
  * time from start of challenge to end of challenge
  */
-const TIME_FROM_START_TO_END = 5_000;
+exports.TIME_FROM_START_TO_END = 1_000 * 120;
 /**
  * time between the end of a challenge and the start of a new challenge event
  */
-const TIME_FROM_END_TO_START = 30_000;
+const TIME_FROM_END_TO_START = 5_000;
 /**
  * can be used as time from end to end as well
  */
-exports.TIME_FROM_START_TO_START = TIME_FROM_START_TO_END + TIME_FROM_END_TO_START;
+exports.TIME_FROM_START_TO_START = exports.TIME_FROM_START_TO_END + TIME_FROM_END_TO_START;
 /**
  * create the messages that will be broadcast to the client
  *
@@ -67,7 +67,7 @@ const createChallengeRounds = (match, challengesByRound) => {
         let start = {
             matchId: match.id,
             round: i,
-            endsAt: Date.now() + TIME_FROM_START_TO_END,
+            endsAt: Date.now() + exports.TIME_FROM_START_TO_END,
             challenges: {
                 [t1p1.id]: {
                     challengeId: challenge1.id,
@@ -91,7 +91,7 @@ const createChallengeRounds = (match, challengesByRound) => {
         start.endsAt += TIME_FROM_END_TO_START;
         challengeEnds.push({ startsAt: start.endsAt, matchId: match.id });
         for (let j = 0; j < exports.NUMBER_OF_SWAPS_PER_ROUND; j++) {
-            start.endsAt += TIME_FROM_START_TO_END;
+            start.endsAt += exports.TIME_FROM_START_TO_END;
             start.challenges = {
                 [t1p1.id]: start.challenges[t1p2.id],
                 [t1p2.id]: start.challenges[t1p1.id],

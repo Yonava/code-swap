@@ -11,6 +11,7 @@ import {
   fetchChallenges,
   NUMBER_OF_ROUNDS,
   packChallengesByRound,
+  TIME_FROM_START_TO_END,
   TIME_FROM_START_TO_START
 } from '../createChallengeRounds';
 import { ChallengeSetSubmissions, codeSubmissions } from '../db/codeSubmissions';
@@ -38,6 +39,12 @@ listenToChannel<StartMatch>({
       getNewChallengeSetSubmissionObj(challenges),
     ])
 
+    playerToTeam.set(match.teams[0][0].id, 0)
+    playerToTeam.set(match.teams[0][1].id, 0)
+
+    playerToTeam.set(match.teams[1][0].id, 1)
+    playerToTeam.set(match.teams[1][1].id, 1)
+
     for (let i = 0; i < starts.length; i++) {
       setTimeout(() => {
         pub.publish(START_CHALLENGE, JSON.stringify(starts[i]))
@@ -47,7 +54,7 @@ listenToChannel<StartMatch>({
     for (let i = 0; i < ends.length; i++) {
       setTimeout(() => {
         pub.publish(END_CHALLENGE, JSON.stringify(ends[i]))
-      }, (i * TIME_FROM_START_TO_START) + TIME_FROM_START_TO_START)
+      }, (i * TIME_FROM_START_TO_START) + TIME_FROM_START_TO_END)
     }
   }
 })
