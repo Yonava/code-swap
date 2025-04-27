@@ -52,7 +52,6 @@ const injectCurrentSubmissionState = (challenge) => {
         playerToTeam_1.playerToTeam.set(match.teams[1][1].id, 1);
         for (let i = 0; i < starts.length; i++) {
             setTimeout(() => {
-                const { challenges } = starts[i];
                 injectCurrentSubmissionState(starts[i]);
                 pub.publish(START_CHALLENGE, JSON.stringify(starts[i]));
             }, i * createChallengeRounds_1.TIME_FROM_START_TO_START);

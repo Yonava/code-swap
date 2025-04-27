@@ -79,7 +79,6 @@ listenToChannel<StartMatch>({
 
     for (let i = 0; i < starts.length; i++) {
       setTimeout(() => {
-        const { challenges } = starts[i]
         injectCurrentSubmissionState(starts[i])
         pub.publish(START_CHALLENGE, JSON.stringify(starts[i]))
       }, i * TIME_FROM_START_TO_START)
