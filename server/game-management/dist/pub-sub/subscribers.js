@@ -12,6 +12,29 @@ const getNewChallengeSetSubmissionObj = (challenges) => challenges.reduce((acc, 
     acc[curr.id] = curr?.startingCode ?? '';
     return acc;
 }, {});
+const injectCurrentSubmissionState = (challenge) => {
+    console.log('injecting in progress');
+    const matchSubmissions = codeSubmissions_1.codeSubmissions.get(challenge.matchId);
+    if (!matchSubmissions) {
+        console.log('no submissions on match that should exist');
+        return;
+    }
+    const playerIdToChallengeId = Object.entries(challenge.challenges).reduce((acc, [playerId, { challengeId }]) => {
+        acc[playerId] = challengeId;
+        return acc;
+    }, {});
+    const playerIds = Object.keys(challenge.challenges);
+    for (const playerId of playerIds) {
+        const team = playerToTeam_1.playerToTeam.get(playerId);
+        if (team === undefined) {
+            console.log('player should be assigned to a team but was not :(');
+            return;
+        }
+        const challengeId = playerIdToChallengeId[playerId];
+        const currentSubmission = matchSubmissions[team][challengeId];
+        challenge.challenges[playerId].code = currentSubmission;
+    }
+};
 (0, listenToChannel_1.listenToChannel)({
     from: START_MATCH,
     fn: async ({ match }) => {
@@ -29,6 +52,8 @@ const getNewChallengeSetSubmissionObj = (challenges) => challenges.reduce((acc, 
         playerToTeam_1.playerToTeam.set(match.teams[1][1].id, 1);
         for (let i = 0; i < starts.length; i++) {
             setTimeout(() => {
+                const { challenges } = starts[i];
+                injectCurrentSubmissionState(starts[i]);
                 pub.publish(START_CHALLENGE, JSON.stringify(starts[i]));
             }, i * createChallengeRounds_1.TIME_FROM_START_TO_START);
         }

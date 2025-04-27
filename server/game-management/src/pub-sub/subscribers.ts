@@ -2,6 +2,8 @@ import { listenToChannel, logResponse } from '../listenToChannel';
 import {
   Challenge,
   GAME_MANAGEMENT_CHANNEL,
+  Player,
+  StartChallenge,
   StartMatch,
   UpdateCodeSubmission,
 } from 'shared-types';
@@ -25,6 +27,36 @@ const getNewChallengeSetSubmissionObj = (challenges: Challenge[]) => challenges.
   return acc
 }, {})
 
+const injectCurrentSubmissionState = (challenge: StartChallenge) => {
+  console.log('injecting in progress')
+
+  const matchSubmissions = codeSubmissions.get(challenge.matchId)
+
+  if (!matchSubmissions) {
+    console.log('no submissions on match that should exist')
+    return
+  }
+
+  const playerIdToChallengeId = Object.entries(challenge.challenges).reduce((acc, [playerId, { challengeId }]) => {
+    acc[playerId] = challengeId
+    return acc
+  }, {} as Record<Player['id'], Challenge['id']>)
+
+  const playerIds = Object.keys(challenge.challenges)
+
+  for (const playerId of playerIds) {
+    const team = playerToTeam.get(playerId)
+    if (team === undefined) {
+      console.log('player should be assigned to a team but was not :(')
+      return
+    }
+
+    const challengeId = playerIdToChallengeId[playerId]
+    const currentSubmission = matchSubmissions[team][challengeId]
+    challenge.challenges[playerId].code = currentSubmission
+  }
+}
+
 listenToChannel<StartMatch>({
   from: START_MATCH,
   fn: async ({ match }) => {
@@ -47,6 +79,8 @@ listenToChannel<StartMatch>({
 
     for (let i = 0; i < starts.length; i++) {
       setTimeout(() => {
+        const { challenges } = starts[i]
+        injectCurrentSubmissionState(starts[i])
         pub.publish(START_CHALLENGE, JSON.stringify(starts[i]))
       }, i * TIME_FROM_START_TO_START)
     }

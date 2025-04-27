@@ -34,15 +34,15 @@ exports.NUMBER_OF_ROUNDS = 1;
  * ie 1 means each player gets 1 stab at the challenge, 2 means player 1 gets 2 stabs at challenge 1
  * while player 2 gets 1 stab at challenge 1 but 2 stabs at challenge 2
  */
-exports.NUMBER_OF_SWAPS_PER_ROUND = 3;
+exports.NUMBER_OF_SWAPS_PER_ROUND = 2;
 /**
  * time from start of challenge to end of challenge
  */
-exports.TIME_FROM_START_TO_END = 1_000 * 120;
+exports.TIME_FROM_START_TO_END = 1_000 * 30;
 /**
  * time between the end of a challenge and the start of a new challenge event
  */
-const TIME_FROM_END_TO_START = 5_000;
+const TIME_FROM_END_TO_START = 1_000 * 5;
 /**
  * can be used as time from end to end as well
  */
