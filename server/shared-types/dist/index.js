@@ -19,3 +19,4 @@ __exportStar(require("./socket-gateway"), exports);
 __exportStar(require("./challenges"), exports);
 __exportStar(require("./game-management"), exports);
 __exportStar(require("./util"), exports);
+__exportStar(require("./scoring"), exports);

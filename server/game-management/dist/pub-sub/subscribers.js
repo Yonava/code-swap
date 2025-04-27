@@ -6,17 +6,18 @@ const redis_1 = require("../redis");
 const createChallengeRounds_1 = require("../createChallengeRounds");
 const codeSubmissions_1 = require("../db/codeSubmissions");
 const playerToTeam_1 = require("../db/playerToTeam");
+const scoring_1 = require("shared-types/dist/scoring");
 const { pub } = redis_1.RedisClient.getInstance();
 const { START_MATCH, START_CHALLENGE, END_CHALLENGE, UPDATE_CODE_SUBMISSION } = shared_types_1.GAME_MANAGEMENT_CHANNEL;
 const getNewChallengeSetSubmissionObj = (challenges) => challenges.reduce((acc, curr) => {
-    acc[curr.id] = curr?.startingCode ?? '';
+    acc[curr.id] = curr?.startingCode ?? "";
     return acc;
 }, {});
 const injectCurrentSubmissionState = (challenge) => {
-    console.log('injecting in progress');
+    console.log("injecting in progress");
     const matchSubmissions = codeSubmissions_1.codeSubmissions.get(challenge.matchId);
     if (!matchSubmissions) {
-        console.log('no submissions on match that should exist');
+        console.log("no submissions on match that should exist");
         return;
     }
     const playerIdToChallengeId = Object.entries(challenge.challenges).reduce((acc, [playerId, { challengeId }]) => {
@@ -27,7 +28,7 @@ const injectCurrentSubmissionState = (challenge) => {
     for (const playerId of playerIds) {
         const team = playerToTeam_1.playerToTeam.get(playerId);
         if (team === undefined) {
-            console.log('player should be assigned to a team but was not :(');
+            console.log("player should be assigned to a team but was not :(");
             return;
         }
         const challengeId = playerIdToChallengeId[playerId];
@@ -58,24 +59,30 @@ const injectCurrentSubmissionState = (challenge) => {
         }
         for (let i = 0; i < ends.length; i++) {
             setTimeout(() => {
+                if (ends[i].startsAt === undefined) {
+                    pub.publish(scoring_1.SCORING_CHANNEL.MATCH_READY_TO_SCORE, JSON.stringify({
+                        matchId: match.id,
+                        challengeSet: codeSubmissions_1.codeSubmissions.get(match.id),
+                    }));
+                }
                 pub.publish(END_CHALLENGE, JSON.stringify(ends[i]));
-            }, (i * createChallengeRounds_1.TIME_FROM_START_TO_START) + createChallengeRounds_1.TIME_FROM_START_TO_END);
+            }, i * createChallengeRounds_1.TIME_FROM_START_TO_START + createChallengeRounds_1.TIME_FROM_START_TO_END);
         }
-    }
+    },
 });
 (0, listenToChannel_1.listenToChannel)({
     from: UPDATE_CODE_SUBMISSION,
     fn: async ({ playerId, matchId, challengeId, code }) => {
         const match = codeSubmissions_1.codeSubmissions.get(matchId);
         if (!match) {
-            console.log('match not found');
+            console.log("match not found");
             return;
         }
         const team = playerToTeam_1.playerToTeam.get(playerId);
         if (team === undefined) {
-            console.log('team not found');
+            console.log("team not found");
             return;
         }
         match[team][challengeId] = code;
-    }
+    },
 });

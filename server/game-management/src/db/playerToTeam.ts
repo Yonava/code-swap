@@ -1,4 +1,3 @@
-import { Player, TeamIndex } from "shared-types"
+import { PlayerToTeamDB } from "shared-types";
 
-export type PlayerToTeamDB = Map<Player['id'], TeamIndex>
-export const playerToTeam: PlayerToTeamDB = new Map()
+export const playerToTeam: PlayerToTeamDB = new Map();
