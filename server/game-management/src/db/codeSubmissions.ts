@@ -1,6 +1,3 @@
-import { Challenge, Match } from 'shared-types'
+import { CodeSubmissionsDB } from "shared-types";
 
-export type ChallengeSetSubmissions = Record<Challenge['id'], string>
-export type CodeSubmissionsDB = Map<Match['id'], [ChallengeSetSubmissions, ChallengeSetSubmissions]>
-
-export const codeSubmissions: CodeSubmissionsDB = new Map()
+export const codeSubmissions: CodeSubmissionsDB = new Map();

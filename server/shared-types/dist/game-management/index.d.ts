@@ -1,5 +1,5 @@
 import { Challenge } from "../challenges";
-import { FullMatch, Match, Player } from "../match-making";
+import { FullMatch, Match, Player, TeamIndex } from "../match-making";
 export declare const GAME_MANAGEMENT_CHANNEL_PREFIX = "gameManagement";
 export declare const GAME_MANAGEMENT_CHANNEL: {
     readonly START_MATCH: "gameManagement.startMatch";
@@ -7,7 +7,7 @@ export declare const GAME_MANAGEMENT_CHANNEL: {
     readonly END_CHALLENGE: "gameManagement.endChallenge";
     readonly UPDATE_CODE_SUBMISSION: "gameManagement.updateCodeSubmission";
 };
-export type GameManagementChannel = typeof GAME_MANAGEMENT_CHANNEL[keyof typeof GAME_MANAGEMENT_CHANNEL];
+export type GameManagementChannel = (typeof GAME_MANAGEMENT_CHANNEL)[keyof typeof GAME_MANAGEMENT_CHANNEL];
 export type StartMatch = {
     match: FullMatch;
 };
@@ -15,10 +15,10 @@ type MatchIdForRouting = {
     /**
      * match id the challenge is being sent to, for routing purposes
      */
-    matchId: Match['id'];
+    matchId: Match["id"];
 };
 export type ChallengeData = {
-    challengeId: Challenge['id'];
+    challengeId: Challenge["id"];
     /**
      * this code will replace the content in the players editor
      */
@@ -38,7 +38,7 @@ export type StartChallenge = {
     /**
      * maps a player id to the challenge question they are receiving
      */
-    challenges: Record<Player['id'], ChallengeData>;
+    challenges: Record<Player["id"], ChallengeData>;
 } & MatchIdForRouting;
 export type EndChallenge = {
     /**
@@ -50,8 +50,14 @@ export type EndChallenge = {
 /**
  * the object the players client stores
  */
-export type ClientChallenge = Pick<StartChallenge, 'endsAt' | 'round'> & ChallengeData;
+export type ClientChallenge = Pick<StartChallenge, "endsAt" | "round"> & ChallengeData;
 export type UpdateCodeSubmission = {
-    playerId: Player['id'];
+    playerId: Player["id"];
 } & ChallengeData & MatchIdForRouting;
+export type ChallengeSetSubmissions = Record<Challenge["id"], string>;
+export type CodeSubmissionsDB = Map<Match["id"], [
+    ChallengeSetSubmissions,
+    ChallengeSetSubmissions
+]>;
+export type PlayerToTeamDB = Map<Player["id"], TeamIndex>;
 export {};

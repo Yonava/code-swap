@@ -9,37 +9,42 @@ import { io, type Socket } from 'socket.io-client';
 type EventsMap = {
   // eslint-disable-next-line
   [event: string]: any;
-}
+};
 
 export type ConnectSocketOptions<T extends EventsMap, K extends EventsMap> = {
-  url: string,
-  onConnected?: (socket: Socket<T, K>) => void,
-  onDisconnected?: (socket: Socket<T, K>) => void,
-  onError?: (err: Error) => void,
-}
+  url: string;
+  onConnected?: (socket: Socket<T, K>) => void;
+  onDisconnected?: (socket: Socket<T, K>) => void;
+  onError?: (err: Error) => void;
+};
 
-export const connectSocket = <T extends EventsMap, K extends EventsMap>(options: ConnectSocketOptions<T, K>) => {
+export const connectSocket = <T extends EventsMap, K extends EventsMap>(
+  options: ConnectSocketOptions<T, K>
+) => {
   const socketInstance: Socket<T, K> = io(options.url);
 
   return new Promise<Socket<T, K>>((resolve, reject) => {
     socketInstance.on('connect', () => {
-      resolve(socketInstance)
-      options.onConnected?.(socketInstance)
+      resolve(socketInstance);
+      options.onConnected?.(socketInstance);
     });
 
     socketInstance.on('connect_error', (err) => {
       reject(err);
-      options.onError?.(err)
+      options.onError?.(err);
     });
 
     socketInstance.on('disconnect', () => {
-      options.onDisconnected?.(socketInstance)
+      options.onDisconnected?.(socketInstance);
     });
   });
-}
+};
 
 import { matchCtxRef } from './MatchContext';
-import { ChallengeData, UpdateCodeSubmission } from 'shared-types/dist/game-management';
+import {
+  ChallengeData,
+  UpdateCodeSubmission,
+} from 'shared-types/dist/game-management';
 
 export const useMatchSocketListeners = () => {
   const navigate = useNavigate();
@@ -47,13 +52,13 @@ export const useMatchSocketListeners = () => {
   return (socket: ClientSocketInstance) => {
     if (!socket) return;
 
-    socket.on('matchMaking.responseCreateMatch', () => {
-      navigate('/');
-    });
+    // socket.on('matchMaking.responseCreateMatch', () => {
+    //   navigate('/');
+    // });
 
-    socket.on('matchMaking.responseJoinMatch', () => {
-      navigate('/');
-    });
+    // socket.on('matchMaking.responseJoinMatch', () => {
+    //   navigate('/');
+    // });
 
     socket.on('matchMaking.playerJoined', ({ match }) => {
       matchCtxRef.current.dispatch({
@@ -69,53 +74,60 @@ export const useMatchSocketListeners = () => {
       });
     });
 
-    socket.on('gameManagement.startChallenge', ({ round, endsAt, challenges }) => {
-      console.log('gameManagement.startChallenge')
-      const ctx = matchCtxRef.current;
-      const { challengeId, code } = challenges[ctx.playerId];
-      ctx.dispatch({
-        type: MATCH_ACTIONS.SET_CHALLENGE,
-        payload: {
-          round,
-          endsAt,
-          challengeId,
-          code,
-        },
-      });
-      ctx.dispatch({
-        type: MATCH_ACTIONS.SET_NEW_CHALLENGE_TIME,
-        payload: undefined,
-      })
-    });
+    socket.on(
+      'gameManagement.startChallenge',
+      ({ round, endsAt, challenges }) => {
+        console.log('gameManagement.startChallenge');
+        const ctx = matchCtxRef.current;
+        const { challengeId, code } = challenges[ctx.playerId];
+        ctx.dispatch({
+          type: MATCH_ACTIONS.SET_CHALLENGE,
+          payload: {
+            round,
+            endsAt,
+            challengeId,
+            code,
+          },
+        });
+        ctx.dispatch({
+          type: MATCH_ACTIONS.SET_NEW_CHALLENGE_TIME,
+          payload: undefined,
+        });
+      }
+    );
 
     socket.on('gameManagement.endChallenge', (data) => {
       console.log('gameManagement.endChallenge', data);
       matchCtxRef.current.dispatch({
         type: MATCH_ACTIONS.SET_NEW_CHALLENGE_TIME,
-        payload: data?.startsAt
-      })
+        payload: data?.startsAt,
+      });
 
-      if (!('startsAt' in data)) matchCtxRef.current.dispatch(({
-        type: MATCH_ACTIONS.SET_CHALLENGE,
-        // @ts-expect-error temporary before we add a scorecard
-        action: undefined,
-      }))
+      if (!('startsAt' in data))
+        matchCtxRef.current.dispatch({
+          type: MATCH_ACTIONS.SET_CHALLENGE,
+          // @ts-expect-error temporary before we add a scorecard
+          action: undefined,
+        });
     });
   };
 };
 
 export const useMatchSocketEmitters = (socket: ClientSocketInstance | null) => {
-  const createMatch = useCallback((playerId: Player['id']) => {
-    if (!socket) return console.warn('socket left unset')
+  const createMatch = useCallback(
+    (playerId: Player['id']) => {
+      if (!socket) return console.warn('socket left unset');
 
-    socket.emit('matchMaking.requestCreateMatch', {
-      player: getPlayerObj(playerId)
-    });
-  }, [socket])
+      socket.emit('matchMaking.requestCreateMatch', {
+        player: getPlayerObj(playerId),
+      });
+    },
+    [socket]
+  );
 
   const joinMatch = useCallback(
     (playerId: Player['id'], matchId: Match['id'], teamIndex: TeamIndex) => {
-      if (!socket) return console.warn('socket left unset')
+      if (!socket) return console.warn('socket left unset');
 
       socket.emit('matchMaking.requestJoinMatch', {
         matchId,
@@ -127,23 +139,26 @@ export const useMatchSocketEmitters = (socket: ClientSocketInstance | null) => {
   );
 
   const leaveMatch = useCallback(() => {
-    if (!socket) return console.warn('socket left unset')
+    if (!socket) return console.warn('socket left unset');
 
     socket.emit('matchMaking.leaveMatch');
     socket.disconnect();
   }, [socket]);
 
   const matchReady = useCallback(() => {
-    if (!socket) return console.warn('socket left unset')
+    if (!socket) return console.warn('socket left unset');
 
-    socket.emit('matchMaking.matchReady')
-  }, [socket])
+    socket.emit('matchMaking.matchReady');
+  }, [socket]);
 
-  const updateCodeSubmission = useCallback((data: UpdateCodeSubmission) => {
-    if (!socket) return console.warn('socket left unset')
+  const updateCodeSubmission = useCallback(
+    (data: UpdateCodeSubmission) => {
+      if (!socket) return console.warn('socket left unset');
 
-    socket.emit('gameManagement.updateCodeSubmission', data)
-  }, [socket])
+      socket.emit('gameManagement.updateCodeSubmission', data);
+    },
+    [socket]
+  );
 
   return {
     createMatch,
@@ -151,7 +166,9 @@ export const useMatchSocketEmitters = (socket: ClientSocketInstance | null) => {
     leaveMatch,
     matchReady,
     updateCodeSubmission,
-  }
+  };
 };
 
-export type MatchSocketEventEmitters = ReturnType<typeof useMatchSocketEmitters>
+export type MatchSocketEventEmitters = ReturnType<
+  typeof useMatchSocketEmitters
+>;
