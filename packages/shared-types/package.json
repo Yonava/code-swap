@@ -1,5 +1,5 @@
 {
-  "name": "@code-swap/shared-types",
+  "name": "shared-types",
   "version": "1.0.0",
   "description": "Shared TypeScript types",
   "main": "dist/index.js",
