@@ -33,14 +33,3 @@ export type Challenge = {
    */
   restrictions: string[];
 };
-
-export type ChallengeCodeUpdate = {
-  /**
-   * challenge id the code update request is for
-   */
-  challengeId: Challenge['id'],
-  /**
-   * the code the challenge submission will be updated with
-   */
-  code: string
-}

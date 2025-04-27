@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 import type { ClientSocketInstance } from 'shared-types/dist/socket-gateway';
 import type { Match, Player, TeamIndex } from 'shared-types/dist/match-making';
-import type { MatchActionDispatcher } from './matchReducer';
 import { MATCH_ACTIONS } from './MatchActions';
 import { getPlayerObj } from './utils';
 import { useNavigate } from 'react-router';
@@ -39,40 +38,70 @@ export const connectSocket = <T extends EventsMap, K extends EventsMap>(options:
   });
 }
 
-export const useMatchSocketListeners = (matchDispatcher: MatchActionDispatcher) => {
-  const navigate = useNavigate()
+import { matchCtxRef } from './MatchContext';
+import { ChallengeData, UpdateCodeSubmission } from 'shared-types/dist/game-management';
+
+export const useMatchSocketListeners = () => {
+  const navigate = useNavigate();
 
   return (socket: ClientSocketInstance) => {
-    if (!socket) return
+    if (!socket) return;
 
-    socket.on('matchMaking.responseCreateMatch', (data) => {
-      console.log('matchMaking.responseCreateMatch', data);
-      navigate('/')
+    socket.on('matchMaking.responseCreateMatch', () => {
+      navigate('/');
     });
 
-    socket.on('matchMaking.responseJoinMatch', (data) => {
-      console.log('matchMaking.responseJoinMatch', data);
-      navigate('/')
+    socket.on('matchMaking.responseJoinMatch', () => {
+      navigate('/');
     });
 
     socket.on('matchMaking.playerJoined', ({ match }) => {
-      console.log('matchMaking.playerJoined', match);
-      matchDispatcher({ type: MATCH_ACTIONS.SET_LIVE_MATCH, payload: match });
+      matchCtxRef.current.dispatch({
+        type: MATCH_ACTIONS.SET_LIVE_MATCH,
+        payload: match,
+      });
     });
 
     socket.on('matchMaking.playerLeft', ({ match }) => {
-      console.log('matchMaking.playerLeft', match);
-      matchDispatcher({ type: MATCH_ACTIONS.SET_LIVE_MATCH, payload: match });
+      matchCtxRef.current.dispatch({
+        type: MATCH_ACTIONS.SET_LIVE_MATCH,
+        payload: match,
+      });
     });
 
-    socket.on('gameManagement.startChallenge', (data) => {
-      console.log('gameManagement.startChallenge', data)
-    })
+    socket.on('gameManagement.startChallenge', ({ round, endsAt, challenges }) => {
+      console.log('gameManagement.startChallenge')
+      const ctx = matchCtxRef.current;
+      const { challengeId, code } = challenges[ctx.playerId];
+      ctx.dispatch({
+        type: MATCH_ACTIONS.SET_CHALLENGE,
+        payload: {
+          round,
+          endsAt,
+          challengeId,
+          code,
+        },
+      });
+      ctx.dispatch({
+        type: MATCH_ACTIONS.SET_NEW_CHALLENGE_TIME,
+        payload: undefined,
+      })
+    });
 
     socket.on('gameManagement.endChallenge', (data) => {
-      console.log('gameManagement.endChallenge', data)
-    })
-  }
+      console.log('gameManagement.endChallenge', data);
+      matchCtxRef.current.dispatch({
+        type: MATCH_ACTIONS.SET_NEW_CHALLENGE_TIME,
+        payload: data?.startsAt
+      })
+
+      if (!('startsAt' in data)) matchCtxRef.current.dispatch(({
+        type: MATCH_ACTIONS.SET_CHALLENGE,
+        // @ts-expect-error temporary before we add a scorecard
+        action: undefined,
+      }))
+    });
+  };
 };
 
 export const useMatchSocketEmitters = (socket: ClientSocketInstance | null) => {
@@ -110,11 +139,18 @@ export const useMatchSocketEmitters = (socket: ClientSocketInstance | null) => {
     socket.emit('matchMaking.matchReady')
   }, [socket])
 
+  const updateCodeSubmission = useCallback((data: UpdateCodeSubmission) => {
+    if (!socket) return console.warn('socket left unset')
+
+    socket.emit('gameManagement.updateCodeSubmission', data)
+  }, [socket])
+
   return {
     createMatch,
     joinMatch,
     leaveMatch,
     matchReady,
+    updateCodeSubmission,
   }
 };
 

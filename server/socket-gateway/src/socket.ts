@@ -6,6 +6,7 @@ import {
 } from "http";
 import { unregisterListener } from './registerSocket';
 import matchMakingListeners from './match-making/inboundFromClient'
+import gameManagementListeners from './game-management/inboundFromClient'
 import type { SocketServerInstance } from 'shared-types/dist/socket-gateway';
 import { LOG_COLORS } from './constants';
 
@@ -26,6 +27,7 @@ export const activateSocketServer = (
   const socketListeners = [
     unregisterListener,
     matchMakingListeners,
+    gameManagementListeners,
   ].flat()
 
   io.on('connection', (socket) => {

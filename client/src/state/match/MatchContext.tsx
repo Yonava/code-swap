@@ -13,6 +13,7 @@ import { useNavigate, useSearchParams } from 'react-router';
 import { MatchSocketEventEmitters, useMatchSocketListeners, useMatchSocketEmitters, connectSocket } from './useMatchSocket';
 import { MatchActionDispatcher, matchReducer, newStateDefaults } from './matchReducer';
 import { MATCH_ACTIONS } from './MatchActions';
+import { ClientChallenge } from 'shared-types/dist/game-management';
 
 const IS_PROD = window.location.hostname !== 'localhost';
 const SOCKET_URL = IS_PROD ? '/' : 'http://localhost:3000';
@@ -23,7 +24,8 @@ export type TMatchContext = {
   playerId: string,
 
   match: Match | undefined,
-  challenge: undefined,
+  challenge: ClientChallenge | undefined,
+  newChallengeTime: number | undefined,
   scoreboard: undefined,
 
   matchPhase: MatchPhase,
@@ -32,7 +34,7 @@ export type TMatchContext = {
 
 const getMatchPhase = (matchContext: TMatchContext): MatchPhase => {
   if (matchContext.scoreboard !== undefined) return 'scoring'
-  if (matchContext.challenge !== undefined) return 'matchMaking'
+  if (matchContext.challenge !== undefined) return 'livePlay'
   if (matchContext.match !== undefined) return 'matchMaking'
   return 'inactive'
 }
@@ -44,7 +46,10 @@ const DEFAULT_MATCH_DATA: TMatchContext = {
   createMatch: () => { },
   leaveMatch: () => { },
   matchReady: () => { },
+  updateCodeSubmission: () => { }
 };
+
+export const matchCtxRef = { current: DEFAULT_MATCH_DATA };
 
 const MatchContext = createContext<TMatchContext>(DEFAULT_MATCH_DATA);
 
@@ -52,7 +57,7 @@ export const MatchContextProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(matchReducer, DEFAULT_MATCH_DATA);
   const [socket, setSocket] = useState<ClientSocketInstance | null>(null);
   const socketEmitters = useMatchSocketEmitters(socket)
-  const initListeners = useMatchSocketListeners(dispatch)
+  const initListeners = useMatchSocketListeners()
 
   useOnUnmount(() => socket?.disconnect());
 
@@ -122,12 +127,15 @@ export const MatchContextProvider = ({ children }: { children: ReactNode }) => {
     playerId: state.playerId,
     match: state.match,
     challenge: state.challenge,
+    newChallengeTime: state.newChallengeTime,
     scoreboard: state.scoreboard,
     matchPhase: getMatchPhase(state),
     dispatch,
 
     ...socketEmitters,
   };
+
+  matchCtxRef.current = contextValue;
 
   return (
     <MatchContext.Provider value={contextValue}>

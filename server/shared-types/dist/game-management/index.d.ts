@@ -17,6 +17,13 @@ type MatchIdForRouting = {
      */
     matchId: Match['id'];
 };
+export type ChallengeData = {
+    challengeId: Challenge['id'];
+    /**
+     * this code will replace the content in the players editor
+     */
+    code: string;
+};
 export type StartChallenge = {
     /**
      * the round of the challenge. Each challenge question is associated with one round
@@ -31,13 +38,7 @@ export type StartChallenge = {
     /**
      * maps a player id to the challenge question they are receiving
      */
-    challenges: Record<Player['id'], {
-        challengeId: Challenge['id'];
-        /**
-         * this code will replace the content in the players editor
-         */
-        code: string;
-    }>;
+    challenges: Record<Player['id'], ChallengeData>;
 } & MatchIdForRouting;
 export type EndChallenge = {
     /**
@@ -46,4 +47,11 @@ export type EndChallenge = {
      */
     startsAt: number | undefined;
 } & MatchIdForRouting;
+/**
+ * the object the players client stores
+ */
+export type ClientChallenge = Pick<StartChallenge, 'endsAt' | 'round'> & ChallengeData;
+export type UpdateCodeSubmission = {
+    playerId: Player['id'];
+} & ChallengeData & MatchIdForRouting;
 export {};

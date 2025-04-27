@@ -1,5 +1,6 @@
 
-export default `<style>header {
+export default `<style>
+header {
   color: red;
   font-size: 50px;
 }
