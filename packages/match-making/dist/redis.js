@@ -14,10 +14,10 @@ const createRedisClient = ({ nickname }) => {
         }
     });
     client.connect();
-    client.on('connect', redisLogger(`${nickname} Connected`));
+    // client.on('connect', redisLogger(`${nickname} Connected`));
     client.on('error', redisLogger(`${nickname} Error`));
     client.on('reconnecting', redisLogger(`${nickname} Reconnecting`));
-    client.on('ready', redisLogger(`${nickname} Ready`));
+    // client.on('ready', redisLogger(`${nickname} Ready`));
     client.on('end', redisLogger(`${nickname} End`));
     client.on('close', redisLogger(`${nickname} Closed`));
     return client;

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently -n \"client,socket,challenges,scoring,matchmaking,game\" -c \"cyan,magenta,green,yellow,blue,red\"     \"pnpm --filter=client dev\"     \"pnpm --filter=socket-gateway dev\"     \"pnpm --filter=challenges dev\"     \"pnpm --filter=scoring dev\"     \"pnpm --filter=match-making dev\"     \"pnpm --filter=game-management dev\""
+    "dev": "concurrently -n \"client,socket-gateway,challenges,scoring,match-making,game-management\" -c \"cyan,magenta,green,yellow,blue,red\" \"pnpm --filter=client dev\" \"pnpm --filter=socket-gateway dev\" \"pnpm --filter=challenges dev\" \"pnpm --filter=scoring dev\" \"pnpm --filter=match-making dev\" \"pnpm --filter=game-management dev\""
   },
   "repository": {
     "type": "git",
@@ -16,17 +16,9 @@
     "url": "https://github.com/Yonava/code-swap/issues"
   },
   "homepage": "https://github.com/Yonava/code-swap#readme",
-  "description": "",
+  "description": "welcome to code swap!",
+  "private": "true",
   "devDependencies": {
     "concurrently": "^9.1.2"
-  },
-  "workspaces": [
-    "packages/client",
-    "packages/socket-gateway",
-    "packages/game-management",
-    "packages/match-making",
-    "packages/scoring",
-    "packages/challenges",
-    "packages/shared-types"
-  ]
+  }
 }
