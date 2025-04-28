@@ -5,8 +5,7 @@
   "scripts": {
     "start": "node dist/index.js",
     "dev": "nodemon",
-    "build": "tsc",
-    "refresh-types": "rm -rf node_modules && pnpm install"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",

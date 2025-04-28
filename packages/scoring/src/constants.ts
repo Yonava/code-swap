@@ -2,7 +2,7 @@ import chalk from "chalk";
 
 export const LOCALHOST_PORT = 3005;
 
-export const CHALLENGE_LOCALHOST_PORT = 3001;
+export const CHALLENGE_LOCALHOST_PORT = 3003;
 
 export const API_BASE_URL =
   process.env.NODE_ENV === "production"
