@@ -12,7 +12,13 @@ export const WaitingRoom = () => {
 
   const isHost = match.hostId === playerId
   const allPlayerSlotsFilled = match.teams.flat().every(Boolean)
-  const canStartMatch = isHost && allPlayerSlotsFilled
+  const canStartMatch = isHost && allPlayerSlotsFilled;
+
+  const fillRoom = () => {
+    window.open(`http://localhost:5173/challenge?matchId=${match.id}-0`)
+    window.open(`http://localhost:5173/challenge?matchId=${match.id}-1`)
+    window.open(`http://localhost:5173/challenge?matchId=${match.id}-1`)
+  }
 
   return (
     <Dialog open={matchPhase === 'matchMaking'}>
@@ -47,6 +53,11 @@ export const WaitingRoom = () => {
             className="self-center w-32 bg-red-600"
           >
             Leave Match
+          </Button>
+          <Button
+            onClick={fillRoom}
+          >
+            Fill Room (Dev Only)
           </Button>
         </div>
       </DialogContent>
