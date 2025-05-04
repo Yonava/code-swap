@@ -51,10 +51,12 @@
   margin-bottom: 1rem;
 }
 
+/* `example` */
 .markdown-content code {
   font-family: monospace;
   padding: 0.2rem 0.4rem;
   border-radius: 3px;
+  background-color: #2e3745;
 }
 
 .markdown-content pre {

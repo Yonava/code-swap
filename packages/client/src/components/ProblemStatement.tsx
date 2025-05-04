@@ -1,7 +1,7 @@
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useMatchContext } from '@/state/match/useMatchContext';
-import { CSSProperties, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Challenge } from 'shared-types/dist/challenges';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
@@ -35,11 +35,12 @@ export const ProblemStatement = () => {
 
   const problemStatement = useMemo(() => {
     if (!challenge) return 'no problem statement available';
-    return `
-      ${challenge.title} ->
-
-      ${challenge.description}
-    `;
+    const { title, description, restrictions } = challenge;
+    return `# ${title} \n ${description} ${
+      restrictions.length > 0
+        ? '\n ## Restrictions \n - ' + restrictions.join(' \n \n - ')
+        : ''
+    }`;
   }, [challenge]);
 
   return (
@@ -93,7 +94,3 @@ export const ProblemStatement = () => {
     </div>
   );
 };
-
-// rebnder md
-// update challenges to be md pretty :)
-// add standard for problem
