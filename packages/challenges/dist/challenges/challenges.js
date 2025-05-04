@@ -70,6 +70,6 @@ exports.challenges = [
         description: `Given a string of comma separated numbers, return \`composite\` if most of those numbers are composite, and \`prime\` otherwise.`,
         startingCode: `function majorityCompositeOrPrime(str) {\n \t // your code here \n}`,
         testCases: [],
-        restrictions: ["`0 <= str.length <= 10,000`"],
+        restrictions: [],
     },
 ];
