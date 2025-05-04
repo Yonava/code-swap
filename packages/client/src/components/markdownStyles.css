@@ -1,0 +1,104 @@
+/* markdownStyles.css */
+.markdown-content {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.markdown-content h1 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.markdown-content h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.8rem;
+  margin-top: 0.8rem;
+}
+
+.markdown-content h3 {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 0.6rem;
+  margin-top: 0.6rem;
+}
+
+.markdown-content p {
+  margin-bottom: 1rem;
+}
+
+.markdown-content ul {
+  list-style-type: disc;
+  margin-left: 2rem;
+  margin-bottom: 1rem;
+}
+
+.markdown-content ol {
+  list-style-type: decimal;
+  margin-left: 2rem;
+  margin-bottom: 1rem;
+}
+
+.markdown-content li {
+  margin-bottom: 0.5rem;
+}
+
+.markdown-content blockquote {
+  border-left: 4px solid #ddd;
+  padding-left: 1rem;
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+.markdown-content code {
+  font-family: monospace;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+}
+
+.markdown-content pre {
+  font-family: monospace;
+  padding: 1rem;
+  border-radius: 5px;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.markdown-content pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+.markdown-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.markdown-content th {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+}
+
+.markdown-content td {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+}
+
+.markdown-content a {
+  color: #0066cc;
+  text-decoration: underline;
+}
+
+.markdown-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+.markdown-content hr {
+  border: 0;
+  border-top: 1px solid #ddd;
+  margin: 1rem 0;
+}
