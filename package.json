@@ -1,6 +1,25 @@
 {
-  "packageManager": "pnpm@10.10.0+sha512.d615db246fe70f25dcfea6d8d73dee782ce23e2245e3c4f6f888249fb568149318637dca73c2c5c8ef2a4ca0d5657fb9567188bfab47f566d1ee6ce987815c39",
-  "overrides": {
-    "rollup": "npm:@rollup/wasm-node"
+  "name": "code-swap",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently -n \"client,socket-gateway,challenges,scoring,match-making,game-management\" -c \"cyan,magenta,green,yellow,blue,red\" \"pnpm --filter=client dev\" \"pnpm --filter=socket-gateway dev\" \"pnpm --filter=challenges dev\" \"pnpm --filter=scoring dev\" \"pnpm --filter=match-making dev\" \"pnpm --filter=game-management dev\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yonava/code-swap.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yonava/code-swap/issues"
+  },
+  "homepage": "https://github.com/Yonava/code-swap#readme",
+  "description": "welcome to code swap!",
+  "private": "true",
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+  "packageManager": "pnpm@10.10.0+sha512.d615db246fe70f25dcfea6d8d73dee782ce23e2245e3c4f6f888249fb568149318637dca73c2c5c8ef2a4ca0d5657fb9567188bfab47f566d1ee6ce987815c39"
   }
 }
