@@ -3,6 +3,7 @@ import type { Socket as ClientSocket } from "socket.io-client";
 import type { CreateMatchRequest, CreateMatchResponse, JoinMatchRequest, JoinMatchResponse, Match, Player } from '../match-making';
 import { MATCH_MAKING_CHANNEL } from "../match-making";
 import { EndChallenge, GAME_MANAGEMENT_CHANNEL, MatchEnding, StartChallenge, UpdateCodeSubmission } from "../game-management";
+import { MatchResult, SCORING_CHANNEL } from "../scoring";
 export type SocketGatewayRegistrationRequest = {
     playerId: Player['id'];
 };
@@ -28,6 +29,7 @@ export type ServerSocketEvents = {
     [GAME_MANAGEMENT_CHANNEL.END_CHALLENGE]: (data: EndChallenge) => void;
     [GAME_MANAGEMENT_CHANNEL.MATCH_ENDING]: (data: MatchEnding) => void;
     [GAME_MANAGEMENT_CHANNEL.MATCH_ENDED]: () => void;
+    [SCORING_CHANNEL.MATCH_RESULT]: (data: MatchResult) => void;
 };
 /**
  * for server-side use only

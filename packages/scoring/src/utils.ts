@@ -26,7 +26,7 @@ export const fetchChallenge = async (challengeId: string) => {
       );
     }
 
-    const data = await response.json();
+    const data: Challenge = await response.json();
 
     return { challenge: data };
   } catch (error) {
@@ -105,15 +105,8 @@ export const runTestCase = (
 
 export const runTestCases = async (
   func: string,
-  challengeId: Challenge["id"]
+  testCases: Challenge["testCases"]
 ) => {
-  const { challenge, error } = await fetchChallenge(challengeId);
-  if (error) return { error };
-
-  const { testCases } = challenge;
-  const total = challenge.testCases.length;
-
-  let totalDifficultyWeight = 0;
   let testCasesPassed = 0;
 
   const testCaseResults: TestCaseResults["results"] = [];
@@ -126,22 +119,17 @@ export const runTestCases = async (
     if (success) {
       const { result } = testCaseOutcome;
       testCaseResults.push(result);
-      const { passed, difficultyWeight } = result;
+      const { passed } = result;
 
       if (passed) {
-        totalDifficultyWeight += difficultyWeight;
         testCasesPassed++;
       }
     }
   }
 
-  const results = {
+  return {
     passed: testCasesPassed,
-    total,
-    allPassed: testCasesPassed === total,
+    total: testCases.length,
     testCaseResults,
-    totalDifficultyWeight,
   };
-
-  return { results };
 };

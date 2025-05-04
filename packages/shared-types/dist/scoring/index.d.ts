@@ -3,8 +3,8 @@ import { ChallengeSetSubmissions } from "../game-management";
 import { Match } from "../match-making";
 export declare const SCORING_CHANNEL_PREFIX = "scoring";
 export declare const SCORING_CHANNEL: {
-    MATCH_READY_TO_SCORE: string;
-    MATCH_RESULT: string;
+    readonly MATCH_READY_TO_SCORE: "scoring.matchReadyToScore";
+    readonly MATCH_RESULT: "scoring.matchResult";
 };
 export type ScoringChannel = (typeof SCORING_CHANNEL)[keyof typeof SCORING_CHANNEL];
 export type MatchReadyToScore = {
@@ -19,5 +19,5 @@ export type ChallengeResult = {
 };
 export type MatchResult = {
     matchId: Match["id"];
-    result: [ChallengeResult, ChallengeResult];
+    result: readonly [ChallengeResult, ChallengeResult];
 };

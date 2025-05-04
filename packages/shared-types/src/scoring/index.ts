@@ -7,7 +7,7 @@ export const SCORING_CHANNEL_PREFIX = "scoring";
 export const SCORING_CHANNEL = {
   MATCH_READY_TO_SCORE: `${SCORING_CHANNEL_PREFIX}.matchReadyToScore`,
   MATCH_RESULT: `${SCORING_CHANNEL_PREFIX}.matchResult`,
-};
+} as const;
 
 export type ScoringChannel =
   (typeof SCORING_CHANNEL)[keyof typeof SCORING_CHANNEL];
@@ -26,5 +26,5 @@ export type ChallengeResult = {
 
 export type MatchResult = {
   matchId: Match["id"];
-  result: [ChallengeResult, ChallengeResult]
+  result: readonly [ChallengeResult, ChallengeResult]
 };
