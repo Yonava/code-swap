@@ -8,7 +8,12 @@ import { useQuery } from '@tanstack/react-query';
 import { CountdownTimer } from './CountdownTimer';
 
 export const ProblemStatement = () => {
-  const { challenge: challengeCtx, newChallengeTime: newChallengeTimeCtx } = useMatchContext()
+  const {
+    challenge: challengeCtx,
+    newChallengeTime: newChallengeTimeCtx,
+    matchEndTime: matchEndTimeCtx
+  } = useMatchContext()
+
   const challengeId = useMemo(() => challengeCtx ? challengeCtx.challengeId : undefined, [challengeCtx])
 
   const fetchChallenge = async () => {
@@ -43,7 +48,7 @@ export const ProblemStatement = () => {
       </div>
 
       <div className='absolute bottom-0'>
-        {challengeCtx && !newChallengeTimeCtx && (
+        {challengeCtx && !newChallengeTimeCtx && !matchEndTimeCtx && (
           <>
             <span>Hands Off Keyboard In:</span>
             <CountdownTimer timeAtZero={challengeCtx.endsAt} />
@@ -55,6 +60,14 @@ export const ProblemStatement = () => {
             <CountdownTimer timeAtZero={newChallengeTimeCtx} />
           </>
         )}
+        {
+          matchEndTimeCtx && (
+            <>
+              <span>Match Is Over In:</span>
+              <CountdownTimer timeAtZero={matchEndTimeCtx} />
+            </>
+          )
+        }
       </div>
     </div>
   );

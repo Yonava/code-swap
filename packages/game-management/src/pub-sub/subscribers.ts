@@ -1,25 +1,25 @@
-import { listenToChannel, logResponse } from "../listenToChannel";
+import { listenToChannel } from "../listenToChannel";
 import {
   Challenge,
   ChallengeSetSubmissions,
+  EndChallenge,
   GAME_MANAGEMENT_CHANNEL,
-  Player,
+  MatchEnding,
+  MatchReadyToScore,
+  SCORING_CHANNEL,
   StartChallenge,
   StartMatch,
   UpdateCodeSubmission,
 } from "shared-types";
 import { RedisClient } from "../redis";
 import {
-  createChallengeRounds,
   fetchChallenges,
-  NUMBER_OF_ROUNDS,
-  packChallengesByRound,
+  TIME_BEFORE_MATCH_ENDS,
+  TIME_FROM_END_TO_START,
   TIME_FROM_START_TO_END,
-  TIME_FROM_START_TO_START,
 } from "../createChallengeRounds";
 import { codeSubmissions } from "../db/codeSubmissions";
 import { playerToTeam } from "../db/playerToTeam";
-import { SCORING_CHANNEL } from "shared-types/dist/scoring";
 
 const { pub } = RedisClient.getInstance();
 const { START_MATCH, START_CHALLENGE, END_CHALLENGE, UPDATE_CODE_SUBMISSION } =
@@ -27,90 +27,79 @@ const { START_MATCH, START_CHALLENGE, END_CHALLENGE, UPDATE_CODE_SUBMISSION } =
 
 const getNewChallengeSetSubmissionObj = (challenges: Challenge[]) =>
   challenges.reduce<ChallengeSetSubmissions>((acc, curr) => {
-    acc[curr.id] = curr?.startingCode ?? "";
+    const { id: challengeId } = curr
+    acc[challengeId] = {
+      challengeId,
+      code: curr?.startingCode ?? "",
+      isFinished: false,
+    }
     return acc;
   }, {});
-
-const injectCurrentSubmissionState = (challenge: StartChallenge) => {
-  console.log("injecting in progress");
-
-  const matchSubmissions = codeSubmissions.get(challenge.matchId);
-
-  if (!matchSubmissions) {
-    console.log("no submissions on match that should exist");
-    return;
-  }
-
-  const playerIdToChallengeId = Object.entries(challenge.challenges).reduce(
-    (acc, [playerId, { challengeId }]) => {
-      acc[playerId] = challengeId;
-      return acc;
-    },
-    {} as Record<Player["id"], Challenge["id"]>
-  );
-
-  const playerIds = Object.keys(challenge.challenges);
-
-  for (const playerId of playerIds) {
-    const team = playerToTeam.get(playerId);
-    if (team === undefined) {
-      console.log("player should be assigned to a team but was not :(");
-      return;
-    }
-
-    const challengeId = playerIdToChallengeId[playerId];
-    const currentSubmission = matchSubmissions[team][challengeId];
-    challenge.challenges[playerId].code = currentSubmission;
-  }
-};
 
 listenToChannel<StartMatch>({
   from: START_MATCH,
   fn: async ({ match }) => {
-    const challenges = await fetchChallenges(NUMBER_OF_ROUNDS * 2);
-    const challengesByRound = packChallengesByRound(challenges);
-    const [starts, ends] = createChallengeRounds(match, challengesByRound);
-
-    logResponse({ channel: START_MATCH, payload: JSON.stringify(starts) });
+    console.log('START_MATCH')
+    const challenges = await fetchChallenges(2);
 
     codeSubmissions.set(match.id, [
       getNewChallengeSetSubmissionObj(challenges),
       getNewChallengeSetSubmissionObj(challenges),
     ]);
 
-    playerToTeam.set(match.teams[0][0].id, 0);
-    playerToTeam.set(match.teams[0][1].id, 0);
+    const [team1, team2] = match.teams;
+    const [team1Player1, team1Player2] = team1
+    const [team2Player1, team2Player2] = team2
 
-    playerToTeam.set(match.teams[1][0].id, 1);
-    playerToTeam.set(match.teams[1][1].id, 1);
+    playerToTeam.set(team1Player1.id, 0);
+    playerToTeam.set(team1Player2.id, 0);
 
-    for (let i = 0; i < starts.length; i++) {
-      setTimeout(() => {
-        injectCurrentSubmissionState(starts[i]);
-        pub.publish(START_CHALLENGE, JSON.stringify(starts[i]));
-      }, i * TIME_FROM_START_TO_START);
-    }
+    playerToTeam.set(team2Player1.id, 1);
+    playerToTeam.set(team2Player2.id, 1);
 
-    for (let i = 0; i < ends.length; i++) {
-      setTimeout(() => {
-        if (ends[i].startsAt === undefined) {
-          pub.publish(
-            SCORING_CHANNEL.MATCH_READY_TO_SCORE,
-            JSON.stringify({
-              matchId: match.id,
-              challengeSet: codeSubmissions.get(match.id),
-            })
-          );
+    let numOfCalls = 0
+
+    const processRound = () => {
+      numOfCalls++
+      console.log('ROUND PROCESSING', numOfCalls)
+      const isRoundStarting = numOfCalls % 2 === 1
+      if (isRoundStarting) {
+        const submissions = codeSubmissions.get(match.id)
+        if (!submissions) throw new Error('No Submissions Found: Invalid State!')
+        const team1Submissions = Object.values(submissions[0])
+        const team2Submissions = Object.values(submissions[1])
+        const offset = numOfCalls % 4 === 1
+        const start: StartChallenge = {
+          endsAt: Date.now() + TIME_FROM_START_TO_END,
+          matchId: match.id,
+          challenges: {
+            [team1Player1.id]: team1Submissions[offset ? 0 : 1],
+            [team1Player2.id]: team1Submissions[offset ? 1 : 0],
+            [team2Player1.id]: team2Submissions[offset ? 0 : 1],
+            [team2Player2.id]: team2Submissions[offset ? 1 : 0]
+          }
         }
-        pub.publish(END_CHALLENGE, JSON.stringify(ends[i]));
-      }, i * TIME_FROM_START_TO_START + TIME_FROM_START_TO_END);
+        const startPayload = JSON.stringify(start)
+        pub.publish(START_CHALLENGE, startPayload)
+        setTimeout(processRound, TIME_FROM_START_TO_END)
+      } else {
+        const end: EndChallenge = {
+          startsAt: Date.now() + TIME_FROM_END_TO_START,
+          matchId: match.id
+        }
+        const endPayload = JSON.stringify(end)
+        pub.publish(END_CHALLENGE, endPayload)
+        setTimeout(processRound, TIME_FROM_END_TO_START)
+      }
     }
+
+    processRound()
   },
 });
 
 listenToChannel<UpdateCodeSubmission>({
   from: UPDATE_CODE_SUBMISSION,
-  fn: async ({ playerId, matchId, challengeId, code }) => {
+  fn: async ({ playerId, matchId, challengeId, code, isFinished }) => {
     const match = codeSubmissions.get(matchId);
     if (!match) {
       console.log("match not found");
@@ -123,6 +112,31 @@ listenToChannel<UpdateCodeSubmission>({
       return;
     }
 
-    match[team][challengeId] = code;
+    const wasFinishedAlready = match[team][challengeId].isFinished
+    if (wasFinishedAlready) {
+      console.log("dude tried to submit a challenge that has already been marked as finished in the system!")
+      return
+    }
+
+    match[team][challengeId] = { challengeId, code, isFinished };
+
+    const bothChallengesFinished = Object.values(match[team]).every((challenge) => challenge.isFinished)
+
+    if (bothChallengesFinished) {
+      const matchEnding: MatchEnding = {
+        at: Date.now() + TIME_BEFORE_MATCH_ENDS,
+        matchId,
+      }
+      pub.publish(GAME_MANAGEMENT_CHANNEL.MATCH_ENDING, JSON.stringify(matchEnding))
+      setTimeout(() => {
+        const finalSubmissions = codeSubmissions.get(matchId)
+        if (!finalSubmissions) throw new Error('No Final Submissions. Invalid State!')
+        const payload: MatchReadyToScore = {
+          challengeSet: finalSubmissions,
+          matchId,
+        }
+        pub.publish(SCORING_CHANNEL.MATCH_READY_TO_SCORE, JSON.stringify(payload))
+      }, TIME_BEFORE_MATCH_ENDS)
+    }
   },
 });

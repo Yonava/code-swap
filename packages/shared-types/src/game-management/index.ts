@@ -7,6 +7,7 @@ export const GAME_MANAGEMENT_CHANNEL = {
   START_MATCH: `${GAME_MANAGEMENT_CHANNEL_PREFIX}.startMatch`,
   START_CHALLENGE: `${GAME_MANAGEMENT_CHANNEL_PREFIX}.startChallenge`,
   END_CHALLENGE: `${GAME_MANAGEMENT_CHANNEL_PREFIX}.endChallenge`,
+  MATCH_ENDING: `${GAME_MANAGEMENT_CHANNEL_PREFIX}.matchEnding`,
   UPDATE_CODE_SUBMISSION: `${GAME_MANAGEMENT_CHANNEL_PREFIX}.updateCodeSubmission`,
 } as const;
 
@@ -30,13 +31,14 @@ export type ChallengeData = {
    * this code will replace the content in the players editor
    */
   code: string;
+  /**
+   * whether this code submission is marked as final by the team.
+   * Final code cannot be edited any longer
+   */
+  isFinished: boolean;
 };
 
 export type StartChallenge = {
-  /**
-   * the round of the challenge. Each challenge question is associated with one round
-   */
-  round: number;
   /**
    * unix timestamp of when the player submission period is scheduled to end.
    * A player submission period is the window that a user can write code for a challenge
@@ -51,16 +53,23 @@ export type StartChallenge = {
 
 export type EndChallenge = {
   /**
-   * unix timestamp of when the next challenge will start.
-   * `undefined` if that was the last challenge
+   * unix timestamp of when the next round will start
    */
-  startsAt: number | undefined;
+  startsAt: number;
 } & MatchIdForRouting;
+
+export type MatchEnding = {
+  /**
+   * unix timestamp of when the match is over. Leaves a bit of wiggle room for final submissions before its
+   * to late!
+   */
+  at: number
+} & MatchIdForRouting
 
 /**
  * the object the players client stores
  */
-export type ClientChallenge = Pick<StartChallenge, "endsAt" | "round"> &
+export type ClientChallenge = Pick<StartChallenge, "endsAt"> &
   ChallengeData;
 
 export type UpdateCodeSubmission = {
@@ -68,7 +77,8 @@ export type UpdateCodeSubmission = {
 } & ChallengeData &
   MatchIdForRouting;
 
-export type ChallengeSetSubmissions = Record<Challenge["id"], string>;
+export type ChallengeSetSubmissions = Record<Challenge["id"], ChallengeData>;
+
 export type CodeSubmissionsDB = Map<
   Match["id"],
   [ChallengeSetSubmissions, ChallengeSetSubmissions]
