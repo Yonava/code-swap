@@ -7,7 +7,6 @@ import { Challenge } from 'shared-types/dist/challenges';
 const NO_CODE_AVAILABLE = 'no code available';
 const SUBMIT_INTERVAL_MS = 5000
 
-
 const useUpdateCodeSubmission = (editorState: string, challengeId: Challenge['id'] | undefined) => {
   const { updateCodeSubmission, playerId, match } = useMatchContext();
 
@@ -26,6 +25,7 @@ const useUpdateCodeSubmission = (editorState: string, challengeId: Challenge['id
         code: editorStateRef.current,
         challengeId,
         playerId,
+        isFinished: false,
         matchId: match.id,
       });
       lastSubmissionRef.current = editorStateRef.current;
