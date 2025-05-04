@@ -11,6 +11,7 @@ const constants_1 = require("./constants");
 const socket_1 = require("./socket");
 require("./match-making/outboundToClient");
 require("./game-management/outboundToClient");
+require("./scoring/outboundToClient");
 const app = (0, express_1.default)();
 const server = (0, http_1.createServer)(app);
 (0, socket_1.activateSocketServer)(server);

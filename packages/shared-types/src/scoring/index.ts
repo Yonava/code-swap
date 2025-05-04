@@ -1,5 +1,5 @@
 import { Challenge } from "../challenges";
-import { ChallengeSetSubmissions } from "../game-management";
+import { ChallengeData, ChallengeSetSubmissions } from "../game-management";
 import { Match } from "../match-making";
 
 export const SCORING_CHANNEL_PREFIX = "scoring";
@@ -20,6 +20,7 @@ export type MatchReadyToScore = {
 export type ChallengeResult = {
   challengeId: Challenge['id'],
   challengeTitle: Challenge['title'],
+  gradedCodeSubmission: [ChallengeData['code'], ChallengeData['code']],
   testCasesPassed: [number, number],
   totalTestCases: number
 }

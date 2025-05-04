@@ -6,6 +6,7 @@ import { PORT } from './constants';
 import { activateSocketServer } from './socket';
 import './match-making/outboundToClient';
 import './game-management/outboundToClient'
+import './scoring/outboundToClient'
 
 const app = express();
 const server = createServer(app);

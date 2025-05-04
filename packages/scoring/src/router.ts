@@ -1,5 +1,5 @@
 import express from "express";
-import { runTestCases } from "./utils";
+import { fetchChallenge, runTestCases } from "./utils";
 
 const router = express.Router();
 
@@ -11,14 +11,12 @@ router.post("/", async (req, res) => {
     return;
   }
 
-  const { results, error } = await runTestCases(func, challengeId);
+  const { challenge } = await fetchChallenge(challengeId)
 
-  if (error) {
-    res.status(500).json({ error });
-    return;
-  }
+  if (!challenge) throw '🤭'
 
-  res.json(results);
+  const testResults = await runTestCases(func, challenge.testCases);
+  res.json(testResults);
 });
 
 export default router;

@@ -12,11 +12,10 @@ router.post("/", async (req, res) => {
         res.status(400).json({ error: "Function and challenge ID are required" });
         return;
     }
-    const { results, error } = await (0, utils_1.runTestCases)(func, challengeId);
-    if (error) {
-        res.status(500).json({ error });
-        return;
-    }
-    res.json(results);
+    const { challenge } = await (0, utils_1.fetchChallenge)(challengeId);
+    if (!challenge)
+        throw '🤭';
+    const testResults = await (0, utils_1.runTestCases)(func, challenge.testCases);
+    res.json(testResults);
 });
 exports.default = router;

@@ -14,6 +14,7 @@ import { MatchSocketEventEmitters, useMatchSocketListeners, useMatchSocketEmitte
 import { MatchActionDispatcher, matchReducer, newStateDefaults } from './matchReducer';
 import { MATCH_ACTIONS } from './MatchActions';
 import { ClientChallenge } from 'shared-types/dist/game-management';
+import { MatchResult } from 'shared-types/dist/scoring';
 
 const IS_PROD = window.location.hostname !== 'localhost';
 const SOCKET_URL = IS_PROD ? '/' : 'http://localhost:3000';
@@ -31,7 +32,7 @@ export type TMatchContext = {
   // when the service indicates a match is scheduled to end, this will be set to the time it is scheduled to be shut down
   matchEndTime: number | undefined,
 
-  scoreboard: undefined | 'loading',
+  scoreboard: undefined | 'loading' | MatchResult,
 
   matchPhase: MatchPhase,
   dispatch: MatchActionDispatcher,
