@@ -4,6 +4,9 @@ import {
   ChallengeSetSubmissions,
   EndChallenge,
   GAME_MANAGEMENT_CHANNEL,
+  MatchEnding,
+  MatchReadyToScore,
+  SCORING_CHANNEL,
   StartChallenge,
   StartMatch,
   UpdateCodeSubmission,
@@ -11,6 +14,7 @@ import {
 import { RedisClient } from "../redis";
 import {
   fetchChallenges,
+  TIME_BEFORE_MATCH_ENDS,
   TIME_FROM_END_TO_START,
   TIME_FROM_START_TO_END,
 } from "../createChallengeRounds";
@@ -108,6 +112,31 @@ listenToChannel<UpdateCodeSubmission>({
       return;
     }
 
+    const wasFinishedAlready = match[team][challengeId].isFinished
+    if (wasFinishedAlready) {
+      console.log("dude tried to submit a challenge that has already been marked as finished in the system!")
+      return
+    }
+
     match[team][challengeId] = { challengeId, code, isFinished };
+
+    const bothChallengesFinished = Object.values(match[team]).every((challenge) => challenge.isFinished)
+
+    if (bothChallengesFinished) {
+      const matchEnding: MatchEnding = {
+        at: Date.now() + TIME_BEFORE_MATCH_ENDS,
+        matchId,
+      }
+      pub.publish(GAME_MANAGEMENT_CHANNEL.MATCH_ENDING, JSON.stringify(matchEnding))
+      setTimeout(() => {
+        const finalSubmissions = codeSubmissions.get(matchId)
+        if (!finalSubmissions) throw new Error('No Final Submissions. Invalid State!')
+        const payload: MatchReadyToScore = {
+          challengeSet: finalSubmissions,
+          matchId,
+        }
+        pub.publish(SCORING_CHANNEL.MATCH_READY_TO_SCORE, JSON.stringify(payload))
+      }, TIME_BEFORE_MATCH_ENDS)
+    }
   },
 });

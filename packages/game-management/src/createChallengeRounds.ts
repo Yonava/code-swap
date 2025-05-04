@@ -17,3 +17,9 @@ export const TIME_FROM_START_TO_END = 1_000 * 20
  * time between the end of a round and the start of a new round event
  */
 export const TIME_FROM_END_TO_START = 1_000 * 5
+
+/**
+ * the time given to the team that has not yet submitted their
+ * final code before scoring commences
+ */
+export const TIME_BEFORE_MATCH_ENDS = 1_000 * 15
