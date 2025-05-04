@@ -8,12 +8,12 @@ COPY ../../pnpm-workspace.yaml ./pnpm-workspace.yaml
 COPY ../../package.json ./package.json
 COPY ../../pnpm-lock.yaml ./pnpm-lock.yaml
 
-COPY ../../packages/scoring ./packages/scoring
+COPY ../../packages/socket-gateway ./packages/socket-gateway
 
 COPY ../packages ./packages
 
-RUN pnpm install --filter scoring...
+RUN pnpm install --filter socket-gateway...
 
-WORKDIR /app/packages/scoring
+WORKDIR /app/packages/socket-gateway
 
 CMD ["pnpm", "start"]
