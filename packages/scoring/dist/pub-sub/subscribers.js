@@ -14,6 +14,7 @@ const getChallengeResult = async (challengeId, challengeData) => {
     return {
         challengeId,
         challengeTitle: res.challenge.title,
+        gradedCodeSubmission: [team1Code, team2Code],
         testCasesPassed: [team1Result.passed, team2Result.passed],
         totalTestCases: res.challenge.testCases.length
     };
