@@ -1,6 +1,6 @@
 import chalk from "chalk";
 
-export const LOCALHOST_PORT = 3005;
+export const LOCALHOST_PORT = 3004;
 
 export const CHALLENGE_LOCALHOST_PORT = 3003;
 

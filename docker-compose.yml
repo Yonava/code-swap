@@ -1,0 +1,62 @@
+version: "3.8"
+
+services:
+  socket-gateway:
+    build:
+      context: .
+      dockerfile: packages/socket-gateway/Dockerfile
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+
+  match-making:
+    build:
+      context: .
+      dockerfile: packages/match-making/Dockerfile
+    volumes:
+      - .:/app
+    ports:
+      - "3001:3001"
+
+  game-management:
+    build:
+      context: .
+      dockerfile: packages/game-management/Dockerfile
+    volumes:
+      - .:/app
+    ports:
+      - "3002:3002"
+
+  challenges:
+    build:
+      context: .
+      dockerfile: packages/challenges/Dockerfile
+    volumes:
+      - .:/app
+    ports:
+      - "3003:3003"
+
+  scoring:
+    build:
+      context: .
+      dockerfile: packages/scoring/Dockerfile
+    volumes:
+      - .:/app
+    ports:
+      - "3004:3004"
+
+  client:
+    build:
+      context: .
+      dockerfile: packages/client/Dockerfile
+    volumes:
+      - .:/app
+    ports:
+      - "5173:5173"
+    depends_on:
+      - socket-gateway
+      - match-making
+      - game-management
+      - challenges
+      - scoring
