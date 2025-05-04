@@ -5,10 +5,8 @@ exports.challenges = [
     {
         id: "match-array-elements",
         title: "Count Matching Unique Elements in Arrays",
-        description: `Given an array of objects containing two properties “arr1” and “arr2” - output an array of integers such that the number at output[I] corresponds to the number of matching elements in input[I].arr1 and input[I].arr2. Do not count duplicates!`,
-        startingCode: `function countMatches(input) {
-        // your code here
-      }`,
+        description: `Given an array of objects containing two properties \`arr1\` and \`arr2\`, output an array of integers such that the number at \`output[I]\` corresponds to the number of matching elements in \`input[I].arr1\` and \`input[I].arr2\`. Do not count duplicates!`,
+        startingCode: `function countMatches(input) { \n \t // your code here \n}`,
         testCases: [
             {
                 input: [
@@ -22,17 +20,15 @@ exports.challenges = [
             },
         ],
         restrictions: [
-            "0 <= input.length <= 10,000",
-            "0 <= input[i].arr1 + input[i].arr2 <= 5,000",
+            "`0 <= input.length <= 10,000`",
+            "`0 <= input[i].arr1 + input[i].arr2 <= 5,000`",
         ],
     },
     {
         id: "filter-words-by-length",
         title: "Filter Words by Length Range",
-        description: `Given a string of characters, remove all the words with characters above a certain length referred to as the upper limit or “ul” and words below the lower limit or “ll”. Output an array that contains the string with the remaining words as the first element, and a comma separated string of words removed as the second element.`,
-        startingCode: `function filterWords(str, ll, ul) {
-        // your code here
-      }`,
+        description: `Given a string of characters, remove all the words with characters above a certain length referred to as the upper limit or \`ul\` and words below the lower limit or \`ll\`. Output an array that contains the string with the remaining words as the first element, and a comma separated string of words removed as the second element.`,
+        startingCode: `function filterWords(str, ll, ul) {\n \t // your code here \n}`,
         testCases: [
             {
                 input: [
@@ -48,15 +44,16 @@ exports.challenges = [
                 id: "1",
             },
         ],
-        restrictions: [],
+        restrictions: [
+            "`0 <= str.length <= 10,000`",
+            "`str` consists of only letters, spaces, and punctuation",
+        ],
     },
     {
         id: "sum-prime-factors-progressive",
         title: "Progressive Sum of Prime Factors",
-        description: `Given a list of integers, create an array where each element of the array is the sum of the prime factors of all of the numbers from elements 0 to i in the input array.`,
-        startingCode: `function sumPrimeFactorsProgressive(arr) {
-        // your code here
-      }`,
+        description: `Given a list of integers, create an array where each element of the array is the sum of the prime factors of all of the numbers from elements \`0\` to \`i\` in the input array.`,
+        startingCode: `function sumPrimeFactorsProgressive(arr) {\n \t // your code here \n}`,
         testCases: [
             {
                 input: [2, 1, 6, 14],
@@ -65,15 +62,13 @@ exports.challenges = [
                 id: "1",
             },
         ],
-        restrictions: [],
+        restrictions: ["`0 <= arr.length <= 10,000`"],
     },
     {
         id: "composite-vs-prime",
         title: "Composite vs Prime Count",
-        description: `Given a string of comma separated numbers, return “composite” if most of those numbers are composite, and “prime” otherwise.`,
-        startingCode: `function majorityCompositeOrPrime(str) {
-        // your code here
-      }`,
+        description: `Given a string of comma separated numbers, return \`composite\` if most of those numbers are composite, and \`prime\` otherwise.`,
+        startingCode: `function majorityCompositeOrPrime(str) {\n \t // your code here \n}`,
         testCases: [],
         restrictions: [],
     },
