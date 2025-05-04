@@ -16,7 +16,6 @@ import {
 } from "../createChallengeRounds";
 import { codeSubmissions } from "../db/codeSubmissions";
 import { playerToTeam } from "../db/playerToTeam";
-import { SCORING_CHANNEL } from "shared-types/dist/scoring";
 
 const { pub } = RedisClient.getInstance();
 const { START_MATCH, START_CHALLENGE, END_CHALLENGE, UPDATE_CODE_SUBMISSION } =
@@ -57,6 +56,7 @@ listenToChannel<StartMatch>({
 
     const processRound = () => {
       numOfCalls++
+      console.log('ROUND PROCESSING', numOfCalls)
       const isRoundStarting = numOfCalls % 2 === 1
       if (isRoundStarting) {
         const submissions = codeSubmissions.get(match.id)
