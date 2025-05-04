@@ -2,8 +2,10 @@ import { CodeEditor } from '@/components/CodeEditor';
 import { ProblemStatement } from '@/components/ProblemStatement';
 import { TitledContainer } from '@/components/TitledContainer';
 import { WaitingRoom } from '@/components/waiting-room/WaitingRoom';
+import { useMatchContext } from '@/state/match/useMatchContext';
 
 const ChallengeView = () => {
+  const { challenge } = useMatchContext()
 
   return (
     <>
@@ -17,7 +19,7 @@ const ChallengeView = () => {
           </div>
         </TitledContainer>
         <TitledContainer
-          title="Code"
+          title={challenge?.isFinished ? 'Code (Submitted)' : 'Code'}
           width="65%"
         >
           <CodeEditor />

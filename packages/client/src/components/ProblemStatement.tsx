@@ -12,12 +12,13 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import './markdownStyles.css';
 
 export const ProblemStatement = () => {
-  const { challenge: challengeCtx, newChallengeTime: newChallengeTimeCtx } =
-    useMatchContext();
-  const challengeId = useMemo(
-    () => (challengeCtx ? challengeCtx.challengeId : undefined),
-    [challengeCtx]
-  );
+  const {
+    challenge: challengeCtx,
+    newChallengeTime: newChallengeTimeCtx,
+    matchEndTime: matchEndTimeCtx
+  } = useMatchContext()
+
+  const challengeId = useMemo(() => challengeCtx ? challengeCtx.challengeId : undefined, [challengeCtx])
 
   const fetchChallenge = async () => {
     if (!challengeId) throw 'query fn should not be enabled';
@@ -77,8 +78,8 @@ export const ProblemStatement = () => {
         </ReactMarkdown>
       </div>
 
-      <div className="absolute bottom-0">
-        {challengeCtx && !newChallengeTimeCtx && (
+      <div className='absolute bottom-0'>
+        {challengeCtx && !newChallengeTimeCtx && !matchEndTimeCtx && (
           <>
             <span>Hands Off Keyboard In:</span>
             <CountdownTimer timeAtZero={challengeCtx.endsAt} />
@@ -90,6 +91,14 @@ export const ProblemStatement = () => {
             <CountdownTimer timeAtZero={newChallengeTimeCtx} />
           </>
         )}
+        {
+          matchEndTimeCtx && (
+            <>
+              <span>Match Is Over In:</span>
+              <CountdownTimer timeAtZero={matchEndTimeCtx} />
+            </>
+          )
+        }
       </div>
     </div>
   );

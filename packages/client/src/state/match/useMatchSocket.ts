@@ -3,7 +3,7 @@ import type { ClientSocketInstance } from 'shared-types/dist/socket-gateway';
 import type { Match, Player, TeamIndex } from 'shared-types/dist/match-making';
 import { MATCH_ACTIONS } from './MatchActions';
 import { getPlayerObj } from './utils';
-import { useNavigate } from 'react-router';
+// import { useNavigate } from 'react-router';
 import { io, type Socket } from 'socket.io-client';
 
 type EventsMap = {
@@ -42,12 +42,11 @@ export const connectSocket = <T extends EventsMap, K extends EventsMap>(
 
 import { matchCtxRef } from './MatchContext';
 import {
-  ChallengeData,
   UpdateCodeSubmission,
 } from 'shared-types/dist/game-management';
 
 export const useMatchSocketListeners = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   return (socket: ClientSocketInstance) => {
     if (!socket) return;
@@ -76,19 +75,18 @@ export const useMatchSocketListeners = () => {
 
     socket.on(
       'gameManagement.startChallenge',
-      ({ round, endsAt, challenges }) => {
+      ({ endsAt, challenges }) => {
         console.log('gameManagement.startChallenge');
         const ctx = matchCtxRef.current;
-        const { challengeId, code } = challenges[ctx.playerId];
+
         ctx.dispatch({
           type: MATCH_ACTIONS.SET_CHALLENGE,
           payload: {
-            round,
             endsAt,
-            challengeId,
-            code,
+            ...challenges[ctx.playerId]
           },
         });
+
         ctx.dispatch({
           type: MATCH_ACTIONS.SET_NEW_CHALLENGE_TIME,
           payload: undefined,
@@ -100,16 +98,25 @@ export const useMatchSocketListeners = () => {
       console.log('gameManagement.endChallenge', data);
       matchCtxRef.current.dispatch({
         type: MATCH_ACTIONS.SET_NEW_CHALLENGE_TIME,
-        payload: data?.startsAt,
+        payload: data.startsAt,
+      });
+    });
+
+    socket.on('gameManagement.matchEnding', (data) => {
+      console.log('gameManagement.matchEnding', data)
+
+      const ctx = matchCtxRef.current;
+
+      ctx.dispatch({
+        type: MATCH_ACTIONS.SET_NEW_CHALLENGE_TIME,
+        payload: undefined,
       });
 
-      if (!('startsAt' in data))
-        matchCtxRef.current.dispatch({
-          type: MATCH_ACTIONS.SET_CHALLENGE,
-          // @ts-expect-error temporary before we add a scorecard
-          action: undefined,
-        });
-    });
+      ctx.dispatch({
+        type: MATCH_ACTIONS.SET_MATCH_END_TIME,
+        payload: data.at
+      })
+    })
   };
 };
 
