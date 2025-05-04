@@ -89,13 +89,7 @@ const runTestCase = (func, testCase) => {
     }
 };
 exports.runTestCase = runTestCase;
-const runTestCases = async (func, challengeId) => {
-    const { challenge, error } = await (0, exports.fetchChallenge)(challengeId);
-    if (error)
-        return { error };
-    const { testCases } = challenge;
-    const total = challenge.testCases.length;
-    let totalDifficultyWeight = 0;
+const runTestCases = async (func, testCases) => {
     let testCasesPassed = 0;
     const testCaseResults = [];
     for (const testCase of testCases) {
@@ -104,20 +98,16 @@ const runTestCases = async (func, challengeId) => {
         if (success) {
             const { result } = testCaseOutcome;
             testCaseResults.push(result);
-            const { passed, difficultyWeight } = result;
+            const { passed } = result;
             if (passed) {
-                totalDifficultyWeight += difficultyWeight;
                 testCasesPassed++;
             }
         }
     }
-    const results = {
+    return {
         passed: testCasesPassed,
-        total,
-        allPassed: testCasesPassed === total,
+        total: testCases.length,
         testCaseResults,
-        totalDifficultyWeight,
     };
-    return { results };
 };
 exports.runTestCases = runTestCases;

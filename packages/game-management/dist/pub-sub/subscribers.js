@@ -115,8 +115,11 @@ const getNewChallengeSetSubmissionObj = (challenges) => challenges.reduce((acc, 
                     matchId,
                 };
                 const matchEndedPayload = { matchId };
-                pub.publish(shared_types_1.SCORING_CHANNEL.MATCH_READY_TO_SCORE, JSON.stringify(payload));
                 pub.publish(shared_types_1.GAME_MANAGEMENT_CHANNEL.MATCH_ENDED, JSON.stringify(matchEndedPayload));
+                setTimeout(() => {
+                    // adds additional 5 sec buffer in order for the last client code updates to be captured
+                    pub.publish(shared_types_1.SCORING_CHANNEL.MATCH_READY_TO_SCORE, JSON.stringify(payload));
+                }, 5000);
             }, createChallengeRounds_1.TIME_BEFORE_MATCH_ENDS);
         }
     },
