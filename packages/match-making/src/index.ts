@@ -24,5 +24,5 @@ app.get('/health', (req, res) => {
 })
 
 app.listen(PORT, () => {
-  console.log(`👩‍❤️‍💋‍👩 Match Making Live on Port ${PORT}`);
+  console.log(`💫 Match Making Live on Port ${PORT}`);
 });
