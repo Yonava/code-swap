@@ -7,6 +7,7 @@ export const GAME_MANAGEMENT_CHANNEL = {
   START_MATCH: `${GAME_MANAGEMENT_CHANNEL_PREFIX}.startMatch`,
   START_CHALLENGE: `${GAME_MANAGEMENT_CHANNEL_PREFIX}.startChallenge`,
   END_CHALLENGE: `${GAME_MANAGEMENT_CHANNEL_PREFIX}.endChallenge`,
+  MATCH_ENDING: `${GAME_MANAGEMENT_CHANNEL_PREFIX}.matchEnding`,
   UPDATE_CODE_SUBMISSION: `${GAME_MANAGEMENT_CHANNEL_PREFIX}.updateCodeSubmission`,
 } as const;
 
@@ -56,6 +57,14 @@ export type EndChallenge = {
    */
   startsAt: number;
 } & MatchIdForRouting;
+
+export type MatchEnding = {
+  /**
+   * unix timestamp of when the match is over. Leaves a bit of wiggle room for final submissions before its
+   * to late!
+   */
+  at: number
+} & MatchIdForRouting
 
 /**
  * the object the players client stores

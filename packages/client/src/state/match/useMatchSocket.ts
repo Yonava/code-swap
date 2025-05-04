@@ -78,6 +78,7 @@ export const useMatchSocketListeners = () => {
       ({ endsAt, challenges }) => {
         console.log('gameManagement.startChallenge');
         const ctx = matchCtxRef.current;
+
         ctx.dispatch({
           type: MATCH_ACTIONS.SET_CHALLENGE,
           payload: {
@@ -85,6 +86,7 @@ export const useMatchSocketListeners = () => {
             ...challenges[ctx.playerId]
           },
         });
+
         ctx.dispatch({
           type: MATCH_ACTIONS.SET_NEW_CHALLENGE_TIME,
           payload: undefined,
@@ -99,6 +101,22 @@ export const useMatchSocketListeners = () => {
         payload: data.startsAt,
       });
     });
+
+    socket.on('gameManagement.matchEnding', (data) => {
+      console.log('gameManagement.matchEnding', data)
+
+      const ctx = matchCtxRef.current;
+
+      ctx.dispatch({
+        type: MATCH_ACTIONS.SET_NEW_CHALLENGE_TIME,
+        payload: undefined,
+      });
+
+      ctx.dispatch({
+        type: MATCH_ACTIONS.SET_MATCH_END_TIME,
+        payload: data.at
+      })
+    })
   };
 };
 

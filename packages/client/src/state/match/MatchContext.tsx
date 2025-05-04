@@ -24,8 +24,13 @@ export type TMatchContext = {
   playerId: string,
 
   match: Match | undefined,
+  // connected with startChallenge. set when a new round begins/challenge arrives (or when player indicates final submission "isFinished: true")
   challenge: ClientChallenge | undefined,
+  // connected with endChallenge. set to the startsAt time
   newChallengeTime: number | undefined,
+  // when the service indicates a match is scheduled to end, this will be set to the time it is scheduled to be shut down
+  matchEndTime: number | undefined,
+
   scoreboard: undefined,
 
   matchPhase: MatchPhase,
@@ -128,6 +133,7 @@ export const MatchContextProvider = ({ children }: { children: ReactNode }) => {
     match: state.match,
     challenge: state.challenge,
     newChallengeTime: state.newChallengeTime,
+    matchEndTime: state.matchEndTime,
     scoreboard: state.scoreboard,
     matchPhase: getMatchPhase(state),
     dispatch,

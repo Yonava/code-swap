@@ -5,6 +5,7 @@ export declare const GAME_MANAGEMENT_CHANNEL: {
     readonly START_MATCH: "gameManagement.startMatch";
     readonly START_CHALLENGE: "gameManagement.startChallenge";
     readonly END_CHALLENGE: "gameManagement.endChallenge";
+    readonly MATCH_ENDING: "gameManagement.matchEnding";
     readonly UPDATE_CODE_SUBMISSION: "gameManagement.updateCodeSubmission";
 };
 export type GameManagementChannel = (typeof GAME_MANAGEMENT_CHANNEL)[keyof typeof GAME_MANAGEMENT_CHANNEL];
@@ -46,6 +47,13 @@ export type EndChallenge = {
      * unix timestamp of when the next round will start
      */
     startsAt: number;
+} & MatchIdForRouting;
+export type MatchEnding = {
+    /**
+     * unix timestamp of when the match is over. Leaves a bit of wiggle room for final submissions before its
+     * to late!
+     */
+    at: number;
 } & MatchIdForRouting;
 /**
  * the object the players client stores

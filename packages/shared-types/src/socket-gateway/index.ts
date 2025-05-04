@@ -9,7 +9,7 @@ import type {
   Player
 } from '../match-making'
 import { MATCH_MAKING_CHANNEL } from "../match-making";
-import { ChallengeData, EndChallenge, GAME_MANAGEMENT_CHANNEL, StartChallenge, UpdateCodeSubmission } from "../game-management";
+import { ChallengeData, EndChallenge, GAME_MANAGEMENT_CHANNEL, MatchEnding, StartChallenge, UpdateCodeSubmission } from "../game-management";
 
 export type SocketGatewayRegistrationRequest = {
   playerId: Player['id'];
@@ -39,6 +39,7 @@ export type ServerSocketEvents = {
 
   [GAME_MANAGEMENT_CHANNEL.START_CHALLENGE]: (data: StartChallenge) => void,
   [GAME_MANAGEMENT_CHANNEL.END_CHALLENGE]: (data: EndChallenge) => void,
+  [GAME_MANAGEMENT_CHANNEL.MATCH_ENDING]: (data: MatchEnding) => void,
 }
 
 /**
