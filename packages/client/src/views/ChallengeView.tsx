@@ -3,6 +3,7 @@ import { ProblemStatement } from '@/components/ProblemStatement';
 import { TitledContainer } from '@/components/TitledContainer';
 import { WaitingRoom } from '@/components/waiting-room/WaitingRoom';
 import { useMatchContext } from '@/state/match/useMatchContext';
+import { MatchScoreboard } from './MatchScoreboard';
 
 const ChallengeView = () => {
   const { challenge } = useMatchContext()
@@ -27,6 +28,7 @@ const ChallengeView = () => {
       </div>
 
       <WaitingRoom />
+      <MatchScoreboard />
     </>
   );
 };

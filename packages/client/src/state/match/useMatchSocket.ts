@@ -117,6 +117,11 @@ export const useMatchSocketListeners = () => {
         payload: data.at
       })
     })
+
+    socket.on('gameManagement.matchEnded', () => {
+      console.log('gameManagement.matchEnded')
+      matchCtxRef.current.dispatch({ type: MATCH_ACTIONS.SET_SCOREBOARD, payload: 'loading' })
+    })
   };
 };
 

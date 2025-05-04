@@ -27,6 +27,7 @@ export type ServerSocketEvents = {
     [GAME_MANAGEMENT_CHANNEL.START_CHALLENGE]: (data: StartChallenge) => void;
     [GAME_MANAGEMENT_CHANNEL.END_CHALLENGE]: (data: EndChallenge) => void;
     [GAME_MANAGEMENT_CHANNEL.MATCH_ENDING]: (data: MatchEnding) => void;
+    [GAME_MANAGEMENT_CHANNEL.MATCH_ENDED]: () => void;
 };
 /**
  * for server-side use only

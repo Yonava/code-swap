@@ -1,8 +1,8 @@
-import { StartChallenge, GAME_MANAGEMENT_CHANNEL, EndChallenge } from "shared-types";
+import { StartChallenge, GAME_MANAGEMENT_CHANNEL, EndChallenge, MatchEnding, MatchIdForRouting, SCORING_CHANNEL } from "shared-types";
 import { listenToChannel } from "../listenToChannel";
 import { io } from "../socket";
 
-const { START_CHALLENGE, END_CHALLENGE } = GAME_MANAGEMENT_CHANNEL
+const { START_CHALLENGE, END_CHALLENGE, MATCH_ENDING, MATCH_ENDED } = GAME_MANAGEMENT_CHANNEL
 
 listenToChannel<StartChallenge>({
   from: START_CHALLENGE,
@@ -12,4 +12,14 @@ listenToChannel<StartChallenge>({
 listenToChannel<EndChallenge>({
   from: END_CHALLENGE,
   fn: (data) => io.to(data.matchId).emit(END_CHALLENGE, data)
+})
+
+listenToChannel<MatchEnding>({
+  from: MATCH_ENDING,
+  fn: (data) => io.to(data.matchId).emit(MATCH_ENDING, data)
+})
+
+listenToChannel<MatchIdForRouting>({
+  from: MATCH_ENDED,
+  fn: (data) => io.to(data.matchId).emit(MATCH_ENDED)
 })
