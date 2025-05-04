@@ -95,7 +95,7 @@ listenToChannel<StartMatch>({
 
 listenToChannel<UpdateCodeSubmission>({
   from: UPDATE_CODE_SUBMISSION,
-  fn: async ({ playerId, matchId, challengeId, code }) => {
+  fn: async ({ playerId, matchId, challengeId, code, isFinished }) => {
     const match = codeSubmissions.get(matchId);
     if (!match) {
       console.log("match not found");
@@ -108,6 +108,6 @@ listenToChannel<UpdateCodeSubmission>({
       return;
     }
 
-    match[team][challengeId].code = code;
+    match[team][challengeId] = { challengeId, code, isFinished };
   },
 });

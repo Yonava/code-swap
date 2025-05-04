@@ -74,7 +74,7 @@ const getNewChallengeSetSubmissionObj = (challenges) => challenges.reduce((acc, 
 });
 (0, listenToChannel_1.listenToChannel)({
     from: UPDATE_CODE_SUBMISSION,
-    fn: async ({ playerId, matchId, challengeId, code }) => {
+    fn: async ({ playerId, matchId, challengeId, code, isFinished }) => {
         const match = codeSubmissions_1.codeSubmissions.get(matchId);
         if (!match) {
             console.log("match not found");
@@ -85,6 +85,6 @@ const getNewChallengeSetSubmissionObj = (challenges) => challenges.reduce((acc, 
             console.log("team not found");
             return;
         }
-        match[team][challengeId].code = code;
+        match[team][challengeId] = { challengeId, code, isFinished };
     },
 });
