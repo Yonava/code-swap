@@ -31,7 +31,7 @@ export type TMatchContext = {
   // when the service indicates a match is scheduled to end, this will be set to the time it is scheduled to be shut down
   matchEndTime: number | undefined,
 
-  scoreboard: undefined,
+  scoreboard: undefined | 'loading',
 
   matchPhase: MatchPhase,
   dispatch: MatchActionDispatcher,

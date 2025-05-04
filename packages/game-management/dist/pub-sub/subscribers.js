@@ -20,7 +20,6 @@ const getNewChallengeSetSubmissionObj = (challenges) => challenges.reduce((acc, 
 (0, listenToChannel_1.listenToChannel)({
     from: START_MATCH,
     fn: async ({ match }) => {
-        console.log('START_MATCH');
         const challenges = await (0, createChallengeRounds_1.fetchChallenges)(2);
         codeSubmissions_1.codeSubmissions.set(match.id, [
             getNewChallengeSetSubmissionObj(challenges),
@@ -34,9 +33,18 @@ const getNewChallengeSetSubmissionObj = (challenges) => challenges.reduce((acc, 
         playerToTeam_1.playerToTeam.set(team2Player1.id, 1);
         playerToTeam_1.playerToTeam.set(team2Player2.id, 1);
         let numOfCalls = 0;
+        const isMatchEnding = () => {
+            const submissions = codeSubmissions_1.codeSubmissions.get(match.id);
+            if (!submissions)
+                throw new Error('No Submissions Found: Invalid State!');
+            const team1Finished = Object.values(submissions[0]).every((challenge) => challenge.isFinished);
+            const team2Finished = Object.values(submissions[1]).every((challenge) => challenge.isFinished);
+            return team1Finished || team2Finished;
+        };
         const processRound = () => {
+            if (isMatchEnding())
+                return;
             numOfCalls++;
-            console.log('ROUND PROCESSING', numOfCalls);
             const isRoundStarting = numOfCalls % 2 === 1;
             if (isRoundStarting) {
                 const submissions = codeSubmissions_1.codeSubmissions.get(match.id);
@@ -85,6 +93,31 @@ const getNewChallengeSetSubmissionObj = (challenges) => challenges.reduce((acc, 
             console.log("team not found");
             return;
         }
+        const wasFinishedAlready = match[team][challengeId].isFinished;
+        if (wasFinishedAlready) {
+            console.log("dude tried to submit a challenge that has already been marked as finished in the system!");
+            return;
+        }
         match[team][challengeId] = { challengeId, code, isFinished };
+        const bothChallengesFinished = Object.values(match[team]).every((challenge) => challenge.isFinished);
+        if (bothChallengesFinished) {
+            const matchEnding = {
+                at: Date.now() + createChallengeRounds_1.TIME_BEFORE_MATCH_ENDS,
+                matchId,
+            };
+            pub.publish(shared_types_1.GAME_MANAGEMENT_CHANNEL.MATCH_ENDING, JSON.stringify(matchEnding));
+            setTimeout(() => {
+                const finalSubmissions = codeSubmissions_1.codeSubmissions.get(matchId);
+                if (!finalSubmissions)
+                    throw new Error('No Final Submissions. Invalid State!');
+                const payload = {
+                    challengeSet: finalSubmissions,
+                    matchId,
+                };
+                const matchEndedPayload = { matchId };
+                pub.publish(shared_types_1.SCORING_CHANNEL.MATCH_READY_TO_SCORE, JSON.stringify(payload));
+                pub.publish(shared_types_1.GAME_MANAGEMENT_CHANNEL.MATCH_ENDED, JSON.stringify(matchEndedPayload));
+            }, createChallengeRounds_1.TIME_BEFORE_MATCH_ENDS);
+        }
     },
 });

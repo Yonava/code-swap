@@ -6,13 +6,14 @@ export declare const GAME_MANAGEMENT_CHANNEL: {
     readonly START_CHALLENGE: "gameManagement.startChallenge";
     readonly END_CHALLENGE: "gameManagement.endChallenge";
     readonly MATCH_ENDING: "gameManagement.matchEnding";
+    readonly MATCH_ENDED: "gameManagement.matchEnded";
     readonly UPDATE_CODE_SUBMISSION: "gameManagement.updateCodeSubmission";
 };
 export type GameManagementChannel = (typeof GAME_MANAGEMENT_CHANNEL)[keyof typeof GAME_MANAGEMENT_CHANNEL];
 export type StartMatch = {
     match: FullMatch;
 };
-type MatchIdForRouting = {
+export type MatchIdForRouting = {
     /**
      * match id the challenge is being sent to, for routing purposes
      */
@@ -68,4 +69,3 @@ export type CodeSubmissionsDB = Map<Match["id"], [
     ChallengeSetSubmissions
 ]>;
 export type PlayerToTeamDB = Map<Player["id"], TeamIndex>;
-export {};

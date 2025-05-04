@@ -5,6 +5,7 @@ import {
   EndChallenge,
   GAME_MANAGEMENT_CHANNEL,
   MatchEnding,
+  MatchIdForRouting,
   MatchReadyToScore,
   SCORING_CHANNEL,
   StartChallenge,
@@ -39,7 +40,6 @@ const getNewChallengeSetSubmissionObj = (challenges: Challenge[]) =>
 listenToChannel<StartMatch>({
   from: START_MATCH,
   fn: async ({ match }) => {
-    console.log('START_MATCH')
     const challenges = await fetchChallenges(2);
 
     codeSubmissions.set(match.id, [
@@ -59,9 +59,17 @@ listenToChannel<StartMatch>({
 
     let numOfCalls = 0
 
+    const isMatchEnding = () => {
+      const submissions = codeSubmissions.get(match.id)
+      if (!submissions) throw new Error('No Submissions Found: Invalid State!')
+      const team1Finished = Object.values(submissions[0]).every((challenge) => challenge.isFinished)
+      const team2Finished = Object.values(submissions[1]).every((challenge) => challenge.isFinished)
+      return team1Finished || team2Finished
+    }
+
     const processRound = () => {
+      if (isMatchEnding()) return
       numOfCalls++
-      console.log('ROUND PROCESSING', numOfCalls)
       const isRoundStarting = numOfCalls % 2 === 1
       if (isRoundStarting) {
         const submissions = codeSubmissions.get(match.id)
@@ -135,7 +143,9 @@ listenToChannel<UpdateCodeSubmission>({
           challengeSet: finalSubmissions,
           matchId,
         }
+        const matchEndedPayload: MatchIdForRouting = { matchId }
         pub.publish(SCORING_CHANNEL.MATCH_READY_TO_SCORE, JSON.stringify(payload))
+        pub.publish(GAME_MANAGEMENT_CHANNEL.MATCH_ENDED, JSON.stringify(matchEndedPayload))
       }, TIME_BEFORE_MATCH_ENDS)
     }
   },

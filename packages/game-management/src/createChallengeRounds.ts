@@ -11,7 +11,7 @@ export const fetchChallenges = async (count: number) => {
 /**
  * time from start of round to end of round
  */
-export const TIME_FROM_START_TO_END = 1_000 * 20
+export const TIME_FROM_START_TO_END = 1_000 * 30
 
 /**
  * time between the end of a round and the start of a new round event

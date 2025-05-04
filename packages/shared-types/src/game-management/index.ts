@@ -8,6 +8,7 @@ export const GAME_MANAGEMENT_CHANNEL = {
   START_CHALLENGE: `${GAME_MANAGEMENT_CHANNEL_PREFIX}.startChallenge`,
   END_CHALLENGE: `${GAME_MANAGEMENT_CHANNEL_PREFIX}.endChallenge`,
   MATCH_ENDING: `${GAME_MANAGEMENT_CHANNEL_PREFIX}.matchEnding`,
+  MATCH_ENDED: `${GAME_MANAGEMENT_CHANNEL_PREFIX}.matchEnded`,
   UPDATE_CODE_SUBMISSION: `${GAME_MANAGEMENT_CHANNEL_PREFIX}.updateCodeSubmission`,
 } as const;
 
@@ -18,7 +19,7 @@ export type StartMatch = {
   match: FullMatch;
 };
 
-type MatchIdForRouting = {
+export type MatchIdForRouting = {
   /**
    * match id the challenge is being sent to, for routing purposes
    */

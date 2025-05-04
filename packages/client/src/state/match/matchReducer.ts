@@ -12,6 +12,7 @@ export type MatchAction =
   | { type: MatchActionNames['SET_CHALLENGE']; payload: ClientChallenge }
   | { type: MatchActionNames['SET_NEW_CHALLENGE_TIME']; payload: number | undefined }
   | { type: MatchActionNames['SET_MATCH_END_TIME']; payload: number }
+  | { type: MatchActionNames['SET_SCOREBOARD'], payload: TMatchContext['scoreboard'] }
   | { type: MatchActionNames['CLEAR_MATCH_DATA'] };
 
 export const newStateDefaults = () => ({
@@ -39,6 +40,8 @@ export const matchReducer = (
       return { ...state, newChallengeTime: action.payload }
     case MATCH_ACTIONS.SET_MATCH_END_TIME:
       return { ...state, matchEndTime: action.payload }
+    case MATCH_ACTIONS.SET_SCOREBOARD:
+      return { ...state, scoreboard: action.payload }
     case MATCH_ACTIONS.CLEAR_MATCH_DATA:
       return { ...state, ...newStateDefaults() };
     default:
