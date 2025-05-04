@@ -145,7 +145,10 @@ listenToChannel<UpdateCodeSubmission>({
         }
         const matchEndedPayload: MatchIdForRouting = { matchId }
         pub.publish(SCORING_CHANNEL.MATCH_READY_TO_SCORE, JSON.stringify(payload))
-        pub.publish(GAME_MANAGEMENT_CHANNEL.MATCH_ENDED, JSON.stringify(matchEndedPayload))
+        setTimeout(() => {
+          // adds additional 5 sec buffer in order for the last client code updates to be captured
+          pub.publish(GAME_MANAGEMENT_CHANNEL.MATCH_ENDED, JSON.stringify(matchEndedPayload))
+        }, 5000)
       }, TIME_BEFORE_MATCH_ENDS)
     }
   },

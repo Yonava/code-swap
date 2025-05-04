@@ -17,6 +17,9 @@ export const MatchScoreboard = () => {
         {
           scoreboard === 'loading' && <LoadingState />
         }
+        <div>
+          {JSON.stringify(scoreboard, null, 2)}
+        </div>
       </DialogContent>
     </Dialog>
   )

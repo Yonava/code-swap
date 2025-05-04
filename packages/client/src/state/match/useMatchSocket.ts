@@ -122,6 +122,10 @@ export const useMatchSocketListeners = () => {
       console.log('gameManagement.matchEnded')
       matchCtxRef.current.dispatch({ type: MATCH_ACTIONS.SET_SCOREBOARD, payload: 'loading' })
     })
+
+    socket.on('scoring.matchResult', (data) => {
+      matchCtxRef.current.dispatch({ type: MATCH_ACTIONS.SET_SCOREBOARD, payload: data })
+    })
   };
 };
 
