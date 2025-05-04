@@ -1,4 +1,4 @@
-import { listenToChannel, logResponse } from "../listenToChannel";
+import { listenToChannel } from "../listenToChannel";
 import {
   Challenge,
   ChallengeSetSubmissions,
@@ -35,6 +35,7 @@ const getNewChallengeSetSubmissionObj = (challenges: Challenge[]) =>
 listenToChannel<StartMatch>({
   from: START_MATCH,
   fn: async ({ match }) => {
+    console.log('START_MATCH')
     const challenges = await fetchChallenges(2);
 
     codeSubmissions.set(match.id, [
@@ -61,7 +62,8 @@ listenToChannel<StartMatch>({
       if (isRoundStarting) {
         const submissions = codeSubmissions.get(match.id)
         if (!submissions) throw new Error('No Submissions Found: Invalid State!')
-        const [team1Submissions, team2Submissions] = submissions
+        const team1Submissions = Object.values(submissions[0])
+        const team2Submissions = Object.values(submissions[1])
         const offset = numOfCalls % 4 === 1
         const start: StartChallenge = {
           endsAt: Date.now() + TIME_FROM_START_TO_END,
