@@ -19,10 +19,12 @@
   "description": "welcome to code swap!",
   "private": "true",
   "devDependencies": {
+    "@types/react-syntax-highlighter": "^15.5.13",
     "concurrently": "^9.1.2"
   },
   "dependencies": {
     "react-markdown": "^10.1.0",
+    "react-syntax-highlighter": "^15.6.1",
     "remark-gfm": "^4.0.1"
   }
 }

@@ -1,12 +1,14 @@
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useMatchContext } from '@/state/match/useMatchContext';
-import { useMemo } from 'react';
+import { CSSProperties, useMemo } from 'react';
 import { Challenge } from 'shared-types/dist/challenges';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { CountdownTimer } from './CountdownTimer';
 import rehypeRaw from 'rehype-raw';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import './markdownStyles.css';
 
 export const ProblemStatement = () => {
@@ -32,28 +34,7 @@ export const ProblemStatement = () => {
   });
 
   const problemStatement = useMemo(() => {
-    if (!challenge)
-      return `# Default Problem Statement
-
-- The file synchronization will keep one file of the workspace synced with one or multiple files in **Google Drive**, **Dropbox** or **GitHub**.
-- Line breaks need to be properly formatted
-- Lists need proper markdown syntax
-
-> Before starting to sync files, you must link an account in the **Synchronize** sub-menu.
-
-## Code Example
-\`\`\`javascript
-function example() {
-  console.log("This is a code block");
-}
-\`\`\`
-
-| Feature | Description |
-|---------|-------------|
-| File sync | Sync your files across devices |
-| Storage | Access your files from anywhere |
-| Sharing | Share with colleagues and friends |
-`;
+    if (!challenge) return 'no problem statement available';
     return `
       ${challenge.title} ->
 
@@ -67,6 +48,29 @@ function example() {
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           rehypePlugins={[rehypeRaw]}
+          components={{
+            code({ className, children, ...props }) {
+              const match = /language-(\w+)/.exec(className || '');
+              return match ? (
+                <SyntaxHighlighter
+                  // @ts-expect-error not sure why this type doesnt match
+                  style={vscDarkPlus}
+                  language={match[1]}
+                  PreTag="div"
+                  {...props}
+                >
+                  {String(children).replace(/\n$/, '')}
+                </SyntaxHighlighter>
+              ) : (
+                <code
+                  className={className}
+                  {...props}
+                >
+                  {children}
+                </code>
+              );
+            },
+          }}
         >
           {problemStatement}
         </ReactMarkdown>
@@ -89,3 +93,7 @@ function example() {
     </div>
   );
 };
+
+// rebnder md
+// update challenges to be md pretty :)
+// add standard for problem
