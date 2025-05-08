@@ -2,7 +2,8 @@ import axios from "axios"
 import { Challenge } from "shared-types"
 
 export const fetchChallenges = async (count: number) => {
-  const CHALLENGE_URL = `http://localhost:3003/challenges/random?count=${count}`
+  const baseUrl = process.env.CHALLENGES_URL || 'http://localhost:3003'
+  const CHALLENGE_URL = `${baseUrl}/challenges/random?count=${count}`
   const { data } = await axios.get<Challenge[] | { error: string }>(CHALLENGE_URL)
   if ('error' in data) throw new Error(data.error)
   return data

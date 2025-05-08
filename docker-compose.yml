@@ -7,6 +7,7 @@ services:
       dockerfile: packages/socket-gateway/Dockerfile
     volumes:
       - .:/app
+      - /app/node_modules
     ports:
       - "3000:3000"
 
@@ -16,6 +17,7 @@ services:
       dockerfile: packages/match-making/Dockerfile
     volumes:
       - .:/app
+      - /app/node_modules
     ports:
       - "3001:3001"
 
@@ -25,8 +27,11 @@ services:
       dockerfile: packages/game-management/Dockerfile
     volumes:
       - .:/app
+      - /app/node_modules
     ports:
       - "3002:3002"
+    environment:
+      - CHALLENGES_URL=http://challenges:3003
 
   challenges:
     build:
@@ -34,6 +39,7 @@ services:
       dockerfile: packages/challenges/Dockerfile
     volumes:
       - .:/app
+      - /app/node_modules
     ports:
       - "3003:3003"
 
@@ -43,6 +49,7 @@ services:
       dockerfile: packages/scoring/Dockerfile
     volumes:
       - .:/app
+      - /app/node_modules
     ports:
       - "3004:3004"
 
@@ -52,6 +59,7 @@ services:
       dockerfile: packages/client/Dockerfile
     volumes:
       - .:/app
+      - /app/node_modules
     ports:
       - "5173:5173"
     depends_on:
