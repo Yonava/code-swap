@@ -22,7 +22,7 @@ git clone https://github.com/Yonava/code-swap.git
 cd code-swap
 ```
 
-🤫 Add environment secrets
+🤫 Add environment secrets (dont forget to modify this with your credentials)
 
 ```
 touch .env && echo -e "REDIS_USERNAME=default\nREDIS_PASSWORD=🔒 Your Special Secret 🔒\nREDIS_HOST=🌐 Your Very Own Host 🌐\nREDIS_PORT=🔢 Your Magic Port 🔢" > .env
