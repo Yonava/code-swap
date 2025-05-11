@@ -17,10 +17,8 @@ export const fetchChallenge = async (challengeId: string) => {
   console.log('getting challenges')
   try {
     const baseUrl = process.env.CHALLENGES_URL || 'http://localhost:3003'
-    console.log(baseUrl)
     const CHALLENGE_URL = `${baseUrl}/challenges/`
     const reqUrl = `${CHALLENGE_URL}/${challengeId}`
-    console.log(reqUrl)
     const response = await fetch(reqUrl);
 
     if (!response.ok) {
