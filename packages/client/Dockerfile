@@ -19,5 +19,4 @@ RUN pnpm build-only
 
 EXPOSE 5173
 
-# Start dev server
 CMD ["pnpm", "dev"]

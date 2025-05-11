@@ -6,7 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TIME_BEFORE_MATCH_ENDS = exports.TIME_FROM_END_TO_START = exports.TIME_FROM_START_TO_END = exports.fetchChallenges = void 0;
 const axios_1 = __importDefault(require("axios"));
 const fetchChallenges = async (count) => {
-    const CHALLENGE_URL = `http://localhost:3003/challenges/random?count=${count}`;
+    const baseUrl = process.env.CHALLENGES_URL || 'http://localhost:3003';
+    const CHALLENGE_URL = `${baseUrl}/challenges/random?count=${count}`;
     const { data } = await axios_1.default.get(CHALLENGE_URL);
     if ('error' in data)
         throw new Error(data.error);

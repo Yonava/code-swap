@@ -2,13 +2,6 @@ import chalk from "chalk";
 
 export const LOCALHOST_PORT = 3004;
 
-export const CHALLENGE_LOCALHOST_PORT = 3003;
-
-export const API_BASE_URL =
-  process.env.NODE_ENV === "production"
-    ? process.env.API_URL || "example.com" // need actual url
-    : `http://localhost:${CHALLENGE_LOCALHOST_PORT}`;
-
 export const PORT = process.env.PORT || LOCALHOST_PORT;
 
 export const LOG_COLORS = {

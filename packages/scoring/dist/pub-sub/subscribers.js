@@ -6,7 +6,7 @@ const utils_1 = require("../utils");
 const getChallengeResult = async (challengeId, challengeData) => {
     const res = await (0, utils_1.fetchChallenge)(challengeId);
     if (!res.challenge)
-        throw 'oh no';
+        throw res.error;
     const { code: team1Code } = challengeData[0];
     const { code: team2Code } = challengeData[1];
     const team1Result = await (0, utils_1.runTestCases)(team1Code, res.challenge.testCases);

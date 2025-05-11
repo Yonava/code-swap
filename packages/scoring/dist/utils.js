@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.runTestCases = exports.runTestCase = exports.fetchChallenge = void 0;
 const vm2_1 = require("vm2");
-const constants_1 = require("./constants");
 const TESTCASE_RUNNER_TIMEOUT_MS = 2000; // 2 seconds
 /**
  * Fetches and validates a challenge by ID
@@ -10,8 +9,14 @@ const TESTCASE_RUNNER_TIMEOUT_MS = 2000; // 2 seconds
  * @returns The challenge data or error
  */
 const fetchChallenge = async (challengeId) => {
+    console.log('getting challenges');
     try {
-        const response = await fetch(`${constants_1.API_BASE_URL}/challenges/${challengeId}`);
+        const baseUrl = process.env.CHALLENGES_URL || 'http://localhost:3003';
+        console.log(baseUrl);
+        const CHALLENGE_URL = `${baseUrl}/challenges/`;
+        const reqUrl = `${CHALLENGE_URL}/${challengeId}`;
+        console.log(reqUrl);
+        const response = await fetch(reqUrl);
         if (!response.ok) {
             throw new Error(response.status === 404
                 ? "Challenge id not found"

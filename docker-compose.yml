@@ -7,8 +7,11 @@ services:
       dockerfile: packages/socket-gateway/Dockerfile
     volumes:
       - .:/app
+      - /app/node_modules
     ports:
       - "3000:3000"
+    networks:
+      - microservices
 
   match-making:
     build:
@@ -16,8 +19,13 @@ services:
       dockerfile: packages/match-making/Dockerfile
     volumes:
       - .:/app
+      - /app/node_modules
     ports:
       - "3001:3001"
+    environment:
+      - CHALLENGES_URL=http://challenges:3003
+    networks:
+      - microservices
 
   game-management:
     build:
@@ -25,8 +33,13 @@ services:
       dockerfile: packages/game-management/Dockerfile
     volumes:
       - .:/app
+      - /app/node_modules
     ports:
       - "3002:3002"
+    environment:
+      - CHALLENGES_URL=http://challenges:3003
+    networks:
+      - microservices
 
   challenges:
     build:
@@ -34,8 +47,11 @@ services:
       dockerfile: packages/challenges/Dockerfile
     volumes:
       - .:/app
+      - /app/node_modules
     ports:
       - "3003:3003"
+    networks:
+      - microservices
 
   scoring:
     build:
@@ -43,8 +59,13 @@ services:
       dockerfile: packages/scoring/Dockerfile
     volumes:
       - .:/app
+      - /app/node_modules
     ports:
       - "3004:3004"
+    environment:
+      - CHALLENGES_URL=http://challenges:3003
+    networks:
+      - microservices
 
   client:
     build:
@@ -52,6 +73,7 @@ services:
       dockerfile: packages/client/Dockerfile
     volumes:
       - .:/app
+      - /app/node_modules
     ports:
       - "5173:5173"
     depends_on:
@@ -60,3 +82,9 @@ services:
       - game-management
       - challenges
       - scoring
+    networks:
+      - microservices
+
+networks:
+  microservices:
+    driver: bridge
