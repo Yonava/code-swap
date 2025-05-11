@@ -4,7 +4,7 @@ import { fetchChallenge, runTestCases } from "../utils";
 
 const getChallengeResult = async (challengeId: Challenge['id'], challengeData: [ChallengeData, ChallengeData]): Promise<ChallengeResult> => {
   const res = await fetchChallenge(challengeId);
-  if (!res.challenge) throw 'oh no'
+  if (!res.challenge) throw res.error
 
   const { code: team1Code } = challengeData[0]
   const { code: team2Code } = challengeData[1]

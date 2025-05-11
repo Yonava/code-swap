@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# run chmod +x kill-ports.sh
+
 # locally running microservice ports
 PORTS=(3000 3001 3002 3003 3004)
 
