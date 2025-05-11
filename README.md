@@ -8,29 +8,57 @@ Code Swap is intended for college students, but anyone who is interested in a fu
 
 This application was built as a semester-long group project for the course _COMPSCI 426 Scalable Web Systems_ at UMass Amherst.
 
-## Setup Instructions
+## Repository Setup
 
-Clone the project
+🧑‍💻 Clone the project
 
 ```
 git clone https://github.com/Yonava/code-swap.git
 ```
 
-Switch directory to client
-```
-cd client
-```
-
-Install dependencies
+👉 TP into the project
 
 ```
-pnmp i
+cd code-swap
 ```
 
-Run client dev server
+🤫 Add environment secrets
+
+```
+touch .env && echo -e "REDIS_USERNAME=default\nREDIS_PASSWORD=🔒 Your Special Secret 🔒\nREDIS_HOST=🌐 Your Very Own Host 🌐\nREDIS_PORT=🔢 Your Magic Port 🔢" > .env
+```
+
+🎁 Gift all microservices the secrets
+
+```
+chmod +x setup-env.sh && ./setup-env.sh
+```
+
+🔪 Kill local processes on reserved ports
+
+```
+chmod +x kill-ports.sh && ./kill-ports.sh
+```
+
+🤠 Install dependencies
+
+```
+pnpm i
+```
+
+
+## Run Locally With Concurrently
+
 ```
 pnpm dev
 ```
+
+## Run With Docker Compose
+
+```
+docker compose up --build
+```
+
 
 ## Team Code Swap
 
